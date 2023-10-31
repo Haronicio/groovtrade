@@ -1,0 +1,1 @@
+mysql --user=sysadmin --password=mypassword < create_db.sql

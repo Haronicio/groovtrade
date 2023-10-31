@@ -1,0 +1,10 @@
+devrep/projet_p1/configuration/Config.class
+devrep/projet_p1/controleur/Controleur.class
+devrep/projet_p1/dao/UtilisateurRepository.class
+devrep/projet_p1/configuration/Config$1.class
+devrep/projet_p1/entities/Historique.class
+devrep/projet_p1/dao/HistoriqueRepository.class
+devrep/projet_p1/entities/Produit.class
+devrep/projet_p1/ProjetP1Application.class
+devrep/projet_p1/entities/Utilisateur.class
+devrep/projet_p1/dao/ProduitRepository.class
