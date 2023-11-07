@@ -1,6 +1,8 @@
 package fr.haron.groovtrade.entities;
 
 import java.io.Serializable;
+
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,13 +11,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "produit_meta")
+// Changer pour Embedded
+// @Entity
+// @Table(name = "produit_meta")
+@Embeddable
 public class ProduitMeta implements Serializable
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long id;
 
     private String nom;
     private String artiste;
@@ -23,8 +27,9 @@ public class ProduitMeta implements Serializable
     private int annee;
     private String genres;
 
-    @OneToOne(mappedBy = "meta")
-    private Produit produit;
+    // Changer pour Embedded
+    // @OneToOne(mappedBy = "meta")
+    // private Produit produit;
 
 
     public ProduitMeta(String nom, String artiste, String album, int annee, String genres) {
@@ -40,13 +45,13 @@ public class ProduitMeta implements Serializable
     }
 
 
-    public Long getId() {
-        return this.id;
-    }
+    // public Long getId() {
+    //     return this.id;
+    // }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // public void setId(Long id) {
+    //     this.id = id;
+    // }
 
     public String getNom() {
         return this.nom;
@@ -99,7 +104,7 @@ public class ProduitMeta implements Serializable
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
+            // " id='" + getId() + "'" +
             ", nom='" + getNom() + "'" +
             ", artiste='" + getArtiste() + "'" +
             ", album='" + getAlbum() + "'" +
@@ -109,14 +114,14 @@ public class ProduitMeta implements Serializable
     }
 
 
-    public Produit getProduit() {
-        return produit;
-    }
+    // public Produit getProduit() {
+    //     return produit;
+    // }
 
 
-    public void setProduit(Produit produit) {
-        this.produit = produit;
-    }
+    // public void setProduit(Produit produit) {
+    //     this.produit = produit;
+    // }
 
     
 }

@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,13 +34,25 @@ public class Produit implements Serializable{
     private String description;
 
     // @OneToMany(cascade = CascadeType.ALL)
-    // private List<ProduitImg> imgs = new ArrayList<>();
+    // @JoinColumn(name = "img_id")
+
+    @ElementCollection
+    @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))
+    private List<ProduitImg> imgs = new ArrayList<>();
 
     // @OneToMany(cascade = CascadeType.ALL)
     // private List<ProduitSong> songs = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "meta_id")
+    //TODO : pourquoi pas embended ? Changer pour emmbeded
+
+    
+    // @OneToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "meta_id")
+    @Embedded
+    // @AssociationOverrides
+    // ({
+
+    // })
     private ProduitMeta meta;
 
 
@@ -58,6 +74,7 @@ public class Produit implements Serializable{
     //     this.meta = meta;
     // }
 
+    // TODO: getter setter délégé des attributs meta ...
 
     public Produit() {
     }
@@ -95,13 +112,18 @@ public class Produit implements Serializable{
         this.description = description;
     }
 
-    // public List<ProduitImg> getImgs() {
-    //     return this.imgs;
-    // }
+    public List<ProduitImg> getImgs() {
+        return this.imgs;
+    }
 
-    // public void setImgs(List<ProduitImg> imgs) {
-    //     this.imgs = imgs;
-    // }
+    public void setImgs(List<ProduitImg> imgs) {
+        this.imgs = imgs;
+    }
+
+    public void addImg(ProduitImg img)
+    {
+        this.imgs.add(img);
+    }
 
     // public List<ProduitSong> getSongs() {
     //     return this.songs;

@@ -1,5 +1,6 @@
 package fr.haron.groovtrade;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -17,6 +18,7 @@ public class GroovtradeApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(GroovtradeApplication.class, args);
+		System.out.println(System.getProperty("user.dir"));
 	}
 
 }
