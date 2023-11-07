@@ -1,0 +1,6 @@
+.scrollable-genre-list {
+    max-height: 300px; /* ou la hauteur que vous souhaitez */
+    overflow-y: scroll;
+    border: 1px solid #ccc; /* pour voir les limites du conteneur */
+    padding: 10px;
+}
