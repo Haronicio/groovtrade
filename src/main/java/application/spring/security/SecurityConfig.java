@@ -24,32 +24,20 @@ public class SecurityConfig {
 			auth.antMatchers("/admin").hasRole("ADMIN");
 			auth.antMatchers("/user").hasRole("USER");
 			auth.anyRequest().authenticated();
-		}).formLogin(Customizer.withDefaults()).build();
+		}).formLogin(Customizer.withDefaults())
+        
+        .build();
 	}
     //creation nouveau utilisateur 
     @Bean
-    public UserDetailsService userDetailsService(){
-       
-        var user1 = User.withUsername("Changrui")
-                        .password(passwordEncoder().encode("1234"))
-                        .roles("ADMIN","USER")
-                        .build();
-
-        var user2 = User.withUsername("user")
-                        .password((passwordEncoder().encode("1234")))
-                        .roles("USER")
-                        .build();
-        return new InMemoryUserDetailsManager(user1,user2);
-    }
-    @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-    authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
 
 
-    //permet de encoder le mot de passe
+    //permet d'ncoder le mdp
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
