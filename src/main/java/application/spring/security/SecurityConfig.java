@@ -26,7 +26,7 @@ public class SecurityConfig {
             auth.antMatchers("/user").hasRole("USER");
             auth.anyRequest().authenticated();
         }).httpBasic(Customizer.withDefaults())
-        .oauth2Login(Customizer.withDefaults())
+        //.oauth2Login(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .cors(withDefaults())
 
