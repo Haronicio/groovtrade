@@ -6,12 +6,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.context.annotation.Configuration;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
@@ -21,12 +22,15 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> {
-			auth.antMatchers("/admin").hasRole("ADMIN");
-			auth.antMatchers("/user").hasRole("USER");
-			auth.anyRequest().authenticated();
-		}).formLogin(Customizer.withDefaults())
-        
-        .build();
+            auth.antMatchers("/admin").hasRole("ADMIN");
+            auth.antMatchers("/user").hasRole("USER");
+            auth.anyRequest().authenticated();
+        }).httpBasic(Customizer.withDefaults())
+        .oauth2Login(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .cors(withDefaults())
+
+                .build();
 	}
     //creation nouveau utilisateur 
     @Bean
@@ -36,6 +40,20 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        // https://spring.io/guides/gs/rest-service-cors/
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://127.0.0.1:8080",
+                                "http://localhost:8080",
+                                "http://127.0.0.1:3000",
+                                "http://localhost:3000");
+            }
+        };
+    }
 
     //permet d'ncoder le mdp
     @Bean
