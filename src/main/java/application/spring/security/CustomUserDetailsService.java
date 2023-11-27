@@ -11,18 +11,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import application.spring.repository.DBUserRepository;
-import application.spring.model.DBUser;
+import application.spring.repository.UtilisateurRepository;
+import application.spring.model.Utilisateur;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
-	private DBUserRepository dbUserRepository;
+	private UtilisateurRepository dbUserRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username)  {//throws UsernameNotFoundException
 		try{
-			DBUser user = dbUserRepository.findByUsername(username);
+			Utilisateur user = dbUserRepository.findByUsername(username);
 			return new User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user.getRole()));
 		}catch(Exception e){
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));		

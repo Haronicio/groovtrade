@@ -1,8 +1,11 @@
 package application.spring.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -13,12 +16,31 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import application.spring.model.Produit;
+import application.spring.model.Utilisateur;
+import application.spring.repository.UtilisateurRepository;
+
 @RestController
 public class Controller {
-	private OAuth2AuthorizedClientService authorizedClientService;
-	public Controller(OAuth2AuthorizedClientService authorizedClientService) {
-		this.authorizedClientService = authorizedClientService;
-	 }
+	@Autowired
+	private UtilisateurRepository utilisateurRepository;
+
+	//private OAuth2AuthorizedClientService authorizedClientService;
+	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
+	// 	this.authorizedClientService = authorizedClientService;
+	//  }
+
+	@GetMapping("/add")
+	public void add(){
+		Long id = (long) 0;
+		String username = "admin";
+		String password = "admin";
+		String role = "ADMIN";
+		String email = "c@gmail.com";
+		List<Produit> produits = new ArrayList<>();
+		Utilisateur u = new Utilisateur(id, username, password, role, email, null);
+		utilisateurRepository.save(u);
+	}
 
 	@GetMapping("/user")
 	public String getUser() {

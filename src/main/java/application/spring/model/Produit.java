@@ -19,14 +19,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DBUser implements Serializable{
+public class Produit implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
-	private Integer userid;
-	private String username;
-	private String password;
-	private String role;
-
-
+    private Long produitid;
+    private String nom;
+    private double prix;
+    private String desc;
 }
