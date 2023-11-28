@@ -40,7 +40,7 @@ public class Controller {
 	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
 	// 	this.authorizedClientService = authorizedClientService;
 	//  }
-
+		
 	@GetMapping("/add")
 	public void add(){
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
@@ -90,10 +90,37 @@ public class Controller {
 		return userNameInfo;
 	}
 
-	@GetMapping("/op/logout")
+	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session){
 		SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false); 
 		session.invalidate();
+		
+	}
+	@GetMapping("/test")
+	public String test(){
+		try{
+
+			Utilisateur user = utilisateurRepository.findByUserid(2L);
+
+			//test affiche produits dans 1 historique
+			List<Historique> historiques= user.getHistoriques();
+			Historique i = historiques.get(0);
+			List<Produit> p = i.getProduits();
+
+			System.out.println("historique");
+			p.forEach(x->System.out.print(x.getNom()+" "));
+			System.out.println();
+
+			//test affiche les produits dans panier
+			Panier panier = user.getPanier();
+			List<Produit> pp = panier.getPrduits();
+			pp.forEach(x->System.out.println(x.getNom()));
+
+
+			return Long.toString(panier.getPanierid());
+		}catch(Exception e){
+			return "erreur?: "+e.getMessage();
+		}
 		
 	}
 	//pour obtenir token
