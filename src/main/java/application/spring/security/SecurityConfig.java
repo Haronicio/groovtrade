@@ -24,12 +24,13 @@ public class SecurityConfig {
 		return http.authorizeHttpRequests(auth -> {
             auth.antMatchers("/admin").hasRole("ADMIN");
             auth.antMatchers("/user").hasRole("USER");
+            auth.antMatchers("/logout").permitAll();
             auth.anyRequest().authenticated();
         }).httpBasic(Customizer.withDefaults())
         //.oauth2Login(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .logout(x->x.logoutUrl("/logout").permitAll())
+                               .csrf(csrf -> csrf.disable())
                 .cors(withDefaults())
-
                 .build();
 	}
     //creation nouveau utilisateur 

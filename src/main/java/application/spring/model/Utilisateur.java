@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.ToString;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "utilisateur")
 public class Utilisateur implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +44,9 @@ public class Utilisateur implements Serializable{
 		fetch = FetchType.EAGER
 	)
 	@JoinColumn(name = "userid")
-	private List<Historique> historiques;
-	
+	private List<Historique> historiques = new ArrayList<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "panierid")
+	private Panier panier;
 }

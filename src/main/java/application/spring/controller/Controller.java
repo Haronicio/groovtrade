@@ -5,25 +5,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import application.spring.model.Historique;
+import application.spring.model.Panier;
 import application.spring.model.Produit;
 import application.spring.model.Utilisateur;
 import application.spring.repository.UtilisateurRepository;
 
 @RestController
+@RequestMapping("/")
 public class Controller {
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
+	
 
 	//private OAuth2AuthorizedClientService authorizedClientService;
 	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
@@ -32,13 +43,15 @@ public class Controller {
 
 	@GetMapping("/add")
 	public void add(){
+		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
 		Long id = (long) 0;
-		String username = "admin";
-		String password = "admin";
+		String username = "createdadmin";
+		String password = b.encode("admin");
 		String role = "ADMIN";
 		String email = "c@gmail.com";
-		List<Produit> produits = new ArrayList<>();
-		Utilisateur u = new Utilisateur(id, username, password, role, email, null);
+		List<Historique> historiques = new ArrayList<>();
+		Panier panier = new Panier();
+		Utilisateur u = new Utilisateur(id, username, password, role, email, historiques,panier);
 		utilisateurRepository.save(u);
 	}
 
@@ -49,10 +62,10 @@ public class Controller {
 	
 	@GetMapping("/admin")
 	public String getAdmin() {
-		return "Welcome, Admin";
+		return "Welcome_, Admin";
 	}
 
-	@GetMapping("/*")
+	@GetMapping("/")
 	public String getUserInfo(Principal user) {
 		StringBuffer userInfo= new StringBuffer();
 		 if(user instanceof UsernamePasswordAuthenticationToken){
@@ -77,6 +90,12 @@ public class Controller {
 		return userNameInfo;
 	}
 
+	@GetMapping("/op/logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session){
+		SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false); 
+		session.invalidate();
+		
+	}
 	//pour obtenir token
 	// private StringBuffer getOauth2LoginInfo(Principal user){
 
