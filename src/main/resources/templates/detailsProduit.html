@@ -1,0 +1,37 @@
+<!-- detailsProduit.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Produit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/produits_style.css">
+
+    <script src="/js/produits_script.js"></script>
+</head>
+<body>
+    <div th:include="header :: header"></div>
+    <div class="container mt-2">
+        <h1><span th:text="${produit.meta.nom}"></span></h1>
+        <h2>Détails du Produit</h2>
+        <div>
+            <p><b>Description :</b> <span th:text="${produit.description}"></span></p>
+            <p><b>Prix :</b> <span th:text="${produit.prix} + ' €' "></span></p>
+            <p><b>Type :</b> <span th:text="${produit.type}"></span></p>
+
+            <ul>
+                <li><b>Album :</b> <span th:text="${produit.meta.album}"></span></li>
+                <li><b>Artiste :</b> <span th:text="${produit.meta.artiste}"></span></li>
+                <li><b>Année :</b> <span th:text="${produit.meta.annee}"></span></li>
+                <li><b>Genres :</b> <span th:text="${produit.meta.genres}"></span></li>
+            </ul>
+
+            <div th:if="${!produit.imgs.isEmpty()}">
+                <img th:src="@{'/images/' + ${produit.imgs.get(0).path}}" alt="Image de couverture"/>
+            </div>
+            <!-- Ajoutez d'autres détails que vous souhaitez afficher -->
+        </div>
+    </div>
+</body>
+</html>
