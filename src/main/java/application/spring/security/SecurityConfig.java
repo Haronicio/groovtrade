@@ -41,7 +41,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
-
+    //nécassaire pour connexion avec frontend
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         // https://spring.io/guides/gs/rest-service-cors/
@@ -57,7 +57,7 @@ public class SecurityConfig {
         };
     }
 
-    //permet d'ncoder le mdp
+    //permet d'encoder le mdp
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

@@ -40,7 +40,7 @@ public class Controller {
 	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
 	// 	this.authorizedClientService = authorizedClientService;
 	//  }
-		
+	
 	@GetMapping("/add")
 	public void add(){
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
