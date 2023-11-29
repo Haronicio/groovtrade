@@ -33,7 +33,7 @@ public class ProduitMeta implements Serializable
 
 
     public ProduitMeta(String nom, String artiste, String album, int annee, String genres) {
-        this.nom = nom;
+        this.nom = nom; //= titre ou nom du produit
         this.artiste = artiste;
         this.album = album;
         this.annee = annee;

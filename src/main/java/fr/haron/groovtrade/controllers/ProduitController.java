@@ -35,11 +35,43 @@ public class ProduitController {
     private ProduitRepository produitRepository;
 
     @GetMapping("/liste")
-    public String liste(Model model, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<Produit> produits = produitRepository.findByDescriptionLike("%" + keyword + "%");
-        model.addAttribute("listProduits", produits);
-        return "produits";
+public String liste(Model model, 
+                    @RequestParam(name = "keyword", defaultValue = "") String keyword,
+                    @RequestParam(name = "artiste", required = false) String artiste,
+                    @RequestParam(name = "nom", required = false) String nom,
+                    @RequestParam(name = "album", required = false) String album,
+                    @RequestParam(name = "genres", required = false) String genres,
+                    @RequestParam(name = "annee_inf", required = false, defaultValue = "0") Integer annee_inf,
+                    @RequestParam(name = "annee_sup", required = false, defaultValue = "2100") Integer annee_sup) {
+
+    List<Produit> produits;
+
+    boolean isAdvancedSearch =  (artiste != null && !artiste.isEmpty()) || 
+                                (nom != null && !nom.isEmpty()) || 
+                                (album != null && !album.isEmpty()) || 
+                                (genres != null && !genres.isEmpty()) || 
+                                annee_inf != null || 
+                                annee_sup != null;
+
+    if (isAdvancedSearch) {
+        // Utiliser la recherche par critères
+        produits = produitRepository.findByCombinedCriteria(
+            "%" + keyword + "%", 
+            "%" + (artiste != null ? artiste : "") + "%", 
+            "%" + (nom != null ? nom : "") + "%", 
+            "%" + (album != null ? album : "") + "%", 
+            "%" + (genres != null ? genres : "") + "%", 
+            annee_inf, 
+            annee_sup);
+    } else {
+        // Utiliser une recherche globale
+        produits = produitRepository.findGlobal("%" + keyword + "%");
     }
+
+    model.addAttribute("listProduits", produits);
+    return "produits";
+}
+
 
     @GetMapping("/details/{id}")
     public String detailsProduit(@PathVariable Long id, Model model) {
@@ -55,6 +87,12 @@ public class ProduitController {
         produitRepository.deleteById(id);
         return "redirect:/produits/liste?keyword=" + keyword;
     }
+
+    @GetMapping("/ajouterProduit")
+    public String ajouterProduitForm() {
+        return "ajouterProduit";
+    }
+
 
     @PostMapping("/ajouter")
     public String ajouterProduit(@RequestParam String description,

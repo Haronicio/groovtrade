@@ -1,382 +1,53 @@
+<!-- TODO : lien vers extrait de musique, filtrer recherche, non inscrit : catalogue , inscrit : catalogue + panier + historique + ... -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Produits</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <meta charset="UTF-8">
+        <title>Produits</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="/css/produits_style.css">
+        <link rel="stylesheet" href="/css/produits_style.css">
 
-    <script src="/js/produits_script.js"></script>
+        <script src="/js/produits_script.js"></script>
 </head>
 
 <body>
-    <div class="container mt-2">
-        <div class="card">
-            <div class="card-header">Liste de Produits Disponibles</div>
-            <div class="card-body">
-                <!-- Recherche de produits -->
-                <form method="get" th:action="@{/produits/liste}">
-                    <label>Keyword</label>
-                    <input type="text" name="keyword">
-                    <button type="submit" class="btn btn-primary">Chercher</button>
-                </form>
+        <div th:include="header :: header"></div>
+        <div class="container mt-2">
+                <div class="card">
+                        <div class="card-header">Liste de Produits Disponibles</div>
+                        <div class="card-body">
+                                <!-- Liste des produits -->
+                                <!-- Début de la grille des produits -->
+                                <div class="row">
+                                        <div th:each="p : ${listProduits}" class="col-md-3 mb-3 product">
+                                                <a th:href="@{/produits/details/{id}(id=${p.id})}"
+                                                        class="text-decoration-none product-link">
+                                                        <div th:if="${p != null}" class="card h-100">
+                                                                <img th:if="${p.imgs != null and not #lists.isEmpty(p.imgs)}"
+                                                                        th:src="@{'/images/' + ${p.imgs.get(0).path}}"
+                                                                        alt="Image de couverture" class="card-img-top">
+                                                                <div class="card-body">
+                                                                        <h5 class="card-title" th:text="${p.meta.nom}">
+                                                                        </h5>
+                                                                        <p class="card-text" th:text="${p.type}"></p>
+                                                                        <h6 class="card-text"
+                                                                                th:text="${p.prix} + ' €'"></h6>
+                                                                </div>
+                                                        </div>
+                                                </a>
+                                        </div>
+                                        <!-- Logique pour nouvelle ligne après chaque 4 produits -->
+                                </div>
+                                <!-- Fin de la grille des produits -->
 
-                <!-- Liste des produits -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <!-- <th>ID</th> -->
-                            <th>Image</th>
-                            <th>Description</th>
-                            <th>Prix</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="p : ${listProduits}" class="clickable-row" th:data-id="${p.id}">
-                            <!-- <td th:text="${p.id}"></td> -->
-                            <td>
-                                <img th:if="${p.imgs.size() > 0}" th:src="@{'/images/' + ${p.imgs.get(0).path}}"
-                                    alt="Image de couverture" height="100" width="100" />
-                            </td>
-                            <td th:text="${p.description}"></td>
-                            <td th:text="${p.prix}"></td>
-                            <td th:text="${p.type}"></td>
-                            <td>
-                                <a onclick="event.stopPropagation();return confirm('Etes-vous sûr?')"
-                                    class="btn btn-danger"
-                                    th:href="@{/produits/delete(id=${p.id}, keyword=${keyword})}">
-                                    Supprimer
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <!-- Formulaire d'ajout de produit avec possibilité d'upload des fichiers-->
-                <form method="post" th:action="@{/produits/ajouter}" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description" name="description"
-                            placeholder="Entrez la description">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="prix">Prix</label>
-                        <input type="number" class="form-control" id="prix" name="prix" placeholder="Entrez le prix">
-                    </div>
-
-                    <!-- Type de produit -->
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <select id="type" name="type" class="form-control">
-                            <option value="CD">CD</option>
-                            <option value="K7">K7</option>
-                            <option value="VINYLE33">VINYLE33</option>
-                        </select>
-                    </div>
-
-                    <!-- Container pour les métadonnées -->
-                    <div class="container">
-                        <h4>Métadonnées du Produit</h4>
-                        <div class="form-group">
-                            <label for="nom">Nom</label>
-                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom">
+                                <!-- Formulaire d'ajout de produit avec possibilité d'upload des fichiers-->
+                                <a href="/produits/ajouterProduit" class="btn btn-primary">Ajouter un nouveau
+                                        produit</a>
                         </div>
-                        <div class="form-group">
-                            <label for="nomAlbum">Nom de l'Album</label>
-                            <input type="text" class="form-control" id="album" name="album"
-                                placeholder="Nom de l'Album">
-                        </div>
-                        <div class="form-group">
-                            <label for="annee">Année</label>
-                            <input type="number" class="form-control" id="annee" name="annee" placeholder="Année">
-                        </div>
-                        <div class="form-group">
-                            <label for="artiste">Artiste</label>
-                            <input type="text" class="form-control" id="artiste" name="artiste" placeholder="Artiste">
-                        </div>
-                    </div>
-
-                    <!-- Genres -->
-                    <div class="form-group">
-                        <label>Genres</label>
-                        <input type="text" id="genreSearch" placeholder="Rechercher un genre" onkeyup="filterGenres()">
-                        <div id="genresList" class="scrollable-genre-list">
-                            <span><input type="checkbox" name="genres" value="ROCK"><label> Rock</label></span>
-                            <span><input type="checkbox" name="genres" value="POP"><label> Pop</label></span>
-                            <span><input type="checkbox" name="genres" value="HIP_HOP_RAP"><label>
-                                    HIP-HOP/RAP</label></span>
-                            <span><input type="checkbox" name="genres" value="JAZZ"><label> Jazz</label></span>
-                            <span><input type="checkbox" name="genres" value="BLUES"><label> Blues</label></span>
-                            <span><input type="checkbox" name="genres" value="RNB_SOUL"><label> R&B/Soul</label></span>
-                            <span><input type="checkbox" name="genres" value="COUNTRY"><label> Country</label></span>
-                            <span><input type="checkbox" name="genres" value="FOLK"><label> Folk</label></span>
-                            <span><input type="checkbox" name="genres" value="ELECTRONIC"><label>
-                                    Électronique</label></span>
-                            <span><input type="checkbox" name="genres" value="DANCE"><label> Dance</label></span>
-                            <span><input type="checkbox" name="genres" value="HOUSE"><label> House</label></span>
-                            <span><input type="checkbox" name="genres" value="TECHNO"><label> Techno</label></span>
-                            <span><input type="checkbox" name="genres" value="DUBSTEP"><label> Dubstep</label></span>
-                            <span><input type="checkbox" name="genres" value="TRANCE"><label> Trance</label></span>
-                            <span><input type="checkbox" name="genres" value="AMBIENT"><label> Ambient</label></span>
-                            <span><input type="checkbox" name="genres" value="CLASSICAL"><label>
-                                    Classique</label></span>
-                            <span><input type="checkbox" name="genres" value="OPERA"><label> Opéra</label></span>
-                            <span><input type="checkbox" name="genres" value="BAROQUE"><label> Baroque</label></span>
-                            <span><input type="checkbox" name="genres" value="CHAMBER"><label> Musique de
-                                    chambre</label></span>
-                            <span><input type="checkbox" name="genres" value="SYMPHONIC"><label>
-                                    Symphonique</label></span>
-                            <span><input type="checkbox" name="genres" value="ORCHESTRAL"><label>
-                                    Orchestral</label></span>
-                            <span><input type="checkbox" name="genres" value="METAL"><label> Métal</label></span>
-                            <span><input type="checkbox" name="genres" value="HEAVY_METAL"><label> Heavy
-                                    Metal</label></span>
-                            <span><input type="checkbox" name="genres" value="DEATH_METAL"><label> Death
-                                    Metal</label></span>
-                            <span><input type="checkbox" name="genres" value="BLACK_METAL"><label> Black
-                                    Metal</label></span>
-                            <span><input type="checkbox" name="genres" value="THRASH_METAL"><label> Thrash
-                                    Metal</label></span>
-                            <span><input type="checkbox" name="genres" value="PUNK"><label> Punk</label></span>
-                            <span><input type="checkbox" name="genres" value="HARDCORE_PUNK"><label> Hardcore
-                                    Punk</label></span>
-                            <span><input type="checkbox" name="genres" value="POP_PUNK"><label> Pop Punk</label></span>
-                            <span><input type="checkbox" name="genres" value="SKA_PUNK"><label> Ska Punk</label></span>
-                            <span><input type="checkbox" name="genres" value="REGGAE"><label> Reggae</label></span>
-                            <span><input type="checkbox" name="genres" value="SKA"><label> Ska</label></span>
-                            <span><input type="checkbox" name="genres" value="DANCEHALL"><label>
-                                    Dancehall</label></span>
-                            <span><input type="checkbox" name="genres" value="DUB"><label> Dub</label></span>
-                            <span><input type="checkbox" name="genres" value="WORLD_MUSIC"><label> World
-                                    Music</label></span>
-                            <span><input type="checkbox" name="genres" value="LATINO"><label> Latino</label></span>
-                            <span><input type="checkbox" name="genres" value="SALSA"><label> Salsa</label></span>
-                            <span><input type="checkbox" name="genres" value="MERENGUE"><label> Merengue</label></span>
-                            <span><input type="checkbox" name="genres" value="BACHATA"><label> Bachata</label></span>
-                            <span><input type="checkbox" name="genres" value="REGGAETON"><label>
-                                    Reggaeton</label></span>
-                            <span><input type="checkbox" name="genres" value="CUMBIA"><label> Cumbia</label></span>
-                            <span><input type="checkbox" name="genres" value="BOSSA_NOVA"><label> Bossa
-                                    Nova</label></span>
-                            <span><input type="checkbox" name="genres" value="SAMBA"><label> Samba</label></span>
-                            <span><input type="checkbox" name="genres" value="FLAMENCO"><label> Flamenco</label></span>
-                            <span><input type="checkbox" name="genres" value="TANGO"><label> Tango</label></span>
-                            <span><input type="checkbox" name="genres" value="FOLKLORIC"><label>
-                                    Folklorique</label></span>
-                            <span><input type="checkbox" name="genres" value="GOSPEL"><label> Gospel</label></span>
-                            <span><input type="checkbox" name="genres" value="SPIRITUAL"><label>
-                                    Spirituel</label></span>
-                            <span><input type="checkbox" name="genres" value="NEW_AGE"><label> New Age</label></span>
-                            <span><input type="checkbox" name="genres" value="EXPERIMENTAL"><label> Musique
-                                    expérimentale</label></span>
-                            <span><input type="checkbox" name="genres" value="AVANT_GARDE"><label>
-                                    Avant-garde</label></span>
-                            <span><input type="checkbox" name="genres" value="NOISE"><label> Noise</label></span>
-                            <span><input type="checkbox" name="genres" value="INDUSTRIAL"><label>
-                                    Industrial</label></span>
-                            <span><input type="checkbox" name="genres" value="GOTHIC"><label> Gothique</label></span>
-                            <span><input type="checkbox" name="genres" value="GRUNGE"><label> Grunge</label></span>
-                            <span><input type="checkbox" name="genres" value="ALTERNATIVE"><label>
-                                    Alternative</label></span>
-                            <span><input type="checkbox" name="genres" value="INDIE"><label> Indie</label></span>
-                            <span><input type="checkbox" name="genres" value="SHOEGAZE"><label> Shoegaze</label></span>
-                            <span><input type="checkbox" name="genres" value="LO_FI"><label> Lo-fi</label></span>
-                            <span><input type="checkbox" name="genres" value="EMO"><label> Emo</label></span>
-                            <span><input type="checkbox" name="genres" value="POST_ROCK"><label>
-                                    Post-Rock</label></span>
-                            <span><input type="checkbox" name="genres" value="POST_PUNK"><label>
-                                    Post-Punk</label></span>
-                            <span><input type="checkbox" name="genres" value="BRITPOP"><label> Britpop</label></span>
-                            <span><input type="checkbox" name="genres" value="ANISONG"><label> Anisong</label></span>
-                            <span><input type="checkbox" name="genres" value="CHIPTUNE"><label> Chiptune</label></span>
-                            <span><input type="checkbox" name="genres" value="ELECTRO_SWING"><label> Electro
-                                    Swing</label></span>
-                            <span><input type="checkbox" name="genres" value="EUROBEAT"><label> Eurobeat</label></span>
-                            <span><input type="checkbox" name="genres" value="FADO"><label> Fado</label></span>
-                            <span><input type="checkbox" name="genres" value="FILM_SCORE"><label> Film
-                                    Score</label></span>
-                            <span><input type="checkbox" name="genres" value="FUNK"><label> Funk</label></span>
-                            <span><input type="checkbox" name="genres" value="HARDCORE_TECHNO"><label> Hardcore
-                                    Techno</label></span>
-                            <span><input type="checkbox" name="genres" value="K_POP"><label> K-pop</label></span>
-                            <span><input type="checkbox" name="genres" value="MAMBO"><label> Mambo</label></span>
-                            <span><input type="checkbox" name="genres" value="MANDOPOP"><label> Mandopop</label></span>
-                            <span><input type="checkbox" name="genres" value="MOTOWN"><label> Motown</label></span>
-                            <span><input type="checkbox" name="genres" value="MPB"><label> MPB (Musique populaire
-                                    brésilienne)</label></span>
-                            <span><input type="checkbox" name="genres" value="NEO_SOUL"><label> Neo Soul</label></span>
-                            <span><input type="checkbox" name="genres" value="NEW_WAVE"><label> New Wave</label></span>
-                            <span><input type="checkbox" name="genres" value="NORTEÑO"><label> Norteño</label></span>
-                            <span><input type="checkbox" name="genres" value="PSYCHEDELIC_ROCK"><label> Psychedelic
-                                    Rock</label></span>
-                            <span><input type="checkbox" name="genres" value="PUNTA"><label> Punta</label></span>
-                            <span><input type="checkbox" name="genres" value="QAWWALI"><label> Qawwali</label></span>
-                            <span><input type="checkbox" name="genres" value="RAGGA"><label> Ragga</label></span>
-                            <span><input type="checkbox" name="genres" value="RAI"><label> Raï</label></span>
-                            <span><input type="checkbox" name="genres" value="REGGAE_FUSION"><label> Reggae
-                                    Fusion</label></span>
-                            <span><input type="checkbox" name="genres" value="SCHLAGER"><label> Schlager</label></span>
-                            <span><input type="checkbox" name="genres" value="SOCA"><label> Soca</label></span>
-                            <span><input type="checkbox" name="genres" value="SOFT_ROCK"><label> Soft
-                                    Rock</label></span>
-                            <span><input type="checkbox" name="genres" value="SOUKOUS"><label> Soukous</label></span>
-                            <span><input type="checkbox" name="genres" value="SYNTHWAVE"><label>
-                                    Synthwave</label></span>
-                            <span><input type="checkbox" name="genres" value="TRADITIONAL_COUNTRY"><label> Traditional
-                                    Country</label></span>
-                            <span><input type="checkbox" name="genres" value="TRAP_MUSIC"><label> Trap
-                                    Music</label></span>
-                            <span><input type="checkbox" name="genres" value="TROPICAL_HOUSE"><label> Tropical
-                                    House</label></span>
-                            <span><input type="checkbox" name="genres" value="TURBO_FOLK"><label>
-                                    Turbo-folk</label></span>
-                            <span><input type="checkbox" name="genres" value="VISUAL_KEI"><label> Visual
-                                    Kei</label></span>
-                            <span><input type="checkbox" name="genres" value="VOCAL_TRANCE"><label> Vocal
-                                    Trance</label></span>
-                            <span><input type="checkbox" name="genres" value="WEST_COAST_HIP_HOP"><label> West Coast Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="ZOUK"><label> Zouk</label></span>
-
-                            <span><input type="checkbox" name="genres" value="EAST_COAST_HIP_HOP"><label> East Coast Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="WEST_COAST_HIP_HOP"><label> West Coast Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="SOUTHERN_HIP_HOP"><label> Southern Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="TRAP"><label> Trap</label></span>
-                            <span><input type="checkbox" name="genres" value="GANGSTA_RAP"><label> Gangsta
-                                    Rap</label></span>
-                            <span><input type="checkbox" name="genres" value="MUMBLE_RAP"><label> Mumble
-                                    Rap</label></span>
-                            <span><input type="checkbox" name="genres" value="CHICANO_RAP"><label> Chicano
-                                    Rap</label></span>
-                            <span><input type="checkbox" name="genres" value="CRUNK"><label> Crunk</label></span>
-                            <span><input type="checkbox" name="genres" value="HYPHY"><label> Hyphy</label></span>
-                            <span><input type="checkbox" name="genres" value="GLITCH_HOP"><label> Glitch
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="DRILL"><label> Drill</label></span>
-                            <span><input type="checkbox" name="genres" value="CLOUD_RAP"><label> Cloud
-                                    Rap</label></span>
-                            <span><input type="checkbox" name="genres" value="HORRORCORE"><label>
-                                    Horrorcore</label></span>
-                            <span><input type="checkbox" name="genres" value="ABSTRACT_HIP_HOP"><label> Abstract Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="BOOM_BAP"><label> Boom Bap</label></span>
-                            <span><input type="checkbox" name="genres" value="LO-FI_HIP_HOP"><label> Lo-Fi Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="UK_HIP_HOP"><label> UK Hip
-                                    Hop</label></span>
-                            <span><input type="checkbox" name="genres" value="GRIME"><label> Grime</label></span>
-                            <span><input type="checkbox" name="genres" value="UK_DRILL"><label> UK Drill</label></span>
-                            <span><input type="checkbox" name="genres" value="JUNGLE"><label> Jungle</label></span>
-                            <span><input type="checkbox" name="genres" value="DRUM_AND_BASS"><label> Drum and
-                                    Bass</label></span>
-                            <span><input type="checkbox" name="genres" value="LIQUID_FUNK"><label> Liquid
-                                    Funk</label></span>
-                            <span><input type="checkbox" name="genres" value="JUMP_UP"><label> Jump-Up</label></span>
-                            <span><input type="checkbox" name="genres" value="NEUROFUNK"><label>
-                                    Neurofunk</label></span>
-                            <span><input type="checkbox" name="genres" value="2-STEP_GARAGE"><label> 2-Step
-                                    Garage</label></span>
-                            <span><input type="checkbox" name="genres" value="UK_GARAGE"><label> UK
-                                    Garage</label></span>
-                            <span><input type="checkbox" name="genres" value="SPEED_GARAGE"><label> Speed
-                                    Garage</label></span>
-                            <span><input type="checkbox" name="genres" value="BASSLINE"><label> Bassline</label></span>
-                            <span><input type="checkbox" name="genres" value="GRIME"><label> Grime</label></span>
-                            <span><input type="checkbox" name="genres" value="BREAKBEAT"><label>
-                                    Breakbeat</label></span>
-                            <span><input type="checkbox" name="genres" value="HARDCORE_BREAKS"><label> Hardcore
-                                    Breaks</label></span>
-                            <span><input type="checkbox" name="genres" value="ANISONG"><label> Anisong</label></span>
-                            <span><input type="checkbox" name="genres" value="BEBOP"><label> Bebop</label></span>
-                            <span><input type="checkbox" name="genres" value="BOLERO"><label> Bolero</label></span>
-                            <span><input type="checkbox" name="genres" value="CALYPSO"><label> Calypso</label></span>
-                            <span><input type="checkbox" name="genres" value="CHILLWAVE"><label>
-                                    Chillwave</label></span>
-                            <span><input type="checkbox" name="genres" value="CHIPTUNE"><label> Chiptune</label></span>
-                            <span><input type="checkbox" name="genres" value="CONTEMPORARY_JAZZ"><label> Contemporary
-                                    Jazz</label></span>
-                            <span><input type="checkbox" name="genres" value="CPOP"><label> C-pop</label></span>
-                            <span><input type="checkbox" name="genres" value="DISCO"><label> Disco</label></span>
-                            <span><input type="checkbox" name="genres" value="DANGDUT"><label> Dangdut</label></span>
-                            <span><input type="checkbox" name="genres" value="ENKA"><label> Enka</label></span>
-                            <span><input type="checkbox" name="genres" value="FADO"><label> Fado</label></span>
-                            <span><input type="checkbox" name="genres" value="GABBER"><label> Gabber</label></span>
-                            <span><input type="checkbox" name="genres" value="GREGORIAN_CHANT"><label> Gregorian
-                                    Chant</label></span>
-                            <span><input type="checkbox" name="genres" value="HARDCORE"><label> Hardcore</label></span>
-                            <span><input type="checkbox" name="genres" value="HIGHLIFE"><label> Highlife</label></span>
-                            <span><input type="checkbox" name="genres" value="IDM"><label> IDM (Intelligent Dance
-                                    Music)</label></span>
-                            <span><input type="checkbox" name="genres" value="KWAITO"><label> Kwaito</label></span>
-                            <span><input type="checkbox" name="genres" value="LATIN_JAZZ"><label> Latin
-                                    Jazz</label></span>
-                            <span><input type="checkbox" name="genres" value="MBALAX"><label> Mbalax</label></span>
-                            <span><input type="checkbox" name="genres" value="MOTOWN"><label> Motown</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_ACOSMATIQUE"><label> Musique
-                                    acousmatique</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_CONCRETE"><label> Musique
-                                    concrète</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_DE_FILM"><label> Musique de
-                                    film</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_DE_JEU_VIDEO"><label> Musique de
-                                    jeu vidéo</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_DE_MEDITATION"><label> Musique de
-                                    méditation</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_ENFANTINE"><label> Musique
-                                    enfantine</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_LITURGIQUE"><label> Musique
-                                    liturgique</label></span>
-                            <span><input type="checkbox" name="genres" value="MUSIQUE_TRADITIONNELLE"><label> Musique
-                                    traditionnelle</label></span>
-                            <span><input type="checkbox" name="genres" value="NEW_AGE"><label> New Age</label></span>
-                            <span><input type="checkbox" name="genres" value="QAWWALI"><label> Qawwali</label></span>
-                            <span><input type="checkbox" name="genres" value="RAI"><label> Raï</label></span>
-                            <span><input type="checkbox" name="genres" value="REGGAE_FUSION"><label> Reggae
-                                    Fusion</label></span>
-                            <span><input type="checkbox" name="genres" value="SCHLAGER"><label> Schlager</label></span>
-                            <span><input type="checkbox" name="genres" value="SOCA"><label> Soca</label></span>
-                            <span><input type="checkbox" name="genres" value="SOFT_ROCK"><label> Soft
-                                    Rock</label></span>
-                            <span><input type="checkbox" name="genres" value="SOUKOUS"><label> Soukous</label></span>
-                            <span><input type="checkbox" name="genres" value="SYNTHWAVE"><label>
-                                    Synthwave</label></span>
-                            <span><input type="checkbox" name="genres" value="TRADITIONAL_COUNTRY"><label> Traditional
-                                    Country</label></span>
-                            <span><input type="checkbox" name="genres" value="TRAP_MUSIC"><label> Trap
-                                    Music</label></span>
-                            <span><input type="checkbox" name="genres" value="TROPICAL_HOUSE"><label> Tropical
-                                    House</label></span>
-                            <span><input type="checkbox" name="genres" value="TURBO_FOLK"><label>
-                                    Turbo-folk</label></span>
-                            <span><input type="checkbox" name="genres" value="VISUAL_KEI"><label> Visual
-                                    Kei</label></span>
-                            <span><input type="checkbox" name="genres" value="VOCAL_TRANCE"><label> Vocal
-                                    Trance</label></span>
-                            <span><input type="checkbox" name="genres" value="ZOUK"><label> Zouk</label></span>
-
-
-                        </div>
-                    </div>
-
-                    <!-- Cover -->
-                    <div class="form-group">
-                        <label for="coverImage">Image de couverture</label>
-                        <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                </div>
+                <div th:include="footer :: footer"></div>
 </body>
 
 </html>

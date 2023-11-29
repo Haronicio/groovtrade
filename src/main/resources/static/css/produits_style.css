@@ -4,3 +4,35 @@
     border: 1px solid #ccc; /* pour voir les limites du conteneur */
     padding: 10px;
 }
+
+.product-link {
+    color: inherit; /* Utilise la couleur de texte héritée */
+    text-decoration: none; /* Enlève le soulignement */
+}
+
+.product-link:hover {
+    color: inherit; /* Couleur au survol */
+    text-decoration: none; /* Enlève le soulignement au survol */
+}
+
+.product{
+    transition: transform .2s; /* durée Animation */
+}
+.product:hover{
+    transform: scale(1.1); /* petit effet de zoom au survole*/
+}
+
+/* Barre Recherche */
+
+.advanced-search {
+    display: none; /*Les champs supplémentaires sont cachés par défaut*/
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar input[type="search"] {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}

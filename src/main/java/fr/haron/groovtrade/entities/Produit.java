@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Produit implements Serializable{
     @Enumerated(EnumType.STRING)
     private ProduitType type;
 
+    @Column(length = 3000) // Augmente la limite à 3000 caractères
     private String description;
 
     // @OneToMany(cascade = CascadeType.ALL)
@@ -45,14 +47,7 @@ public class Produit implements Serializable{
 
     //TODO : pourquoi pas embended ? Changer pour emmbeded
 
-    
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "meta_id")
     @Embedded
-    // @AssociationOverrides
-    // ({
-
-    // })
     private ProduitMeta meta;
 
 
@@ -62,6 +57,23 @@ public class Produit implements Serializable{
         this.description = description;
         this.meta = meta;
     }
+
+    public String getNom() {
+        return this.meta.getNom();
+    }
+
+    public String getArtiste() {
+         return this.meta.getArtiste();
+    }
+
+    public String getAlbum() {
+         return this.meta.getAlbum();
+    }
+
+    public int getAnnee() {
+        return this.meta.getAnnee();
+    }
+
 
 
 
@@ -78,6 +90,8 @@ public class Produit implements Serializable{
 
     public Produit() {
     }
+
+
 
 
     public Long getId() {
