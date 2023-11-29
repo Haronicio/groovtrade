@@ -36,7 +36,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import application.spring.model.Historique;
 import application.spring.model.Panier;
@@ -50,12 +53,11 @@ import application.spring.repository.UtilisateurRepository;
 
 @RestController
 @EnableWebMvc
-@RequestMapping("/prodtuis")
+@RequestMapping("/produits")
 public class AppController {
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
 	
-
 	//private OAuth2AuthorizedClientService authorizedClientService;
 	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
 	// 	this.authorizedClientService = authorizedClientService;
@@ -117,13 +119,10 @@ public class AppController {
 		
 	}
 	@GetMapping("/test")
-	public String test(){
-		try{
-
-			return "";
-		}catch(Exception e){
-			return "erreur?: "+e.getMessage();
-		}
+	public ModelAndView test(){
+        ModelAndView m = new ModelAndView();
+        m.setViewName("test");
+		return m;
 		
 	}
 	//pour obtenir token
@@ -151,7 +150,7 @@ public class AppController {
     private ProduitRepository produitRepository;
 
     @GetMapping("/liste")
-    public String liste(Model model,
+    public ModelAndView liste(Model model,
             @RequestParam(name = "keyword", defaultValue = "") String keyword,
             @RequestParam(name = "artiste", required = false) String artiste,
             @RequestParam(name = "nom", required = false) String nom,
@@ -185,16 +184,20 @@ public class AppController {
         }
 
         model.addAttribute("listProduits", produits);
-        return "produits";
+        ModelAndView view = new ModelAndView();
+        view.setViewName("produits");
+        return view;
     }
 
     @GetMapping("/details/{id}")
-    public String detailsProduit(@PathVariable Long id, Model model) {
+    public ModelAndView detailsProduit(@PathVariable Long id, Model model) {
         Produit produit = produitRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
 
         model.addAttribute("produit", produit);
-        return "detailsProduit";
+        ModelAndView view = new ModelAndView();
+        view.setViewName("detailsProduit");
+        return view;
     }
 
     @GetMapping("/delete")
@@ -204,8 +207,10 @@ public class AppController {
     }
 
     @GetMapping("/ajouterProduit")
-    public String ajouterProduitForm() {
-        return "ajouterProduit";
+    public ModelAndView ajouterProduitForm() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("ajouterProduit");
+        return view;
     }
 
     @PostMapping("/ajouter")
