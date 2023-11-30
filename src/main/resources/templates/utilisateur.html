@@ -16,12 +16,12 @@
     <div class="container mt-2">
         <ul>
             <li>image de profile</li>
-            <a href="/utilisateur/0/ventes"><li>liste produit en vente</li></a><!-- /utilisateur/id/liste *-->
-            <a href="/produits/ajouterProduit"><li>ajouter produit</li></a><!-- /produits/ajouterProduit -->
-            <a href="/utilisateur/0/panier"><li>panier</li></a><!-- /utilisateur/id/panier *-->
-            <a href="/utilisateur/0/historique"><li>historique achat</li></a> <!-- /utilisateur/id/historique *-->
-            <a href="/utilisateur/0/profile"><li>profile</li></a> <!-- /utilisateur/id/profile -->
-            <a href="/utilisateur/0/parametres"><li>paramètres</li></a> <!-- /utilisateur/id/paramètres -->
+            <a th:href="@{/utilisateur/{username}/ventes(username=${username})}"><li>liste produit en vente</li></a>
+            <a href="/produits/ajouterProduit"><li>ajouter produit</li></a>
+            <a th:href="@{/utilisateur/{username}/panier(username=${username})}"><li>panier</li></a>
+            <a th:href="@{/utilisateur/{username}/historique(username=${username})}"><li>historique achat</li></a>
+            <a th:href="@{/utilisateur/{username}/profile(username=${username})}"><li>profile</li></a>
+            <a th:href="@{/utilisateur/{username}/parametres(username=${username})}"><li>paramètres</li></a>
             <li>logout</li>
         </ul>
     </div>

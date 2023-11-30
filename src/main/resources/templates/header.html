@@ -2,7 +2,7 @@
 
 <header th:fragment="header">
     <a href="/produits/liste"><h1 class="header-title">Groovtrade</h1></a>
-    <button id="monBouton">Mon Compte</button><!--Bouton de connexion ou d'accès au compte-->
+    <a  th:href="@{/utilisateur/{username}(username=${username})}" id="monBouton">Mon Compte</a><!--Bouton de connexion ou d'accès au compte-->
     <div class="card-body header-search">
         <div class="search-bar mt-3">
             <form method="get" th:action="@{/produits/liste}" id="searchForm">
