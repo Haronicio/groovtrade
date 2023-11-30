@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +35,6 @@ public class Produit implements Serializable{
     @Column(unique = true,name = "produitid")
     private Long produitid;
     
-    private String nom;
     private Double prix;
     @Column(length = 3000) // Augmente la limite à 3000 caractères
     private String description;
@@ -41,4 +42,10 @@ public class Produit implements Serializable{
     @ElementCollection
     @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))
     private List<ProduitImg> imgs = new ArrayList<>();
+
+    @Embedded
+    private ProduitMeta meta;
+
+    @Enumerated(EnumType.STRING)
+    private ProduitType type;
 }
