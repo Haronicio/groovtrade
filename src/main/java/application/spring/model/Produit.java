@@ -1,11 +1,18 @@
 package application.spring.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import lombok.ToString;
@@ -28,5 +35,12 @@ public class Produit implements Serializable{
     
     private String nom;
     private Double prix;
+    @Column(length = 3000) // Augmente la limite à 3000 caractères
     private String description;
+
+    @ElementCollection
+    @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))
+    private List<ProduitImg> imgs = new ArrayList<>();
+
+ 
 }
