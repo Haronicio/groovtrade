@@ -13,10 +13,10 @@
 </head>
 
 <body>
-        <div th:include="header :: header"></div>
+        <div th:include="header :: header" class="container mt-2"></div>
         <div class="container mt-2">
-                <div class="card">
-                        <div class="card-header">Liste de Produits Disponibles</div>
+                <div class="card products-list">
+                        <!-- <div class="card-header">Liste de Produits Disponibles</div> -->
                         <div class="card-body">
                                 <!-- Liste des produits -->
                                 <!-- Début de la grille des produits -->
@@ -24,7 +24,7 @@
                                         <div th:each="p : ${listProduits}" class="col-md-3 mb-3 product">
                                                 <a th:href="@{/produits/details/{id}(id=${p.id})}"
                                                         class="text-decoration-none product-link">
-                                                        <div th:if="${p != null}" class="card h-100">
+                                                        <div th:if="${p != null}" class="card h-100 border-0">
                                                                 <img th:if="${p.imgs != null and not #lists.isEmpty(p.imgs)}"
                                                                         th:src="@{'/images/' + ${p.imgs.get(0).path}}"
                                                                         alt="Image de couverture" class="card-img-top">
@@ -47,7 +47,8 @@
                                         produit</a>
                         </div>
                 </div>
-                <div th:include="footer :: footer"></div>
+        </div>
+        <div th:include="footer :: footer"></div>
 </body>
 
 </html>

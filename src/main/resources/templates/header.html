@@ -1,8 +1,9 @@
 <!-- header thymleaf -->
 
 <header th:fragment="header">
-    <a href="/produits/liste"><h1>Groovtrade</h1></a>
-    <div class="card-body">
+    <a href="/produits/liste"><h1 class="header-title">Groovtrade</h1></a>
+    <button id="monBouton">Mon Compte</button><!--Bouton de connexion ou d'accès au compte-->
+    <div class="card-body header-search">
         <div class="search-bar mt-3">
             <form method="get" th:action="@{/produits/liste}" id="searchForm">
                 <!-- <label>Keyword</label> -->

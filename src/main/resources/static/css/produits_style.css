@@ -18,6 +18,19 @@
 .product{
     transition: transform .2s; /* durée Animation */
 }
+
+.products-list
+{
+    /* background: linear-gradient(123deg, #1f1e1e 1%, #5c5751 87%); */
+    border-radius: 10px;
+}
+
+/* .card
+ {
+    background-color: transparent;
+    border: none;
+ } */
+
 .product:hover{
     transform: scale(1.1); /* petit effet de zoom au survole*/
 }
@@ -30,9 +43,35 @@
 
 .search-bar {
     position: relative;
+    max-width: 75%; /* ou la largeur que vous préférez */
+    margin: auto;
+    padding: 10px;
 }
 
 .search-bar input[type="search"] {
     width: 100%;
     margin-bottom: 0.5rem;
+}
+
+.form-control{
+    border-radius: 0.5rem;
+}
+
+/* Pour le style du header */
+
+.header-title {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.header-search{
+    /* background: linear-gradient(123deg, #1f1e1e 1%, #5c5751 87%); */
+    border-radius: 10px;
+}
+
+#monBouton {
+    position: fixed; /* ou 'absolute' si vous ne voulez pas qu'il reste en place lors du défilement */
+    top: 10px;  /* Espacement par rapport au haut de la page */
+    right: 10px; /* Espacement par rapport au côté droit de la page */
+    z-index: 100; /* S'assurer que le bouton reste au-dessus des autres éléments */
 }
