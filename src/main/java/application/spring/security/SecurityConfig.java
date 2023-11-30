@@ -26,6 +26,7 @@ public class SecurityConfig {
             auth.antMatchers("/user").hasRole("USER");
             auth.antMatchers("/logout").permitAll();
             auth.antMatchers("/test").permitAll();
+            auth.antMatchers("/add").permitAll();
             auth.anyRequest().authenticated();
         }).httpBasic(Customizer.withDefaults())
         //.oauth2Login(Customizer.withDefaults())

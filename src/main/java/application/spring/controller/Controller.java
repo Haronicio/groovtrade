@@ -85,7 +85,7 @@ public class Controller {
 	public void add(){
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
 		Long id = (long) 0;
-		String username = "createdadmin";
+		String username = "myadmin";
 		String password = b.encode("admin");
 		String role = "ADMIN";
 		String email = "c@gmail.com";
