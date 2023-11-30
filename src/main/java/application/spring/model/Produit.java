@@ -41,6 +41,4 @@ public class Produit implements Serializable{
     @ElementCollection
     @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))
     private List<ProduitImg> imgs = new ArrayList<>();
-
- 
 }

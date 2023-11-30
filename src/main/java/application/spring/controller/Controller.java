@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import application.spring.model.Historique;
 import application.spring.model.Panier;
 import application.spring.model.Produit;
+import application.spring.model.ProduitImg;
 import application.spring.model.Utilisateur;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
@@ -73,7 +74,7 @@ public class Controller {
 		return res;
 	}
 
-	
+
 
 
 	//private OAuth2AuthorizedClientService authorizedClientService;
