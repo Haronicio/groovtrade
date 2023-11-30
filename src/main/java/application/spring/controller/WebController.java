@@ -2,17 +2,14 @@ package application.spring.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,35 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.naming.NameNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import application.spring.model.Historique;
-import application.spring.model.Panier;
 import application.spring.model.Produit;
 import application.spring.model.ProduitImg;
 import application.spring.model.ProduitMeta;
 import application.spring.model.ProduitType;
-import application.spring.model.Utilisateur;
 import application.spring.repository.ProduitRepository;
-import application.spring.repository.UtilisateurRepository;
-import ch.qos.logback.classic.pattern.Util;
 
 @Controller
 @RequestMapping("/produits")
@@ -184,5 +157,5 @@ public class WebController {
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
-	
+
 }
