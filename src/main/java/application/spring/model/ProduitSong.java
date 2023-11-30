@@ -9,6 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 @Table(name = "produit_songs")
 public class ProduitSong implements Serializable
@@ -27,29 +31,7 @@ public class ProduitSong implements Serializable
     public ProduitSong(String path) {
         this.path = path;
     }
-
-
-    public ProduitSong() {
-    }
-
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPath() {
-        return this.path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-
+    
     @Override
     public String toString() {
         return "{" +
