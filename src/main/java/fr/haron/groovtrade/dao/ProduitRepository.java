@@ -11,12 +11,13 @@ import fr.haron.groovtrade.entities.Produit;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
 
-    List<Produit> findByDescriptionLike(String string);
-    List<Produit> findByMetaAlbumLike(String string);
-    List<Produit> findByMetaNomLike(String string);
-    List<Produit> findByMetaArtisteLike(String string);
-    List<Produit> findByMetaAnneeLike(String string);
-    List<Produit> findByMetaGenresLike(String string);
+    public List<Produit> findByDescriptionLike(String string);
+    public List<Produit> findByMetaAlbumLike(String string);
+    public List<Produit> findByMetaNomLike(String string);
+    public List<Produit> findByMetaArtisteLike(String string);
+    public List<Produit> findByMetaAnneeLike(String string);
+    public List<Produit> findByMetaGenresLike(String string);
+    public List<Produit> findByUtilisateurId(Long uid);
 
 
     //Recherche global : recherche keyword dans la description, le titre , l'album, le genre, artiste et année

@@ -53,7 +53,10 @@ public class UtilisateurController {
     // public String listeVentes(@PathVariable Long id, Model model) {
     public String listeVentes(@PathVariable String username, Model model, Authentication authentication) {
         // Fournir le modèle avec la liste des produits en vente
-        // model.addAttribute("produits", utilisateurService.getProduitsVente(id));
+         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+          model.addAttribute("listProduits",produitRepository.findByUtilisateurId(currenUtilisateur.getUserid()));
+
+
         return correctUser(authentication.getName(),username); // Vue correspondante
     }
 
