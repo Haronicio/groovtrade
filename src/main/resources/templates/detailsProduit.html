@@ -15,8 +15,12 @@
     <div class="container mt-2">
         <h1><span th:text="${produit.meta.nom}"></span></h1>
         <h2>Détails du Produit</h2>
-        <a href="" class="btn btn-primary">Ajouter au panier</a>
+        <form th:action="@{/utilisateur/{username}/ajouterPanier(username=${username})}" method="post">
+            <input type="hidden" name="produitId" th:value="${produit.id}" />
+            <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
+        </form>
         <div>
+            <p><b>Vendeur :</b> <span th:text="${vendeurUsername}"></span></p><!--TODO lien vers le profile-->
             <p><b>Description :</b> <pre th:text="${produit.description}"></pre></p>
             <p><b>Prix :</b> <span th:text="${produit.prix} + ' €' "></span></p>
             <p><b>Type :</b> <span th:text="${produit.type}"></span></p>

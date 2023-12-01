@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import fr.haron.groovtrade.dao.ProduitRepository;
+import fr.haron.groovtrade.dao.UtilisateurRepository;
 import fr.haron.groovtrade.entities.Produit;
 import fr.haron.groovtrade.entities.ProduitImg;
 import fr.haron.groovtrade.entities.ProduitMeta;
 import fr.haron.groovtrade.entities.ProduitType;
+import fr.haron.groovtrade.entities.Utilisateur;
 
 @Controller
 @RequestMapping("/produits")
@@ -33,6 +36,8 @@ public class ProduitController {
 
     @Autowired
     private ProduitRepository produitRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
 
     @GetMapping("/liste")
 public String liste(Model model, 
@@ -79,6 +84,10 @@ public String liste(Model model,
         .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
     
     model.addAttribute("produit", produit);
+
+    Utilisateur vendorUser = utilisateurRepository.findByUserid(produit.getUtilisateurId());
+    model.addAttribute("vendeurUsername", vendorUser.getUsername());
+
     return "detailsProduit";
 }
 
@@ -103,7 +112,8 @@ public String liste(Model model,
             @RequestParam String artiste,
             @RequestParam String album,
             @RequestParam int annee,
-            @RequestParam("coverImage") MultipartFile coverImage) {
+            @RequestParam("coverImage") MultipartFile coverImage,
+            Authentication authentication) {
         StringJoiner joiner = new StringJoiner(",");
         for (String genre : genres) {
             joiner.add(genre);
@@ -111,6 +121,13 @@ public String liste(Model model,
 
         ProduitMeta meta = new ProduitMeta(nom, artiste, album, annee, joiner.toString());
         Produit nouveauProduit = new Produit(prix, description, type, meta);
+
+        if (authentication == null) 
+        {
+            return "redirect:/login/";
+        }
+        Long utilisateurId = utilisateurRepository.findByUsername(authentication.getName()).getUserid(); 
+        nouveauProduit.setUtilisateurId(utilisateurId);
 
         // TODO : Gestion de plusieurs images
         // Logique pour traiter l'image de couverture

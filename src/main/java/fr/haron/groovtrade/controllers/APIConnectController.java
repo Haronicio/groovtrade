@@ -40,7 +40,7 @@ public class APIConnectController {
 		// }
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
 		Panier panier = u.getPanier();
-		return panier.getPrduits();
+		return panier.getProduits();
 	}
 
 	@GetMapping("/historique")

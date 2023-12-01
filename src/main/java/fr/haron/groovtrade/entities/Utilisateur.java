@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,15 +42,24 @@ public class Utilisateur implements Serializable{
 	private String password;
 	private String role;
 	private String email;
+	
 	@OneToMany(
 		cascade = CascadeType.ALL,
 		orphanRemoval = true,
 		fetch = FetchType.EAGER
 	)
 	@JoinColumn(name = "userid")
-	private List<Historique> historiques = new ArrayList<>();
+    private List<Historique> historiques = new ArrayList<>();
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "panierid")
+	// @OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "panierid")
+	@Embedded
 	private Panier panier;
+
+	public String getUsername()
+	{
+		return this.username;
+	}
+	
+	
 }

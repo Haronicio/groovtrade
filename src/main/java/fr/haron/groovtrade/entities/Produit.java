@@ -35,8 +35,15 @@ public class Produit implements Serializable{
     @Column(length = 3000) // Augmente la limite à 3000 caractères
     private String description;
 
-    // @OneToMany(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "img_id")
+    private Long utilisateurId;
+
+    public Long getUtilisateurId() {
+        return this.utilisateurId;
+    }
+
+    public void setUtilisateurId(Long utilisateurId) {
+        this.utilisateurId = utilisateurId;
+    }
 
     @ElementCollection
     @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))

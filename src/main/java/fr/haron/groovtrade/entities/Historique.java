@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,6 +26,7 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @ToString
 @Entity
 @Getter
@@ -30,12 +34,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "historique")
+// @Embeddable
 public class Historique implements Serializable{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,name = "historiqueid")
     private Long historiqueid;
     private boolean archived;
+
+    private String date;
     
     @ManyToMany(
         fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
@@ -50,9 +57,10 @@ public class Historique implements Serializable{
         joinColumns = @JoinColumn(name = "historiqueid"),
         inverseJoinColumns = @JoinColumn(name = "produitid")
     )
+
     private List<Produit> produits = new ArrayList<>();
 
-    //optionnel: etablir une relation bidirectionnelle avec utilisateur
+    // optionnel: etablir une relation bidirectionnelle avec utilisateur
     @ManyToOne
     @JoinColumn(name = "userid")
     private Utilisateur Utilisateur;
