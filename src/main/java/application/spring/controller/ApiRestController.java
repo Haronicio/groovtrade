@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,22 +46,15 @@ public class ApiRestController {
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
 		Panier panier = u.getPanier();
 		return panier.getProduits();
-		
 	}
 
 	@GetMapping("/historique")
-	public Historique getHistorique(@AuthenticationPrincipal UserDetails userDetails){
+	public List<Historique> getHistorique(@AuthenticationPrincipal UserDetails userDetails){
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		Historique historiques = u.getHistoriques().get(0);
-		
+		List<Historique> historiques = u.getHistoriques();
 		return historiques;
 	}
 
-	//private OAuth2AuthorizedClientService authorizedClientService;
-	// public Controller(OAuth2AuthorizedClientService authorizedClientService) {
-	// 	this.authorizedClientService = authorizedClientService;
-	//  }
-	
 	@GetMapping("/add")
 	public void add(){
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
@@ -79,7 +73,8 @@ public class ApiRestController {
 	@GetMapping
 	public String userInfo(@AuthenticationPrincipal UserDetails userDetails){
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		return "Welcome "+u.getUsername();
+		String description = u.toString();
+		return "Welcome "+u.getUsername()+"\n"+description;
 	}
 	
 
@@ -98,11 +93,13 @@ public class ApiRestController {
 	}
 
 	@PostMapping("/addHistorique")
-	public HttpStatus addHistorique(@AuthenticationPrincipal UserDetails userDetails,Historique Historique){
+	public HttpStatus addHistorique(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Historique newHistorique){
 		try{
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 			List<Historique> historique = user.getHistoriques();
-			historique.addAll(historique);
+			historique.add(newHistorique);
+			System.out.println("addHistorique "+newHistorique.toString());
+			utilisateurRepository.save(user);
 			return HttpStatus.OK;
 		}catch(Exception e){
 			return HttpStatus.NOT_ACCEPTABLE;
@@ -110,13 +107,18 @@ public class ApiRestController {
 	}
 
 	@PostMapping("/register")
-	public HttpStatus register(@AuthenticationPrincipal UserDetails userDetails, Utilisateur newUser){
+	public ResponseEntity register(@AuthenticationPrincipal UserDetails userDetails, @RequestBody SimplerUser newUser){
 		try{
-			utilisateurRepository.save(newUser);
-			return HttpStatus.OK;
+			if(utilisateurRepository.findByUsername(newUser.getUsername()) == null
+				||newUser.getUsername().equals("")){
+				Utilisateur user = new Utilisateur(newUser.getUsername(),newUser.getPassword(),"USER",newUser.getEmail(),new ArrayList<Historique>(),new Panier());
+				System.out.println(user.toString());
+				utilisateurRepository.save(user);
+				return ResponseEntity.ok("creation reussi");
+			}
+			return new ResponseEntity<>("duplication",HttpStatus.NOT_ACCEPTABLE);
 		}catch(Exception e){
-			return HttpStatus.NOT_ACCEPTABLE;
+			return new ResponseEntity<>("erreur creation",HttpStatus.BAD_REQUEST);
 		}
 	}
-
 }

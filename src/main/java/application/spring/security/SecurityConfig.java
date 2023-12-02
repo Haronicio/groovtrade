@@ -22,10 +22,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> {
-            auth.antMatchers("/admin").hasRole("ADMIN");
-            auth.antMatchers("/user").hasRole("USER");
-            auth.antMatchers("/logout").permitAll();
-            auth.antMatchers("/test").permitAll();
+            auth.antMatchers("/api/produits/register").permitAll();
             auth.anyRequest().authenticated();
         }).httpBasic(Customizer.withDefaults())
         //.oauth2Login(Customizer.withDefaults())

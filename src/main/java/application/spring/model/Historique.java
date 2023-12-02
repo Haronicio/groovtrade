@@ -56,4 +56,11 @@ public class Historique implements Serializable{
     )
 
     private List<Produit> produits = new ArrayList<>();
+
+    //optionnel?
+    Historique(boolean archived, String date, List<Produit> produits){
+        this.archived = archived;
+        this.date = date;
+        this.produits = produits;
+    }
 }
