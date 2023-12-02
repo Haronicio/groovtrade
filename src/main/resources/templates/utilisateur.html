@@ -16,12 +16,12 @@
     <div class="container mt-2">
         <ul>
             <li>image de profile</li>
-            <a href="/utilisateur/0/ventes"><li>liste produit en vente</li></a><!-- /utilisateur/id/liste *-->
-            <a href="/produits/ajouterProduit"><li>ajouter produit</li></a><!-- /produits/ajouterProduit -->
-            <a href="/utilisateur/0/panier"><li>panier</li></a><!-- /utilisateur/id/panier *-->
-            <a href="/utilisateur/0/historique"><li>historique achat</li></a> <!-- /utilisateur/id/historique *-->
-            <a href="/utilisateur/0/profile"><li>profile</li></a> <!-- /utilisateur/id/profile -->
-            <a href="/utilisateur/0/parametres"><li>paramètres</li></a> <!-- /utilisateur/id/paramètres -->
+            <a th:href="@{/utilisateur/{username}/ventes(username=${username})}"><li>liste produit en vente</li></a>
+            <a href="/produits/ajouterProduit"><li>ajouter produit</li></a>
+            <a th:href="@{/utilisateur/{username}/panier(username=${username})}"><li>panier</li></a>
+            <a th:href="@{/utilisateur/{username}/historique(username=${username})}"><li>historique achat</li></a>
+            <a th:href="@{/utilisateur/{username}/profile(username=${username})}"><li>profile</li></a>
+            <a th:href="@{/utilisateur/{username}/parametres(username=${username})}"><li>paramètres</li></a>
             <li>logout</li>
         </ul>
     </div>
@@ -33,7 +33,7 @@
                         <!-- Liste des produits -->
                         <!-- Début de la grille des produits -->
                         <div class="row">
-                                <div th:each="p : ${listProduits}" class="col-md-3 mb-3 product">
+                                <div th:if="${not #lists.isEmpty(listProduits)}" th:each="p : ${listProduits}" class="col-md-3 mb-3 product">
                                         <a th:href="@{/produits/details/{id}(id=${p.id})}"
                                                 class="text-decoration-none product-link">
                                                 <div th:if="${p != null}" class="card h-100 border-0">
@@ -49,6 +49,9 @@
                                                         </div>
                                                 </div>
                                         </a>
+                                </div>
+                                <div th:unless="${not #lists.isEmpty(listProduits)}">
+                                        <p>Pas de produit ici</p>
                                 </div>
                                 <!-- Logique pour nouvelle ligne après chaque 4 produits -->
                         </div>
