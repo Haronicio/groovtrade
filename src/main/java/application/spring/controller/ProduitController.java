@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import application.spring.model.Produit;
-import application.spring.model.ProduitImg;
-import application.spring.model.ProduitMeta;
-import application.spring.model.ProduitType;
-import application.spring.model.Utilisateur;
+import application.spring.entities.Produit;
+import application.spring.entities.ProduitImg;
+import application.spring.entities.ProduitMeta;
+import application.spring.entities.ProduitType;
+import application.spring.entities.Utilisateur;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
 

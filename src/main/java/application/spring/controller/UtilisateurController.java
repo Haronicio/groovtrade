@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import application.spring.model.Produit;
-import application.spring.model.Utilisateur;
+import application.spring.entities.Produit;
+import application.spring.entities.Utilisateur;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
 

@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import application.spring.model.Historique;
-import application.spring.model.Panier;
-import application.spring.model.Produit;
-import application.spring.model.Utilisateur;
+import application.spring.entities.Historique;
+import application.spring.entities.Panier;
+import application.spring.entities.Produit;
+import application.spring.entities.Utilisateur;
 import application.spring.postModel.register.SimpleUser;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;

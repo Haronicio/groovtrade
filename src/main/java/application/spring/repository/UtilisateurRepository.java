@@ -2,7 +2,7 @@ package application.spring.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import application.spring.model.Utilisateur;
+import application.spring.entities.Utilisateur;
 
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>{

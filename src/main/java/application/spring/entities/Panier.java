@@ -1,4 +1,4 @@
-package application.spring.model;
+package application.spring.entities;
 
 
 import java.io.Serializable;
