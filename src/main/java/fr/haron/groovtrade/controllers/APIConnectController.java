@@ -15,6 +15,7 @@ import fr.haron.groovtrade.dao.ProduitRepository;
 import fr.haron.groovtrade.dao.UtilisateurRepository;
 import fr.haron.groovtrade.entities.Historique;
 import fr.haron.groovtrade.entities.Panier;
+import fr.haron.groovtrade.entities.PanierItem;
 import fr.haron.groovtrade.entities.Produit;
 import fr.haron.groovtrade.entities.Utilisateur;
 
@@ -33,7 +34,7 @@ public class APIConnectController {
 	}
 
 	@GetMapping("/panier")
-	public List<Produit> getPanier(@AuthenticationPrincipal UserDetails userDetails){
+	public List<PanierItem> getPanier(@AuthenticationPrincipal UserDetails userDetails){
 		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		// if(authentication.isAuthenticated()){
 		// 	//TODO sachant utilisateur est authentifié

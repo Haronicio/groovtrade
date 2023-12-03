@@ -27,6 +27,10 @@ public class Produit implements Serializable{
     @GeneratedValue
     private Long id;
 
+    private int nbProduit;
+
+   
+
     private double prix;
 
     @Enumerated(EnumType.STRING)
@@ -37,22 +41,12 @@ public class Produit implements Serializable{
 
     private Long utilisateurId;
 
-    public Long getUtilisateurId() {
-        return this.utilisateurId;
-    }
-
-    public void setUtilisateurId(Long utilisateurId) {
-        this.utilisateurId = utilisateurId;
-    }
+    //par défaut le produit est visible
+    private boolean archived = false;
 
     @ElementCollection
     @CollectionTable(name = "img_produit", joinColumns = @JoinColumn(name = "produit_id"))
     private List<ProduitImg> imgs = new ArrayList<>();
-
-    // @OneToMany(cascade = CascadeType.ALL)
-    // private List<ProduitSong> songs = new ArrayList<>();
-
-    //TODO : pourquoi pas embended ? Changer pour emmbeded
 
     @Embedded
     private ProduitMeta meta;
@@ -65,41 +59,67 @@ public class Produit implements Serializable{
         this.meta = meta;
     }
 
+    public Produit() {
+    }
+    
+     public boolean isArchived() {
+        return this.archived;
+    }
+
+    public boolean getArchived() {
+        return this.archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public Long getUtilisateurId() {
+        return this.utilisateurId;
+    }
+
+    public void setUtilisateurId(Long utilisateurId) {
+        this.utilisateurId = utilisateurId;
+    }
+    
+     public int getNbProduit() {
+        return this.nbProduit;
+    }
+
+    public void setNbProduit(int nbProduit) {
+        this.nbProduit = nbProduit;
+    }
+
     public String getNom() {
         return this.meta.getNom();
+    }
+    public void setNom(String s) {
+        this.meta.setNom(s);
     }
 
     public String getArtiste() {
          return this.meta.getArtiste();
     }
 
+        public void setArtiste(String s) {
+        this.meta.setArtiste(s);
+    }
+
     public String getAlbum() {
          return this.meta.getAlbum();
+    }
+
+         public void setAlbum(String s) {
+        this.meta.setAlbum(s);
     }
 
     public int getAnnee() {
         return this.meta.getAnnee();
     }
 
-
-
-
-    // public Produit(double prix, ProduitType type, String description, List<ProduitImg> imgs, List<ProduitSong> songs, ProduitMeta meta) {
-    //     this.prix = prix;
-    //     this.type = type;
-    //     this.description = description;
-    //     this.imgs = imgs;
-    //     this.songs = songs;
-    //     this.meta = meta;
-    // }
-
-    // TODO: getter setter délégé des attributs meta ...
-
-    public Produit() {
+         public void setAnnee(int i) {
+        this.meta.setAnnee(i);
     }
-
-
-
 
     public Long getId() {
         return this.id;
@@ -161,7 +181,9 @@ public class Produit implements Serializable{
     public void setMeta(ProduitMeta meta) {
         this.meta = meta;
     }
-
+    public void setGenres(String string) {
+            this.meta.setGenres(string);
+        }
 
     @Override
     public String toString() {
@@ -175,6 +197,8 @@ public class Produit implements Serializable{
             ", meta='" + getMeta() + "'" +
             "}";
     }
+
+   
 
 
 }

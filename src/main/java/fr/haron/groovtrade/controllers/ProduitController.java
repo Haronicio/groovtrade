@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import fr.haron.groovtrade.dao.ProduitRepository;
 import fr.haron.groovtrade.dao.UtilisateurRepository;
 import fr.haron.groovtrade.entities.Produit;
@@ -104,7 +106,8 @@ public String liste(Model model,
 
 
     @PostMapping("/ajouter")
-    public String ajouterProduit(@RequestParam String description,
+    public String ajouterProduit(
+            @RequestParam String description,
             @RequestParam double prix,
             @RequestParam ProduitType type,
             @RequestParam List<String> genres,
@@ -112,8 +115,10 @@ public String liste(Model model,
             @RequestParam String artiste,
             @RequestParam String album,
             @RequestParam int annee,
+            @RequestParam int nb,
             @RequestParam("coverImage") MultipartFile coverImage,
             Authentication authentication) {
+
         StringJoiner joiner = new StringJoiner(",");
         for (String genre : genres) {
             joiner.add(genre);
@@ -121,6 +126,8 @@ public String liste(Model model,
 
         ProduitMeta meta = new ProduitMeta(nom, artiste, album, annee, joiner.toString());
         Produit nouveauProduit = new Produit(prix, description, type, meta);
+
+        nouveauProduit.setNbProduit(nb);
 
         if (authentication == null) 
         {
@@ -168,8 +175,105 @@ public String liste(Model model,
         }
 
         produitRepository.save(nouveauProduit);
-        return "redirect:/produits/liste";
+        // return "redirect:/produits/liste";
+        return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
     }
+
+    @GetMapping("/modifierProduit/{id}")
+    public String modifierProduitForm(@PathVariable Long id, Model model) {
+         Produit produit = produitRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
+
+        model.addAttribute("produit", produit);
+        return "modifierProduit";
+    }
+
+    @PostMapping("/modifier")
+    public String ajouterProduit(Authentication authentication,Model model,
+            @RequestParam Long id,
+            @RequestParam String description,
+            @RequestParam double prix,
+            @RequestParam ProduitType type,
+            @RequestParam List<String> genres,
+            @RequestParam("nom") String nom,
+            @RequestParam String artiste,
+            @RequestParam String album,
+            @RequestParam int annee,
+            @RequestParam int nb,
+            @RequestParam("coverImage") MultipartFile coverImage)
+    {
+
+        StringJoiner joiner = new StringJoiner(",");
+        for (String genre : genres) {
+            joiner.add(genre);
+        }
+
+        // Produit produit = (Produit)model.getAttribute("produit");
+        Produit produit = produitRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
+
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+
+        //TODO :  sécurité pour modification de produit
+        if(produit.getUtilisateurId() != currenUtilisateur.getUserid())
+            return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
+
+        produit.setDescription(description);
+        produit.setPrix(prix);
+        produit.setType(type);
+        produit.setGenres(joiner.toString());
+        produit.setNom(nom);
+        produit.setArtiste(artiste);
+        String pastAlbum = produit.getAlbum();
+        produit.setAlbum(album);
+        produit.setAnnee(annee);
+        produit.setNbProduit(nb);
+
+
+        // TODO : Gestion de plusieurs images
+        // Logique pour traiter l'image de couverture
+        if (!coverImage.isEmpty()) {
+            // Définir le chemin où vous voulez stocker les images
+            // Exemple: "static/images/"
+            String uploadDir = "src/main/resources/static/images";
+
+            // // Obtenir le nom du fichier original
+            // String originalFilename = coverImage.getOriginalFilename();
+
+            // // Construire un nouveau nom de fichier pour éviter les conflits
+            // String filename = StringUtils.cleanPath(originalFilename);
+
+            // TODO : générer un nom + ajouter vérifications solide
+            String filename = pastAlbum + album + "." + getExtensionByStringHandling(coverImage.getOriginalFilename()).get();
+
+            // Sauvegarder le fichier sur le disque dur
+            try {
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                try (InputStream inputStream = coverImage.getInputStream()) {
+                    Path filePath = uploadPath.resolve(filename);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // TODO : Gérer l'exception ici
+            }
+
+            // TODO : Ajouter le chemin de l'image à l'entité Produit
+            produit.addImg(new ProduitImg(filename));
+            // Exemple : produit.setCoverImagePath(filename);
+        }   
+
+        produitRepository.save(produit);
+        
+
+        return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
+    }
+
 
     public Optional<String> getExtensionByStringHandling(String filename) {
         return Optional.ofNullable(filename)

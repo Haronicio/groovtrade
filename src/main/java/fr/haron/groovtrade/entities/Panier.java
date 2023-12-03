@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -36,7 +37,8 @@ import lombok.Setter;
 // @Table(name = "panier")
 @Embeddable
 public class Panier implements Serializable{
-    
+
+    // Ancienne structure
     // @ManyToMany(
     //     fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
     //     cascade = {
@@ -50,21 +52,58 @@ public class Panier implements Serializable{
     //     joinColumns = @JoinColumn(name = "panierid"),
     //     inverseJoinColumns = @JoinColumn(name = "produitid")
     // )
-    @ElementCollection
-    @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
-    @Column(name = "produit_id")
-    private List<Produit> produits = new ArrayList<>();
-
-    // @OneToOne(cascade = {
+     // @OneToOne(cascade = {
     //     CascadeType.MERGE,
     //     CascadeType.PERSIST
     // })
     // @JoinColumn(name = "userid")
     // private Utilisateur utilisateur;
 
+    //structure liste de produit
+    // @ElementCollection
+    // @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
+    // @Column(name = "produit_id")
+    // private List<Produit> produits = new ArrayList<>();
+    // public boolean add(Produit e)
+    // {
+    //     return produits.addAll(e);
+    // }
 
-    public boolean add(Produit e)
+
+    //structure liste de panieritem
+    // @OneToMany(cascade = CascadeType.ALL)
+    // private List<PanierItem> produits = new ArrayList<>();
+
+    //structure liste de panieritem embedded
+    @ElementCollection
+    @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
+    private List<PanierItem> produits = new ArrayList<>();
+
+   
+
+    public boolean remove(Produit produit)
     {
-        return produits.add(e);
+        for (PanierItem item : produits) {
+            if (item.getProduit().equals(produit)) {
+                produits.remove(item);
+                return true;
+            }
+            
+        }
+        return false;
+    }
+   
+    public boolean add(PanierItem e)
+    {
+            // Trouver l'article dans le panier
+            for (PanierItem item : produits) {
+                if (item.getProduit().equals(e.getProduit())) {
+                    // Augmenter la quantité et retourner
+                    item.setQuantite(item.getQuantite() + e.getQuantite());
+                    return true;
+                }
+            }
+            // Si le produit n'est pas trouvé, ajoutez un nouvel article
+            return produits.add(e);
     }
 }

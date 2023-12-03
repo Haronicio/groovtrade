@@ -60,6 +60,21 @@ public class Utilisateur implements Serializable{
 	{
 		return this.username;
 	}
-	
+
+
+	//Pour le controller utilisateur
+	public List<PanierItem> getVentes(List<Produit> produits)
+	{
+		List<PanierItem> res = new ArrayList<>();
+
+		for (Produit e : produits) {
+			if (e.getUtilisateurId() == userid) {
+				res.add(new PanierItem(e, e.getNbProduit()));
+			}
+			
+		}
+
+		return res;
+	}
 	
 }

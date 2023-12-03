@@ -2,6 +2,7 @@ package fr.haron.groovtrade.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,11 +21,15 @@ public class ProduitMeta implements Serializable
     // @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     // private Long id;
-
+    @Column(length = 500)
     private String nom;
+    @Column(length = 500)
     private String artiste;
+    @Column(length = 500)
     private String album;
+    @Column(length = 500)
     private int annee;
+    @Column(length = 500)
     private String genres;
 
     // Changer pour Embedded
