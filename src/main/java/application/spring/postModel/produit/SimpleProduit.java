@@ -1,4 +1,4 @@
-package application.spring.model;
+package application.spring.postModel.produit;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SimplerUser {
-    String username;
-    String password;
-    String email;
+public class SimpleProduit {
+    private Long produitid;    
 }

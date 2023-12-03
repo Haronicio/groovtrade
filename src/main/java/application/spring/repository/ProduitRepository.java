@@ -17,6 +17,7 @@ public interface ProduitRepository extends JpaRepository<Produit,Long>{
     public List<Produit> findByMetaGenresLike(String string);
     public List<Produit> findByUtilisateurId(Long uid);
 
+    public Produit findByProduitid(Long id);
 
     //Recherche global : recherche keyword dans la description, le titre , l'album, le genre, artiste et année
     @Query("SELECT p FROM Produit p WHERE " +

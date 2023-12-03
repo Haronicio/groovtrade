@@ -30,7 +30,7 @@ import lombok.Setter;
 public class Produit implements Serializable{
     @Id
     @GeneratedValue
-    private Long id;
+    private Long produitid;
 
     private double prix;
 
@@ -68,7 +68,7 @@ public class Produit implements Serializable{
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
+            " id='" + getProduitid() + "'" +
             ", prix='" + getPrix() + "'" +
             ", type='" + getType() + "'" +
             ", description='" + getDescription() + "'" +

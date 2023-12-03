@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import application.spring.model.Historique;
 import application.spring.model.Panier;
 import application.spring.model.Produit;
-import application.spring.model.SimplerUser;
 import application.spring.model.Utilisateur;
+import application.spring.postModel.register.SimpleUser;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
 
@@ -107,7 +107,7 @@ public class ApiRestController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity register(@AuthenticationPrincipal UserDetails userDetails, @RequestBody SimplerUser newUser){
+	public ResponseEntity<String> register(@AuthenticationPrincipal UserDetails userDetails, @RequestBody SimpleUser newUser){
 		try{
 			if(utilisateurRepository.findByUsername(newUser.getUsername()) == null
 				||newUser.getUsername().equals("")){
