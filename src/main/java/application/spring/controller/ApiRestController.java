@@ -25,6 +25,7 @@ import application.spring.Model.produit.SimpleProduit;
 import application.spring.Model.register.SimpleUser;
 import application.spring.entities.Historique;
 import application.spring.entities.Panier;
+import application.spring.entities.PanierItem;
 import application.spring.entities.Produit;
 import application.spring.entities.ProduitImg;
 import application.spring.entities.Utilisateur;
@@ -53,7 +54,7 @@ public class ApiRestController {
 
 	//retoune list des produits dans panier 
 	@GetMapping("/panier")
-	public List<Produit> getPanier(@AuthenticationPrincipal UserDetails userDetails){
+	public List<PanierItem> getPanier(@AuthenticationPrincipal UserDetails userDetails){
 		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		// if(authentication.isAuthenticated()){
 		// 	//TODO sachant utilisateur est authentifié
@@ -146,7 +147,7 @@ public class ApiRestController {
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 			Panier panier = user.getPanier();
 			Produit p = produitRepository.findByProduitid(newProduit.getProduitid());
-			panier.add(p);
+			panier.add(new PanierItem(p,newProduit.getQuantite()));
 			utilisateurRepository.save(user);
 			return HttpStatus.OK;
 		}catch(Exception e){
@@ -155,28 +156,28 @@ public class ApiRestController {
 	}
 
 	//ajouter panier dans historique
-	@PostMapping("/addHistorique")
-	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
-		try{
-			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
-			List<Historique> historiques = user.getHistoriques();
-			Panier panier = user.getPanier();
-			List<Produit> panierProduits = panier.getProduits();
+	// @PostMapping("/addHistorique")
+	// public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
+	// 	try{
+	// 		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+	// 		List<Historique> historiques = user.getHistoriques();
+	// 		Panier panier = user.getPanier();
+	// 		List<Produit> panierProduits = panier.getProduits();
 			
-			if(!panier.getProduits().isEmpty()){
-				//  Historique(boolean archived, Date date, List<Produit> produits)
-				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierProduits);
-				historiques.add(newHistorique);
-				panier.setProduits(new ArrayList<>());
+	// 		if(!panier.getProduits().isEmpty()){
+	// 			//  Historique(boolean archived, Date date, List<Produit> produits)
+	// 			Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierProduits);
+	// 			historiques.add(newHistorique);
+	// 			panier.setProduits(new ArrayList<>());
 
-				utilisateurRepository.save(user);
-				return ResponseEntity.ok("succès");
-			}
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}catch(Exception e){
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-	}
+	// 			utilisateurRepository.save(user);
+	// 			return ResponseEntity.ok("succès");
+	// 		}
+	// 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	// 	}catch(Exception e){
+	// 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	// 	}
+	// }
 	//ajouter un nouveau produit
 	@PostMapping("/addProduit")
 	public ResponseEntity<String> addProduit(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit newProduit){

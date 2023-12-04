@@ -85,4 +85,18 @@ public class Utilisateur implements Serializable{
 			this.historiques = historiques;
 			this.panier = panier;
 		}
+			//Pour le controller utilisateur
+	public List<PanierItem> getVentes(List<Produit> produits)
+	{
+		List<PanierItem> res = new ArrayList<>();
+
+		for (Produit e : produits) {
+			if (e.getUtilisateurId() == userid) {
+				res.add(new PanierItem(e, e.getNbProduit()));
+			}
+			
+		}
+
+		return res;
+	}
 }

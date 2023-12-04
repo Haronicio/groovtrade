@@ -31,20 +31,22 @@ import lombok.Setter;
 @Embeddable
 public class Panier implements Serializable{
     
-    @ManyToMany(
-        fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
-        cascade = {
-            //la cascade s’applique tant en création qu’en modification
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-        }
-    )
-    @JoinTable(
-        name = "panier_produits",
-        joinColumns = @JoinColumn(name = "panierid"),
-        inverseJoinColumns = @JoinColumn(name = "produitid")
-    )
-    private List<Produit> produits = new ArrayList<>();
+    // @ManyToMany(
+    //     fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
+    //     cascade = {
+    //         //la cascade s’applique tant en création qu’en modification
+    //         CascadeType.PERSIST,
+    //         CascadeType.MERGE
+    //     }
+    // )
+    // @JoinTable(
+    //     name = "panier_produits",
+    //     joinColumns = @JoinColumn(name = "panierid"),
+    //     inverseJoinColumns = @JoinColumn(name = "produitid")
+    // )
+    @ElementCollection
+    @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
+    private List<PanierItem> produits = new ArrayList<>();
 
     // @OneToOne(cascade = {
     //     CascadeType.MERGE,
@@ -54,8 +56,29 @@ public class Panier implements Serializable{
     // private Utilisateur utilisateur;
 
 
-    public boolean add(Produit e)
+
+    public boolean remove(Produit produit)
     {
-        return produits.add(e);
+        for (PanierItem item : produits) {
+            if (item.getProduit().equals(produit)) {
+                produits.remove(item);
+                return true;
+            }
+        }
+        return false;
+    }
+   
+    public boolean add(PanierItem e)
+    {
+            // Trouver l'article dans le panier
+            for (PanierItem item : produits) {
+                if (item.getProduit().equals(e.getProduit())) {
+                    // Augmenter la quantité et retourner
+                    item.setQuantite(item.getQuantite() + e.getQuantite());
+                    return true;
+                }
+            }
+            // Si le produit n'est pas trouvé, ajoutez un nouvel article
+            return produits.add(e);
     }
 }

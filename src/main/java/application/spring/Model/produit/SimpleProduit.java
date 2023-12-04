@@ -12,5 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class SimpleProduit {
-    private Long produitid;    
+    private Long produitid;
+    private int quantite;
 }
