@@ -147,7 +147,8 @@ public class ApiRestController {
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 			Panier panier = user.getPanier();
 			Produit p = produitRepository.findByProduitid(newProduit.getProduitid());
-			panier.add(new PanierItem(p,newProduit.getQuantite()));
+			List<PanierItem> panierItems = panier.getProduits();
+			panierItems.add(new PanierItem(p,newProduit.getQuantite()));
 			utilisateurRepository.save(user);
 			return HttpStatus.OK;
 		}catch(Exception e){
