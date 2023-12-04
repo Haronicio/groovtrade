@@ -9,7 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Produits = ({token}) => {
     const [newProduit,setNewProdtui] = useState(false);
-    const [produits, setProduits] = useState([]);    
+    const [produits, setProduits] = useState([]);  
+    // obtenir liste des produits  
     useEffect(() => {
         axios(header.getProduits())
             .then(function (res) {
@@ -20,9 +21,11 @@ const Produits = ({token}) => {
         display: 'flex',
         flexWrap: 'wrap'
     };
-    let handleClick=()=>{
+    //action clique sur bouton
+        let handleClick=()=>{
         newProduit?setNewProdtui(false):setNewProdtui(true);
     }
+
     if(newProduit){
         return <AddProduit/>
     }else{
