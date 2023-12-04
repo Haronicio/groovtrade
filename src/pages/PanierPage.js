@@ -10,12 +10,13 @@ const PanierPage = () => {
             navigate('/connexion');
         }
     }, [navigate]);
-
+    
     if(authtificationService.islogged()){
         return (
             <div>
                 <Navigation/>
                 <Panier/>
+                
             </div>
         );
     }

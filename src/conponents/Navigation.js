@@ -21,6 +21,9 @@ const Navigation = () => {
                     <NavLink to="/connexion" className={(x)=>x.isActive?"nav-active":""}>
                         <li>Connexion</li>
                     </NavLink>
+                    <NavLink to="/register" className={(x)=>x.isActive?"nav-active":""}>
+                        <li>S'inscrire</li>
+                    </NavLink>
                     <NavLink to="/deconnecter" className={(x)=>x.isActive?"nav-active":""}>
                         <li>Déconnecter</li>
                     </NavLink>
