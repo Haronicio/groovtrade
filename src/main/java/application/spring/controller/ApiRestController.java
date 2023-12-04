@@ -139,6 +139,34 @@ public class ApiRestController {
 		}
 	}
 
+	//supprimer un produit
+	@PostMapping(value ="/removeOnePanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
+	public HttpStatus removeOnePanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleProduit targetProduit){
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			Panier panier = user.getPanier();
+			Produit p = produitRepository.findByProduitid(targetProduit.getProduitid());
+			panier.removeOne(p);
+			utilisateurRepository.save(user);
+			return HttpStatus.OK;
+		}catch(Exception e){
+			return HttpStatus.NOT_ACCEPTABLE;
+		}
+	}
+	@PostMapping(value ="/removePanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
+	public HttpStatus removePanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleProduit targetProduit){
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			Panier panier = user.getPanier();
+			Produit p = produitRepository.findByProduitid(targetProduit.getProduitid());
+			panier.remove(p);
+			utilisateurRepository.save(user);
+			return HttpStatus.OK;
+		}catch(Exception e){
+			return HttpStatus.NOT_ACCEPTABLE;
+		}
+	}
+
 	//ajoute un produit dans panier
 	@PostMapping(value ="/addPanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
 	public HttpStatus addPanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleProduit newProduit){
@@ -147,8 +175,8 @@ public class ApiRestController {
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 			Panier panier = user.getPanier();
 			Produit p = produitRepository.findByProduitid(newProduit.getProduitid());
-			List<PanierItem> panierItems = panier.getProduits();
-			panierItems.add(new PanierItem(p,newProduit.getQuantite()));
+			panier.add(new PanierItem(p,newProduit.getQuantite()));
+		
 			utilisateurRepository.save(user);
 			return HttpStatus.OK;
 		}catch(Exception e){

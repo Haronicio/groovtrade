@@ -67,7 +67,20 @@ public class Panier implements Serializable{
         }
         return false;
     }
-   
+    public boolean removeOne(Produit produit)
+    {
+        for (PanierItem item : produits) {
+            if (item.getProduit().equals(produit)) {
+                if(item.getQuantite()<=1){
+                    produits.remove(item);
+                }else{
+                    item.setQuantite(item.getQuantite()-1);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean add(PanierItem e)
     {
             // Trouver l'article dans le panier
