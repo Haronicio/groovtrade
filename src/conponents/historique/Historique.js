@@ -7,17 +7,21 @@ const Historique = () => {
     
     const [historiques, setHistoriques] = useState([]);    
     useEffect(() => {
-        axios(header.getPanier())
+        axios(header.getHistorique())
             .then(function (res) {
+                console.log(res.data);
                 setHistoriques(res.data);
             })
     },[]);  
+
     return (
         <div>
-            {historiques.map((historique, index)=>{
-                <HistoriqueCard historique={historique}/>
-            })};
+            {historiques.map((historique, index) => 
+                <HistoriqueCard key={historique.historiqueid} historique={historique}/>
+            )};
         </div>
+
+        
     );
 };
 

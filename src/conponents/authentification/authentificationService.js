@@ -12,6 +12,7 @@ let getToken=()=>{
     
     return localStorage.getItem("token");
 }
+
 export const authtificationService = {
     setToken,logout,islogged, getToken
 }
