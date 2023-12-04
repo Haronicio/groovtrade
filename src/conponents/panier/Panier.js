@@ -6,13 +6,20 @@ import { authtificationService } from '../authentification/authentificationServi
 
 
 const Panier = () => {
-    const [produits, setProduits] = useState([]);    
     useEffect(() => {
         axios(header.getPanier())
             .then(function (res) {
                 setProduits(res.data);
-            })
+                console.log(res.data);
+            });
     },[]);
+    const [produits, setProduits] = useState([]);  
+    var prixTotal = 0;
+    var nbrArticle = 0;
+    nbrArticle = produits.reduce((acc,panierItem)=>acc+panierItem.quantite,0);
+    prixTotal = produits.reduce((acc,panierItem)=>acc+(panierItem.produit.prix * panierItem.quantite),0);
+
+
     let handleClick=()=>{
         axios.post("http://127.0.0.1:8080/api/produits/addHistorique",{},{
             headers: {
@@ -34,11 +41,23 @@ const Panier = () => {
     };
     if(produits.length !== 0){
         return (
-            <div style={divStyle}>
-                {produits.map((produit, index) => (
-                   <ProduitCard produit={produit} />
-                ))}
-                <button onClick={handleClick}>Valider</button>
+            <div>
+                <div style={divStyle}>
+                
+                    {produits.map((panierItem, index) => 
+                    {
+                    return (
+                        <div>
+                        <ProduitCard produit={panierItem.produit} />
+                        <p>quantité: {panierItem.quantite}</p>
+                    </div>
+                    );}
+                    )}
+                    <button onClick={handleClick}>Valider</button>
+                </div>
+                <br/>
+                <h1>total: {prixTotal}</h1>
+                <h3>nombre d'article: {nbrArticle}</h3>
             </div>
         );
     }else{

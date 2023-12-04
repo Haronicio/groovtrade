@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Produits = ({token}) => {
     const [newProduit,setNewProdtui] = useState(false);
     const [produits, setProduits] = useState([]);  
+    const [quantite,SetQuantite] = useState(1);
     // obtenir liste des produits  
     useEffect(() => {
         axios(header.getProduits())
@@ -36,7 +37,8 @@ const Produits = ({token}) => {
                 {
                     let handleClick=()=>{
                         axios.post("http://127.0.0.1:8080/api/produits/addPanier",{
-                            "produitid":produit.produitid
+                            "produitid":produit.produitid,
+                            "quantite":quantite
                         },{
                             headers: {
                                 'Content-Type': 'application/json',
@@ -54,6 +56,7 @@ const Produits = ({token}) => {
                     return (
                     <div>
                         <ProduitCard key={produit.produitid} produit={produit} />
+                        <p>Quantité: <input onChange={(e)=>SetQuantite(e.target.value)} type='number' defaultValue={1}/></p>
                         <button onClick={handleClick}>Ajouter au panier</button>
                     </div>
                     )}
