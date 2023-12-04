@@ -35,6 +35,43 @@
     transform: scale(1.1); /* petit effet de zoom au survole*/
 }
 
+/* bouton de supression et de modification d'article */
+.button-container {
+    position: absolute; /* Positionne les boutons de manière absolue à l'intérieur du div */
+    bottom: 0;             /* En haut du div */
+    right: 0;           /* À droite du div */
+    display: flex;      /* Utilise Flexbox pour l'alignement des boutons */
+
+}
+
+.close{
+    
+    color: red;         /* Couleur de la croix */
+    background-color: transparent; /* Fond transparent */
+    border: none;       /* Pas de bordure */
+    font-size: 40px;    /* Taille de la croix */
+
+}
+
+.close:focus {
+    outline: none; /* Supprime le contour lors de la mise au point sur le bouton */
+    
+}
+
+.modify{
+    
+    color: blue;         /* Couleur de la croix */
+    background-color: transparent; /* Fond transparent */
+    border: none;       /* Pas de bordure */
+    font-size: 40px;    /* Taille de la croix */
+
+}
+
+.modify:focus {
+    outline: none; /* Supprime le contour lors de la mise au point sur le bouton */
+    
+}
+
 /* Barre Recherche */
 
 .advanced-search {
@@ -75,3 +112,50 @@
     right: 10px; /* Espacement par rapport au côté droit de la page */
     z-index: 100; /* S'assurer que le bouton reste au-dessus des autres éléments */
 }
+
+/* détails produit */
+
+/* gallerie d'image*/
+.photo-gallery {
+    color:#313437;
+    background-color:#fff;
+  }
+  
+  .photo-gallery p {
+    color:#7d8285;
+  }
+  
+  .photo-gallery h2 {
+    font-weight:bold;
+    margin-bottom:40px;
+    padding-top:40px;
+    color:inherit;
+  }
+  
+  @media (max-width:767px) {
+    .photo-gallery h2 {
+      margin-bottom:25px;
+      padding-top:25px;
+      font-size:24px;
+    }
+  }
+  
+  .photo-gallery .intro {
+    font-size:16px;
+    max-width:500px;
+    margin:0 auto 40px;
+  }
+  
+  .photo-gallery .intro p {
+    margin-bottom:0;
+  }
+  
+  .photo-gallery .photos {
+    padding-bottom:20px;
+  }
+  
+  .photo-gallery .item {
+    padding-bottom:30px;
+  }
+  
+  

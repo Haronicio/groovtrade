@@ -52,3 +52,18 @@ function filtrerGenres() {
         }
     }
 }
+
+// Coche les genres présent dans la chaine de charactère 
+function checkGenres(genresString) {
+    var genresArray = genresString.split(',');
+
+    var checkboxes = document.querySelectorAll('input[name="genres"]');
+
+    // Parcourir toutes les cases à cocher
+    checkboxes.forEach(function(checkbox) {
+        // Si le genre de la case à cocher est dans genresArray, cocher la case
+        if (genresArray.includes(checkbox.value)) {
+            checkbox.checked = true;
+        }
+    });
+}

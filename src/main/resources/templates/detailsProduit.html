@@ -18,6 +18,8 @@
         <form th:action="@{/utilisateur/{username}/ajouterPanier(username=${username})}" method="post">
             <input type="hidden" name="produitId" th:value="${produit.id}" />
             <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
+            <input type="number" name="nbProduit" value="1" min="1" th:max="${produit.nbProduit}" />
+            <p><b>Nombre disponible :</b><span th:text="${produit.nbProduit}"></span></p>
         </form>
         <div>
             <p><b>Vendeur :</b> <span th:text="${vendeurUsername}"></span></p><!--TODO lien vers le profile-->
@@ -32,10 +34,19 @@
                 <li><b>Genres :</b> <span th:text="${produit.meta.genres}"></span></li>
             </ul>
 
-            <div th:if="${!produit.imgs.isEmpty()}">
+            <!-- <div th:if="${!produit.imgs.isEmpty()}">
                 <img th:src="@{'/images/' + ${produit.imgs.get(0).path}}" alt="Image de couverture"/>
+            </div> -->
+
+            <!-- gallerie d'image -->
+            <div th:if="${!produit.imgs.isEmpty()}" class="photo-gallery">
+                <div class="container">
+                    <div th:each="i : ${produit.imgs}" class="row photos" >
+                        <div class="col-sm-6 col-md-4 col-lg-3 item"><a th:href="@{'/images/' + ${i.path}}" data-lightbox="photos"><img class="img-fluid" th:src="@{'/images/' + ${i.path}}"></a></div>
+                    </div>
+                </div>
             </div>
-            <!-- Ajoutez d'autres détails que vous souhaitez afficher -->
+
         </div>
     </div>
 </body>
