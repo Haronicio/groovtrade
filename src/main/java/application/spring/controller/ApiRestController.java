@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +14,28 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import application.spring.Model.produit.SimpleProduit;
+import application.spring.Model.register.SimpleUser;
 import application.spring.entities.Historique;
 import application.spring.entities.Panier;
 import application.spring.entities.Produit;
+import application.spring.entities.ProduitImg;
 import application.spring.entities.Utilisateur;
-import application.spring.postModel.produit.SimpleProduit;
-import application.spring.postModel.register.SimpleUser;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
+
+
+import org.springframework.core.io.Resource;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 @RequestMapping("/api/produits")
 @RestController
@@ -41,6 +51,7 @@ public class ApiRestController {
 		return produitRepository.findAll();
 	}
 
+	//retoune list des produits dans panier 
 	@GetMapping("/panier")
 	public List<Produit> getPanier(@AuthenticationPrincipal UserDetails userDetails){
 		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,6 +63,7 @@ public class ApiRestController {
 		return panier.getProduits();
 	}
 
+	//retourne list historique
 	@GetMapping("/historique")
 	public List<Historique> getHistorique(@AuthenticationPrincipal UserDetails userDetails){
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
@@ -59,19 +71,20 @@ public class ApiRestController {
 		return historiques;
 	}
 
-	@GetMapping("/add")
-	public void add(){
-		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
-		Long id = (long) 0;
-		String username = "createdadmin";
-		String password = b.encode("admin");
-		String role = "ADMIN";
-		String email = "c@gmail.com";
-		List<Historique> historiques = new ArrayList<>();
-		Panier panier = new Panier();
-		Utilisateur u = new Utilisateur(id, username, password, role, email, historiques,panier);
-		utilisateurRepository.save(u);
-	}
+	// @GetMapping("/add")
+	// public void add(){
+	// 	BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+	// 	Long id = (long) 0;
+	// 	String username = "createdadmin";
+	// 	String password = b.encode("admin");
+	// 	String role = "ADMIN";
+	// 	String email = "c@gmail.com";
+	// 	List<Historique> historiques = new ArrayList<>();
+	// 	Panier panier = new Panier();
+		
+	// 	Utilisateur u = new Utilisateur(id, username, password, role, email, historiques,panier);
+	// 	utilisateurRepository.save(u);
+	// }
 
 
 	@GetMapping
@@ -164,7 +177,7 @@ public class ApiRestController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
-
+	//ajouter un nouveau produit
 	@PostMapping("/addProduit")
 	public ResponseEntity<String> addProduit(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit newProduit){
 		try{
@@ -177,5 +190,26 @@ public class ApiRestController {
 		}
 
 	}	
+	@PostMapping("/image")
+    public ResponseEntity<byte[]> getImage(@RequestBody ProduitImg image) throws IOException {
+		  // Construisez le chemin du fichier d'image dans le répertoire des ressources statiques
+		  String imagePath = "static/images/"  +image.getPath()+ ".jpg";
 
+		  // Chargez la ressource
+		  Resource resource = new ClassPathResource(imagePath);
+  
+		  // Vérifiez si la ressource existe
+		  if (!resource.exists()) {
+			  // Gérez le cas où l'image n'existe pas
+			  return ResponseEntity.notFound().build();
+		  }
+  
+		  // Lisez les bytes depuis la ressource
+		  byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
+  
+		  // Retournez le tableau de bytes en tant que réponse avec le type de média approprié
+		  return ResponseEntity.ok()
+				  .contentType(MediaType.IMAGE_JPEG) // Ajustez le type de média en fonction du type de votre image
+				  .body(imageBytes);
+	}
 }
