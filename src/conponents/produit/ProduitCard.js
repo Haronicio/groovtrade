@@ -33,7 +33,7 @@ const ProduitCard = ({produit}) => {
                 {imageSrc && <img  width='500' height='200' src={imageSrc} alt="imageFailed" />}
                 <p><b>Vendeur :</b>{produit.utilisateurId}</p>
                 <p><b>Description :</b>{produit.description}</p>
-                <p><b>Prix :</b>{produit.prix} </p>
+                <p><b>Prix :</b>{produit.prix} €</p>
                 <p><b>Type :</b>{produit.type} </p>
                 <ul>
                     <li><b>Album :</b> {produit.meta.album}</li>
