@@ -156,29 +156,29 @@ public class ApiRestController {
 		}
 	}
 
-	//ajouter panier dans historique
-	// @PostMapping("/addHistorique")
-	// public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
-	// 	try{
-	// 		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
-	// 		List<Historique> historiques = user.getHistoriques();
-	// 		Panier panier = user.getPanier();
-	// 		List<Produit> panierProduits = panier.getProduits();
+	// ajouter panier dans historique
+	@PostMapping("/addHistorique")
+	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			List<Historique> historiques = user.getHistoriques();
+			Panier panier = user.getPanier();
+			List<PanierItem> panierItems = panier.getProduits();
 			
-	// 		if(!panier.getProduits().isEmpty()){
-	// 			//  Historique(boolean archived, Date date, List<Produit> produits)
-	// 			Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierProduits);
-	// 			historiques.add(newHistorique);
-	// 			panier.setProduits(new ArrayList<>());
+			if(!panier.getProduits().isEmpty()){
+				//  Historique(boolean archived, Date date, List<Produit> produits)
+				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierItems);
+				historiques.add(newHistorique);
+				panier.setProduits(new ArrayList<>());
 
-	// 			utilisateurRepository.save(user);
-	// 			return ResponseEntity.ok("succès");
-	// 		}
-	// 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-	// 	}catch(Exception e){
-	// 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-	// 	}
-	// }
+				utilisateurRepository.save(user);
+				return ResponseEntity.ok("succès");
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}catch(Exception e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
 	//ajouter un nouveau produit
 	@PostMapping("/addProduit")
 	public ResponseEntity<String> addProduit(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit newProduit){

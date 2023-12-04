@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -42,23 +44,24 @@ public class Historique implements Serializable{
 
     private Date date;
     
-    @ManyToMany(
-        fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
-        cascade = {
-            //la cascade s’applique tant en création qu’en modification
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-        }
-    )
-    @JoinTable(
-        name = "historique_produits",
-        joinColumns = @JoinColumn(name = "historiqueid"),
-        inverseJoinColumns = @JoinColumn(name = "produitid")
-    )
+    // @ManyToMany(
+    //     fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
+    //     cascade = {
+    //         //la cascade s’applique tant en création qu’en modification
+    //         CascadeType.PERSIST,
+    //         CascadeType.MERGE
+    //     }
+    // )
+    // @JoinTable(
+    //     name = "historique_produits",
+    //     joinColumns = @JoinColumn(name = "historiqueid"),
+    //     inverseJoinColumns = @JoinColumn(name = "produitid")
+    // )
+    @ElementCollection
+    @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
+    private List<PanierItem> produits = new ArrayList<>();
 
-    private List<Produit> produits = new ArrayList<>();
-
-    public Historique(boolean archived, Date date, List<Produit> produits){
+    public Historique(boolean archived, Date date, List<PanierItem> produits){
         this.archived = archived;
         this.date = date;
         this.produits = produits;
