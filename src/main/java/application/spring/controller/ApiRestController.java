@@ -1,5 +1,8 @@
 package application.spring.controller;
 
+import java.sql.Date;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import application.spring.entities.Historique;
 import application.spring.entities.Panier;
 import application.spring.entities.Produit;
 import application.spring.entities.Utilisateur;
+import application.spring.postModel.produit.SimpleProduit;
 import application.spring.postModel.register.SimpleUser;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
@@ -71,40 +75,39 @@ public class ApiRestController {
 
 
 	@GetMapping
-	public String userInfo(@AuthenticationPrincipal UserDetails userDetails){
+	public Utilisateur userInfo(@AuthenticationPrincipal UserDetails userDetails){
 		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		String description = u.toString();
-		return "Welcome "+u.getUsername()+"\n"+description;
+		return u;
 	}
 	
 
-	@PostMapping(value ="/addPanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
-	public HttpStatus addPanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit produit){
-		try{
-			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
-			System.out.println("voici++"+produit.toString());
-			Panier panier = user.getPanier();
-			panier.add(produit);
-			utilisateurRepository.save(user);
-			return HttpStatus.OK;
-		}catch(Exception e){
-			return HttpStatus.NOT_ACCEPTABLE;
-		}
-	}
+	// @PostMapping(value ="/addPanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
+	// public HttpStatus addPanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit produit){
+	// 	try{
+	// 		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+	// 		System.out.println("voici++"+produit.toString());
+	// 		Panier panier = user.getPanier();
+	// 		panier.add(produit);
+	// 		utilisateurRepository.save(user);
+	// 		return HttpStatus.OK;
+	// 	}catch(Exception e){
+	// 		return HttpStatus.NOT_ACCEPTABLE;
+	// 	}
+	// }
 
-	@PostMapping("/addHistorique")
-	public HttpStatus addHistorique(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Historique newHistorique){
-		try{
-			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
-			List<Historique> historique = user.getHistoriques();
-			historique.add(newHistorique);
-			System.out.println("addHistorique "+newHistorique.toString());
-			utilisateurRepository.save(user);
-			return HttpStatus.OK;
-		}catch(Exception e){
-			return HttpStatus.NOT_ACCEPTABLE;
-		}
-	}
+	// @PostMapping("/addHistorique")
+	// public HttpStatus addHistorique(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Historique newHistorique){
+	// 	try{
+	// 		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+	// 		List<Historique> historique = user.getHistoriques();
+	// 		historique.add(newHistorique);
+	// 		System.out.println("addHistorique "+newHistorique.toString());
+	// 		utilisateurRepository.save(user);
+	// 		return HttpStatus.OK;
+	// 	}catch(Exception e){
+	// 		return HttpStatus.NOT_ACCEPTABLE;
+	// 	}
+	// }
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@AuthenticationPrincipal UserDetails userDetails, @RequestBody SimpleUser newUser){
@@ -121,4 +124,58 @@ public class ApiRestController {
 			return new ResponseEntity<>("erreur creation",HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	//ajoute un produit dans panier
+	@PostMapping(value ="/addPanier", consumes =  MediaType.APPLICATION_JSON_VALUE)
+	public HttpStatus addPanier(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleProduit newProduit){
+		System.out.println("hello "+newProduit.toString());
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			Panier panier = user.getPanier();
+			Produit p = produitRepository.findByProduitid(newProduit.getProduitid());
+			panier.add(p);
+			utilisateurRepository.save(user);
+			return HttpStatus.OK;
+		}catch(Exception e){
+			return HttpStatus.NOT_ACCEPTABLE;
+		}
+	}
+
+	//ajouter panier dans historique
+	@PostMapping("/addHistorique")
+	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			List<Historique> historiques = user.getHistoriques();
+			Panier panier = user.getPanier();
+			List<Produit> panierProduits = panier.getProduits();
+			
+			if(!panier.getProduits().isEmpty()){
+				//  Historique(boolean archived, Date date, List<Produit> produits)
+				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierProduits);
+				historiques.add(newHistorique);
+				panier.setProduits(new ArrayList<>());
+
+				utilisateurRepository.save(user);
+				return ResponseEntity.ok("succès");
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}catch(Exception e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+
+	@PostMapping("/addProduit")
+	public ResponseEntity<String> addProduit(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Produit newProduit){
+		try{
+			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+			newProduit.setUtilisateurId(user.getUserid());
+			produitRepository.save(newProduit);
+			return ResponseEntity.ok("succès");
+		}catch(Exception e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+
+	}	
+
 }

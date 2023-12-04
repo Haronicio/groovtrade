@@ -1,6 +1,7 @@
 package application.spring.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Historique implements Serializable{
     private Long historiqueid;
     private boolean archived;
 
-    private String date;
+    private Date date;
     
     @ManyToMany(
         fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
@@ -57,8 +58,7 @@ public class Historique implements Serializable{
 
     private List<Produit> produits = new ArrayList<>();
 
-    //optionnel?
-    Historique(boolean archived, String date, List<Produit> produits){
+    public Historique(boolean archived, Date date, List<Produit> produits){
         this.archived = archived;
         this.date = date;
         this.produits = produits;
