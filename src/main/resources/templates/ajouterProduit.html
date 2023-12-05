@@ -24,24 +24,24 @@
                                                 <!-- <input type="text" class="form-control" id="description" name="description"
                             placeholder="Entrez la description"> -->
                                                 <textarea class="form-control" id="description" name="description"
-                                                        placeholder="Entrez la description du produit (état, tracklist, année d'acquisition, commentaire ...)" rows="10"></textarea>
+                                                        placeholder="Entrez la description du produit (état, tracklist, année d'acquisition, commentaire ...)" rows="10" required></textarea>
                                         </div>
 
                                         <div class="form-group">
                                                 <label for="prix">Prix</label>
                                                 <input type="number" class="form-control" id="prix" name="prix"
-                                                        placeholder="Entrez le prix">
+                                                        placeholder="Entrez le prix" required>
                                         </div>
                                         <div class="form-group">
                                                 <label for="prix">Nombre disponible</label>
-                                                <p>X<input type="number" class="form-control" id="nb" name="nb"
-                                                        placeholder="Entrer le nombre disponible"></p>
+                                                <p>X<input type="number" class="form-control" id="nb" value="1" name="nb"
+                                                        placeholder="Entrer le nombre disponible" required></p>
                                         </div>
 
                                         <!-- Type de produit -->
                                         <div class="form-group">
                                                 <label for="type">Type</label>
-                                                <select id="type" name="type" class="form-control">
+                                                <select id="type" name="type" class="form-control" required>
                                                         <option value="CD">CD</option>
                                                         <option value="K7">K7</option>
                                                         <option value="VINYLE33">VINYLE33</option>
@@ -54,22 +54,22 @@
                                                 <div class="form-group">
                                                         <label for="nom">Nom</label>
                                                         <input type="text" class="form-control" id="nom" name="nom"
-                                                                placeholder="Titre de l'annonce ou nom du produit">
+                                                                placeholder="Titre de l'annonce ou nom du produit" required>
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="nomAlbum">Nom de l'Album</label>
                                                         <input type="text" class="form-control" id="album" name="album"
-                                                                placeholder="Nom de l'Album">
+                                                                placeholder="Nom de l'Album" required>
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="annee">Année</label>
                                                         <input type="number" class="form-control" id="annee"
-                                                                name="annee" placeholder="Année">
+                                                                name="annee" placeholder="Année" required>
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="artiste">Artiste</label>
                                                         <input type="text" class="form-control" id="artiste"
-                                                                name="artiste" placeholder="Artiste">
+                                                                name="artiste" placeholder="Artiste" required>
                                                 </div>
                                         </div>
 
@@ -77,7 +77,7 @@
                                         <div class="form-group">
                                                 <label>Genres</label>
                                                 <input type="text" id="genreSearch" placeholder="Rechercher un genre"
-                                                        onkeyup="filtrerGenres()">
+                                                        onkeyup="filtrerGenres()" required>
                                                 <div id="genresList" class="scrollable-genre-list">
                                                         <span><input type="checkbox" name="genres" value="ROCK"><label>
                                                                         Rock</label></span>
@@ -517,7 +517,7 @@
                                         <div class="form-group">
                                                 <label for="coverImage">Image de couverture</label>
                                                 <input type="file" class="form-control" id="coverImage"
-                                                        name="coverImage" accept="image/*">
+                                                        name="coverImage" accept="image/*" required>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">Ajouter</button>

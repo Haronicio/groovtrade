@@ -48,8 +48,12 @@ public class Utilisateur implements Serializable{
 		orphanRemoval = true,
 		fetch = FetchType.EAGER
 	)
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "utilisateur_id")
     private List<Historique> historiques = new ArrayList<>();
+
+
+	// @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Historique> historiques = new ArrayList<>();
 
 	// @OneToOne(cascade = CascadeType.ALL)
 	// @JoinColumn(name = "panierid")

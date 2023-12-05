@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.ToString;
@@ -33,17 +34,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
+// L'historique est une entité car il se maintient même sans utilisateur, comparé au Panier
 @Table(name = "historique")
 // @Embeddable
 public class Historique implements Serializable{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true,name = "historiqueid")
+    @Column(unique = true,name = "historique_id")
     private Long historiqueid;
-    private boolean archived;
-
+    private boolean archived = false;
+    private String etat;//process paid cancel
     private String date;
     
+    /*
     @ManyToMany(
         fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
         cascade = {
@@ -54,14 +58,23 @@ public class Historique implements Serializable{
     )
     @JoinTable(
         name = "historique_produits",
-        joinColumns = @JoinColumn(name = "historiqueid"),
-        inverseJoinColumns = @JoinColumn(name = "produitid")
+        joinColumns = @JoinColumn(name = "historique_id"),
+        inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
-
+        
     private List<Produit> produits = new ArrayList<>();
+    */
 
-    // optionnel: etablir une relation bidirectionnelle avec utilisateur
+    @ElementCollection
+    private List<PanierItem> panierItems = new ArrayList<>();
+
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "utilisateur_id")
     private Utilisateur Utilisateur;
+
+    public void add(PanierItem e)
+    {
+        this.panierItems.add(e);
+    }
+
 }

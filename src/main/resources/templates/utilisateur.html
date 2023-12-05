@@ -25,6 +25,9 @@
                         <a th:href="@{/utilisateur/{username}/panier(username=${username})}">
                                 <li>panier</li>
                         </a>
+                        <a th:href="@{/utilisateur/{username}/checkout(username=${username})}">
+                                <li>checkout</li>
+                        </a>
                         <a th:href="@{/utilisateur/{username}/historique(username=${username})}">
                                 <li>historique achat</li>
                         </a>
@@ -63,6 +66,9 @@
                                                                         <h6 class="card-text"
                                                                                 th:text="${'Sous-Total (x' + p.quantite +') : ' + p.quantite * p.produit.prix + ' €'}">
                                                                         </h6>
+
+                                                                        <h7 th:if="${p.commentaire != ''}" th:text="${p.commentaire}"></h7>
+
                                                                         <div class="button-container">
                                                                                 <form th:action="@{/utilisateur/{username}/supprimerPanier(username=${username})}"
                                                                                         method="post">
@@ -77,6 +83,7 @@
                                                                                         </button>
 
                                                                                 </form>
+
 
                                                                                 <!-- TODO: peut être essayer avec authentication = plus sécurisé -->
                                                                                 <div

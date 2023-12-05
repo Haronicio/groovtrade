@@ -1,6 +1,7 @@
 <!-- detailsProduit.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Détails du Produit</title>
@@ -10,20 +11,33 @@
 
     <script src="/js/produits_script.js"></script>
 </head>
+
 <body>
     <div th:include="header :: header" class="container mt-2"></div>
     <div class="container mt-2">
         <h1><span th:text="${produit.meta.nom}"></span></h1>
         <h2>Détails du Produit</h2>
-        <form th:action="@{/utilisateur/{username}/ajouterPanier(username=${username})}" method="post">
-            <input type="hidden" name="produitId" th:value="${produit.id}" />
-            <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
-            <input type="number" name="nbProduit" value="1" min="1" th:max="${produit.nbProduit}" />
-            <p><b>Nombre disponible :</b><span th:text="${produit.nbProduit}"></span></p>
-        </form>
+        <div th:if="${buyable}">
+            <form th:action="@{/utilisateur/{username}/ajouterPanier(username=${username})}" method="post">
+                <input type="hidden" name="produitId" th:value="${produit.id}" />
+                <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
+                <input type="number" name="nbProduit" value="1" min="1" th:max="${produit.nbProduit}" />
+                <div><textarea name="commentaire" id="commentaire-articles"
+                        placeholder="Quelquonque commentaire concernant la ou les commandes" cols="30"
+                        rows="10"></textarea>
+                </div>
+            </form>
+        </div>
+        <div th:unless="${buyable}">
+            <button type="submit" class="btn btn-secondary" disabled>Ajouter au Panier</button>
+        </div>
+        <p><b>Nombre disponible :</b><span th:text="${produit.nbProduit}"></span></p>
+
         <div>
             <p><b>Vendeur :</b> <span th:text="${vendeurUsername}"></span></p><!--TODO lien vers le profile-->
-            <p><b>Description :</b> <pre th:text="${produit.description}"></pre></p>
+            <p><b>Description :</b>
+            <pre th:text="${produit.description}"></pre>
+            </p>
             <p><b>Prix :</b> <span th:text="${produit.prix} + ' €' "></span></p>
             <p><b>Type :</b> <span th:text="${produit.type}"></span></p>
 
@@ -41,8 +55,10 @@
             <!-- gallerie d'image -->
             <div th:if="${!produit.imgs.isEmpty()}" class="photo-gallery">
                 <div class="container">
-                    <div th:each="i : ${produit.imgs}" class="row photos" >
-                        <div class="col-sm-6 col-md-4 col-lg-3 item"><a th:href="@{'/images/' + ${i.path}}" data-lightbox="photos"><img class="img-fluid" th:src="@{'/images/' + ${i.path}}"></a></div>
+                    <div th:each="i : ${produit.imgs}" class="row photos">
+                        <div class="col-sm-6 col-md-4 col-lg-3 item"><a th:href="@{'/images/' + ${i.path}}"
+                                data-lightbox="photos"><img class="img-fluid" th:src="@{'/images/' + ${i.path}}"></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,4 +66,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -44,16 +44,16 @@ public class APIConnectController {
 		return panier.getProduits();
 	}
 
-	@GetMapping("/historique")
-	public List<List<Produit>> getHistorique(@AuthenticationPrincipal UserDetails userDetails){
-		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		List<Historique> historiques = u.getHistoriques();
-		List<List<Produit>> res = new ArrayList<>();
-		for(Historique h:historiques){
-			res.add(h.getProduits());
-		}
-		return res;
-	}
+	// @GetMapping("/historique")
+	// public List<List<Produit>> getHistorique(@AuthenticationPrincipal UserDetails userDetails){
+	// 	Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
+	// 	List<Historique> historiques = u.getHistoriques();
+	// 	List<List<Produit>> res = new ArrayList<>();
+	// 	for(Historique h:historiques){
+	// 		res.add(h.getProduits());
+	// 	}
+	// 	return res;
+	// }
 
 	
 

@@ -81,7 +81,7 @@ public String liste(Model model,
 
 
     @GetMapping("/details/{id}")
-    public String detailsProduit(@PathVariable Long id, Model model) {
+    public String detailsProduit(@PathVariable Long id, Model model, Authentication authentication) {
     Produit produit = produitRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
     
@@ -89,6 +89,21 @@ public String liste(Model model,
 
     Utilisateur vendorUser = utilisateurRepository.findByUserid(produit.getUtilisateurId());
     model.addAttribute("vendeurUsername", vendorUser.getUsername());
+
+    
+
+    // Permet de dire à la vue c'est l'objet peut être acheté (plus simple)
+    //TODO : peut être introduire ce mécanisme sur d'autre mapping pour les vues
+    boolean buyable;
+    
+    if (authentication != null) //Si le client n'est pas connecté il sera amené a ce connecter
+    {
+        buyable =  !(vendorUser.getUsername().equals(authentication.getName()));
+    }
+    else
+        buyable = true;
+
+    model.addAttribute("buyable", buyable);
 
     return "detailsProduit";
 }

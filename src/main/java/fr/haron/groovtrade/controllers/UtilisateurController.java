@@ -1,5 +1,6 @@
 package fr.haron.groovtrade.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import fr.haron.groovtrade.dao.HistoriqueRepository;
 import fr.haron.groovtrade.dao.ProduitRepository;
 import fr.haron.groovtrade.dao.UtilisateurRepository;
+import fr.haron.groovtrade.entities.Historique;
 import fr.haron.groovtrade.entities.PanierItem;
 import fr.haron.groovtrade.entities.Produit;
 import fr.haron.groovtrade.entities.Utilisateur;
@@ -24,6 +27,9 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
+    @Autowired
+    private HistoriqueRepository historiqueRepository;
+
     @GetMapping
     public String utilisateur(@PathVariable String username, Model model, Authentication authentication) {
         System.out.println(username + "," + authentication.getName());
@@ -34,21 +40,36 @@ public class UtilisateurController {
     @PostMapping("/ajouterPanier")
     public String ajouterPanier(@PathVariable String username, Model model, Authentication authentication,
             @RequestParam Long produitId,
-            @RequestParam int nbProduit) {
+            @RequestParam int nbProduit,
+            @RequestParam(value = "commentaire", required = false, defaultValue = "") String commentaire) {
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Produit produit = produitRepository.findById(produitId)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + produitId));
+        
+        
+        int nbInPanier = 0;
+        PanierItem article;
+        //Vérification dans le controller du bon nombre d'article
+        if ((article = currenUtilisateur.getPanier().getItemByProduitId(produitId)) != null) {
+            nbInPanier = article.getQuantite();
+        }
 
-        try {
-            if (nbProduit > produit.getNbProduit())
+        //TODO : Gestion erreurs
+                try {
+            if (nbProduit + nbInPanier > produit.getNbProduit() )//acheter un trop grand nombre de produit ou déjà trop dans panier
+                throw new IllegalArgumentException();
+            if (currenUtilisateur.getUserid().equals(produit.getUtilisateurId()))
+                throw new IllegalArgumentException();
+            if (username == "anonymousUser")
                 throw new IllegalArgumentException();
 
         } catch (IllegalArgumentException e) {
             return "redirect:/produits/details/" + produitId;
         }
 
-        PanierItem article = new PanierItem(produit, nbProduit);
-        currenUtilisateur.getPanier().add(article);
+        article = new PanierItem(produit, nbProduit);
+        article.setCommentaire(commentaire);
+        currenUtilisateur.getPanier().add(article);//add fait déjà la somme des articles déjà présent
 
         // System.out.println("\n\n"+currenUtilisateur.getPanier()+"\n\n");
 
@@ -109,6 +130,81 @@ public class UtilisateurController {
             
         // return correctUser(authentication.getName(), username);
     }
+
+    @GetMapping("/checkout")
+    public String checkoutForm(@PathVariable String username, Model model, Authentication authentication) {
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        model.addAttribute("listProduits", currenUtilisateur.getPanier().getProduits());
+        model.addAttribute("panier", currenUtilisateur.getPanier());
+        return "checkout";
+    }
+
+    @PostMapping("/validate")
+    public String checkout(@PathVariable String username, Model model, Authentication authentication,
+                            @RequestParam("nom") String nom,
+                            @RequestParam("adresse") String adresse,
+                            @RequestParam("ville") String ville,
+                            @RequestParam("pays") String pays,
+                            @RequestParam("zip") String zip,
+                            @RequestParam("nom_carte") String nomCarte,
+                            @RequestParam("numero_carte") String numeroCarte,
+                            @RequestParam("cvv_carte") String cvvCarte,
+                            @RequestParam("annee_mois_carte") String anneMoisCarte)
+                            
+                            /*@RequestParam("annee_carte") String anneeCarte*/
+    {
+        Utilisateur currentUser = utilisateurRepository.findByUsername(authentication.getName());
+        // TODO : Vérifier si le panier n'est pas vide
+        if (currentUser.getPanier().getProduits().isEmpty()) {
+            model.addAttribute("error", "Votre panier est vide.");
+            return "redirect:/produit/liste";
+        }
+
+        //Verifie si les achats sont valide (nombre de produit ok,produit non archivé)
+        for (PanierItem pi : currentUser.getPanier().getProduits()) {
+            if (pi.getQuantite() > pi.getProduit().getNbProduit() ) {
+                 model.addAttribute("error", "Oops plus de stock pour " + pi.getProduit().getNom());
+                return "redirect:/utilisateur/" + currentUser.getUsername() + "/checkout";
+            }
+            if (pi.getProduit().getArchived() == true) {
+                model.addAttribute("error", "Oops il semblerait que " + pi.getProduit().getNom() + "ne soit pas disponible");
+                return "redirect:/utilisateur/" + currentUser.getUsername() + "/checkout";
+            }
+        }
+
+        // ICI le panier est validé
+
+        //décrémente le nombre de produit et les sauvegarde
+        for (PanierItem pi : currentUser.getPanier().getProduits()) {
+            int quantite = pi.getQuantite();
+            pi.getProduit().decreaseNb(quantite);
+            produitRepository.save(pi.getProduit());
+        }
+
+        //Historique copie le panier de l'utilisateur
+
+        List<PanierItem> historyItems = currentUser.getPanier().copyPanierItems();
+        Historique historique = new Historique();
+        historique.setPanierItems(historyItems);
+        historique.setEtat("process");
+        historique.setUtilisateur(currentUser);
+        historique.setDate(LocalDateTime.now().toString());
+
+        //Notification
+
+
+        // Vider le panier après l'achat
+        currentUser.getPanier().clearProduits();
+
+        
+        utilisateurRepository.save(currentUser);
+        historiqueRepository.save(historique);
+
+        //TODO : message de confirmation
+
+        return "redirect:/produits/liste";
+    }
+
 
     // Renvoi la chaine correspondant à la vue de l'utilisateur connecté, une
     // sécurité pour ne pas avoir accès à un autre compte que le sien

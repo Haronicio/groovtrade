@@ -42,6 +42,12 @@ public class PanierItem implements Serializable {
         this.quantite = nbProduit;
     }
 
+     public PanierItem(Produit produit, int nbProduit,String commentaire) {
+        this.produit = produit;
+        this.quantite = nbProduit;
+        this.commentaire = commentaire;
+    }
+
     // @Id
     // @GeneratedValue
     // private Long id;
@@ -50,4 +56,5 @@ public class PanierItem implements Serializable {
     private Produit produit;
 
     private int quantite;
+    private String commentaire;
 }

@@ -20,22 +20,30 @@ public class GlobalControllerAdvice {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
-
+    //TODO : sujet au bug anonymousUser
     @ModelAttribute
     public void globalAttributes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
+        String username = authentication.getName();   
+        model.addAttribute("username", username);                                                   
+        if (authentication != null && authentication.isAuthenticated() && username != "anonymousUser") {
+            // System.out.println("user " + username);
+            //Pose problème si "anonymousUser"
             Long userid = utilisateurRepository.findByUsername(username).getUserid();
-            model.addAttribute("username", username);
             model.addAttribute("userid", userid);
-        }
+        }//si anonymous user (buuug)
+
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
+    public void handle400(HttpMessageNotReadableException e) {
         System.err.println("Returning HTTP 400 Bad Request " + e);
+        throw e;
+    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public void handle500(HttpMessageNotReadableException e) {
+        System.err.println("Returning HTTP 500 Bad Request " + e);
         throw e;
     }
 }
