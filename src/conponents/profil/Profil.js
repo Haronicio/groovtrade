@@ -16,15 +16,15 @@ const Profil = () => {
                 alert(error);
             })
     },[]);
-    const divStyle={
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-    }
+    // const divStyle={
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     flexWrap: 'wrap'
+    // }
     return (
-        <div style={divStyle}>
-            <div>
+        <div className="profile-container">
+            <div className="profile-details">
                 <h1>userid: {profil.userid}</h1>
                 <h1>username: {profil.username}</h1>
                 <h1>email : {profil.email}</h1>

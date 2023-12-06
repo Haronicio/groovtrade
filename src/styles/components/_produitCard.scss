@@ -1,0 +1,54 @@
+
+$border-color: #ddd;
+$padding: 10px;
+$margin-bottom: 20px;
+$font-weight-bold: bold;
+$font-family: 'Arial', sans-serif;
+$font-size: 16px;
+$text-color: #333;
+
+.product {
+  border: 1px solid $border-color;
+  padding: $padding;
+  margin-bottom: $margin-bottom;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, #ffffff, #f4f4f4);
+  font-family: $font-family;
+  font-size: $font-size;
+  color: $text-color;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .vendeur {
+    font-weight: $font-weight-bold;
+    margin-bottom: 10px;
+  }
+
+  p, ul {
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
+}

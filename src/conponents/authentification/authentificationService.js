@@ -9,7 +9,6 @@ let islogged=()=>{
     return !!token;
 }
 let getToken=()=>{
-    
     return localStorage.getItem("token");
 }
 

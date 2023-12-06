@@ -1,0 +1,19 @@
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Hauteur de la page à 100% de la hauteur de la vue */
+    width: 100%;
+  }
+  
+  .profile-details {
+    text-align: center;
+    background-color: #f5f5f5; /* Couleur de fond */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+
+    height: 100%; /* Hauteur de la page à 100% de la hauteur de la vue */
+    width: 100%;
+  }

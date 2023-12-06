@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { authtificationService } from '../authentification/authentificationService';
-
+import { FaMusic, FaUser, FaCalendar, FaTags } from 'react-icons/fa';
 const ProduitCard = ({produit}) => {
     //obtenir img
     const [imageSrc, setImageSrc] = useState('');
@@ -27,23 +27,21 @@ const ProduitCard = ({produit}) => {
         width: '150px'
     }
     return (
-        <div >
-            <div style={divStyle}>
-                <br/>
-                {imageSrc && <img  width='500' height='200' src={imageSrc} alt="imageFailed" />}
-                <p><b>Vendeur :</b>{produit.utilisateurId}</p>
-                <p><b>Description :</b>{produit.description}</p>
-                <p><b>Prix :</b>{produit.prix} €</p>
-                <p><b>Type :</b>{produit.type} </p>
-                <ul>
-                    <li><b>Album :</b> {produit.meta.album}</li>
-                    <li><b>Artiste :</b> {produit.meta.artiste}</li>
-                    <li><b>Année :</b> {produit.meta.annee}"</li>
-                    <li><b>Genres :</b> {produit.meta.genres}</li>
-                </ul>
-
-            </div>
-        </div>
+        <div className="product">
+        <br />
+        {imageSrc && <img className="image" src={imageSrc} alt="imageFailed" />}
+        <p><b>Nom: </b>{produit.nom}</p>
+        <p className="vendeur"><FaUser /> <b>Vendeur :</b>{produit.utilisateurId}</p>
+        <p><b>Description :</b>{produit.description}</p>
+        <p><b>Prix :</b>{produit.prix} €</p>
+        <p><b>Type :</b>{produit.type} </p>
+        <ul>
+          <li><FaMusic /> <b>Album :</b> {produit.meta.album}</li>
+          <li><FaUser /> <b>Artiste :</b> {produit.meta.artiste}</li>
+          <li><FaCalendar /> <b>Année :</b> {produit.meta.annee}</li>
+          <li><FaTags /> <b>Genres :</b> {produit.meta.genres}</li>
+        </ul>
+      </div>
     );
 };
 

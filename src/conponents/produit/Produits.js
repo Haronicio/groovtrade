@@ -69,11 +69,11 @@ const Produits = ({token}) => {
                     if(filtre !== ""){
                         if(produit.type === filtre){
                             return (
-                                <div>
-                                    <ProduitCard key={produit.produitid} produit={produit} />
-                                    <p>Quantité: <input onChange={(e)=>SetQuantite(e.target.value)} type='number' defaultValue={1}/></p>
-                                    <button onClick={handleClick}>Ajouter au panier</button>
-                                </div>
+                                <div className="produit-container">
+                                <ProduitCard key={produit.produitid} produit={produit} />
+                                <p>Quantité: <input onChange={(e) => SetQuantite(e.target.value)} type='number' defaultValue={1} /></p>
+                                <button onClick={handleClick}>Ajouter au panier</button>
+                              </div>
                             )
                         }
                     }else{

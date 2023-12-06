@@ -1,0 +1,37 @@
+.produit-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .produit-container:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Style pour l'input de type nombre */
+  .produit-container input[type="number"] {
+    padding: 8px;
+    margin-right: 10px;
+    width: 60px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Style pour le bouton */
+  .produit-container button {
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .produit-container button:hover {
+    background-color: #45a049;
+  }
+  

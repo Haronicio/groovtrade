@@ -36,17 +36,23 @@ const ConnexionForm = () => {
         navigate("/");
     }
     return (!authtificationService.islogged())?(
-        <form onSubmit={handle}>
-            <label>Username:<input type="text" id="username" onChange={(e)=>setUsername(e.target.value)}/></label>
-            <br/>
-            <label>Password:<input type="password" id="password" onChange={(e)=>setPassword(e.target.value)}/></label>
-            <br/>
-            <input type="submit" value="Connecter"/>
-        </form>
+        <div className='login-container'>
+            <form onSubmit={handle}>
+                <label>Username:<input type="text" id="username" onChange={(e)=>setUsername(e.target.value)}/></label>
+                <br/>
+                <label>Password:<input type="password" id="password" onChange={(e)=>setPassword(e.target.value)}/></label>
+                <br/>
+                <input type="submit" value="Connecter"/>
+            </form>
+        </div>
     ):(
-        <div>
-            <h1>Vous êtes conncté!</h1>
-                <button onClick={handleClick}>ok</button>
+        <div className="logged-in-container">
+        <div className="logged-in-message">
+            <h1>Vous êtes connecté !</h1>
+        </div>
+        <button className="ok-button" onClick={handleClick}>
+            OK
+        </button>
         </div>
     );
 

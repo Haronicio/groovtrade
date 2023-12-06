@@ -8,6 +8,8 @@ npm install react-toastify
 
 npm install axios
 
+npm install react-icons
+
 pour lancer l'application:
 
 npm start
