@@ -67,13 +67,13 @@ public class APIConnectController {
 	public void add(){
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
 		Long id = (long) 0;
-		String username = "haron";
+		String username = "haron1";
 		String password = b.encode("admin");
 		String role = "ADMIN";
-		String email = "haron@gmail.com";
+		String email = "haron1@gmail.com";
 		List<Historique> historiques = new ArrayList<>();
 		Panier panier = new Panier();
-		Utilisateur u = new Utilisateur(id, username, password, role, email, historiques,panier);
+		Utilisateur u = new Utilisateur(id, username, password, role, email, email, historiques,panier);
 		utilisateurRepository.save(u);
 	}
 

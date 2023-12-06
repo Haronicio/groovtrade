@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import fr.haron.groovtrade.dao.UtilisateurRepository;
+import fr.haron.groovtrade.entities.Utilisateur;
 
 
 //Controller Globale qui utilise un modèle disponible dans toutes les vues, ainsi l'username peut être utilisé sur toutes les vues
@@ -25,14 +26,20 @@ public class GlobalControllerAdvice {
     public void globalAttributes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();   
-        model.addAttribute("username", username);                                                   
+        model.addAttribute("username", username);  
+        
+        String userPP = null;
+        Long userid = null;
         if (authentication != null && authentication.isAuthenticated() && username != "anonymousUser") {
             // System.out.println("user " + username);
             //Pose problème si "anonymousUser"
-            Long userid = utilisateurRepository.findByUsername(username).getUserid();
+            Utilisateur utilisateurCourrant = utilisateurRepository.findByUsername(username);
+             userid = utilisateurCourrant.getUserid();
+             userPP = utilisateurCourrant.getImgPath();
+            }//si anonymous user (buuug)
+            model.addAttribute("userPP", userPP);
             model.addAttribute("userid", userid);
-        }//si anonymous user (buuug)
-
+            
     }
 
     @ExceptionHandler

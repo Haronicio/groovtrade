@@ -2,6 +2,7 @@ package fr.haron.groovtrade.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,10 @@ import fr.haron.groovtrade.entities.Utilisateur;
 @RequestMapping("/utilisateur/{username}")
 public class UtilisateurController {
 
+    /**
+     * Utilisateur juste sous chaine de charactère
+     */
+
     @Autowired
     private ProduitRepository produitRepository;
 
@@ -37,6 +42,14 @@ public class UtilisateurController {
         return correctUser(authentication.getName(), username);
     }
 
+    // Les infos du profiles de l'utilisateur
+    @GetMapping("/profile")
+    public String profile(Model model, Authentication authentication) {
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        model.addAttribute("useremail", currenUtilisateur.getEmail());
+        return "profile";
+    }
+
     @PostMapping("/ajouterPanier")
     public String ajouterPanier(@PathVariable String username, Model model, Authentication authentication,
             @RequestParam Long produitId,
@@ -45,18 +58,18 @@ public class UtilisateurController {
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Produit produit = produitRepository.findById(produitId)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + produitId));
-        
-        
+
         int nbInPanier = 0;
         PanierItem article;
-        //Vérification dans le controller du bon nombre d'article
+        // Vérification dans le controller du bon nombre d'article
         if ((article = currenUtilisateur.getPanier().getItemByProduitId(produitId)) != null) {
             nbInPanier = article.getQuantite();
         }
 
-        //TODO : Gestion erreurs
-                try {
-            if (nbProduit + nbInPanier > produit.getNbProduit() )//acheter un trop grand nombre de produit ou déjà trop dans panier
+        // TODO : Gestion erreurs
+        try {
+            if (nbProduit + nbInPanier > produit.getNbProduit())// acheter un trop grand nombre de produit ou déjà trop
+                                                                // dans panier
                 throw new IllegalArgumentException();
             if (currenUtilisateur.getUserid().equals(produit.getUtilisateurId()))
                 throw new IllegalArgumentException();
@@ -69,7 +82,7 @@ public class UtilisateurController {
 
         article = new PanierItem(produit, nbProduit);
         article.setCommentaire(commentaire);
-        currenUtilisateur.getPanier().add(article);//add fait déjà la somme des articles déjà présent
+        currenUtilisateur.getPanier().add(article);// add fait déjà la somme des articles déjà présent
 
         // System.out.println("\n\n"+currenUtilisateur.getPanier()+"\n\n");
 
@@ -91,6 +104,7 @@ public class UtilisateurController {
         // model.addAttribute("listProduits",produitRepository.findByUtilisateurId(currenUtilisateur.getUserid()));
         // avec manipulation de ProduitItem
         model.addAttribute("listProduits", currenUtilisateur.getVentes(produitRepository.findAll()));
+        model.addAttribute("closeAction", "ventes");
         return correctUser(authentication.getName(), username); // Vue correspondante
     }
 
@@ -103,6 +117,8 @@ public class UtilisateurController {
         // System.out.println("\n\npanierrr"+currenUtilisateur.getPanier()+"\n\n");
 
         model.addAttribute("listProduits", currenUtilisateur.getPanier().getProduits());
+        model.addAttribute("closeAction", "panier");
+
         return correctUser(authentication.getName(), username); // Vue correspondante
     }
 
@@ -111,12 +127,48 @@ public class UtilisateurController {
     // public String historiqueAchats(@PathVariable Long id, Model model) {
     public String historiqueAchats(@PathVariable String username, Model model, Authentication authentication) {
         // Fournir le modèle avec l'historique des achats
-        // model.addAttribute("historique", utilisateurService.getHistoriqueAchats(id));
+        // model.addAttribute("closeAction", "historique");
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        model.addAttribute("historiques", currenUtilisateur.getHistoriques());
+        return "historique";
+
+    }
+
+    // Détails historique
+    @GetMapping("/historique/{id}/details")
+    // public String historiqueAchats(@PathVariable Long id, Model model) {
+    public String historiqueDetails(@PathVariable String username, @PathVariable Long id, Model model,
+            Authentication authentication) {
+        // Fournir le modèle avec l'historique des achats
+        Historique historique = historiqueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Historique invalide avec l'id:" + id));
+
+        model.addAttribute("listProduits", historique.getPanierItems());
+
         return correctUser(authentication.getName(), username); // Vue correspondante
     }
 
+    @PostMapping("/supprimerHistorique")
+    public String deleteHistorique(@PathVariable String username, Model model, Authentication authentication,
+            @RequestParam Long id) {
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        Historique historique = historiqueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Historique invalide avec l'id:" + id));
+
+        historique.setArchived(true);
+
+        // si l'état de l'historique était process, il devient canceled (achat annulé),
+        // s'il était paid il reste
+        if (historique.getEtat() == "process") {
+            historique.setEtat("canceled");
+        }
+
+        historiqueRepository.save(historique);
+        return "redirect:/utilisateur/" + currenUtilisateur.getUsername();
+    }
+
     @PostMapping("/supprimerPanier")
-    public String delete(@PathVariable String username, Model model, Authentication authentication,
+    public String deletePanier(@PathVariable String username, Model model, Authentication authentication,
             @RequestParam Long produitId) {
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Produit article = produitRepository.findById(produitId)
@@ -127,7 +179,22 @@ public class UtilisateurController {
         utilisateurRepository.save(currenUtilisateur);
 
         return "redirect:/utilisateur/" + currenUtilisateur.getUsername() + "/panier";
-            
+
+        // return correctUser(authentication.getName(), username);
+    }
+
+    @PostMapping("/supprimerVente")
+    public String deleteVente(@PathVariable String username, Model model, Authentication authentication,
+            @RequestParam Long produitId) {
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        Produit article = produitRepository.findById(produitId)
+                .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + produitId));
+
+        article.setArchived(true);
+        produitRepository.save(article);
+
+        return "redirect:/utilisateur/" + currenUtilisateur.getUsername() + "/panier";
+
         // return correctUser(authentication.getName(), username);
     }
 
@@ -141,17 +208,17 @@ public class UtilisateurController {
 
     @PostMapping("/validate")
     public String checkout(@PathVariable String username, Model model, Authentication authentication,
-                            @RequestParam("nom") String nom,
-                            @RequestParam("adresse") String adresse,
-                            @RequestParam("ville") String ville,
-                            @RequestParam("pays") String pays,
-                            @RequestParam("zip") String zip,
-                            @RequestParam("nom_carte") String nomCarte,
-                            @RequestParam("numero_carte") String numeroCarte,
-                            @RequestParam("cvv_carte") String cvvCarte,
-                            @RequestParam("annee_mois_carte") String anneMoisCarte)
-                            
-                            /*@RequestParam("annee_carte") String anneeCarte*/
+            @RequestParam("nom") String nom,
+            @RequestParam("adresse") String adresse,
+            @RequestParam("ville") String ville,
+            @RequestParam("pays") String pays,
+            @RequestParam("zip") String zip,
+            @RequestParam("nom_carte") String nomCarte,
+            @RequestParam("numero_carte") String numeroCarte,
+            @RequestParam("cvv_carte") String cvvCarte,
+            @RequestParam("annee_mois_carte") String anneMoisCarte)
+
+    /* @RequestParam("annee_carte") String anneeCarte */
     {
         Utilisateur currentUser = utilisateurRepository.findByUsername(authentication.getName());
         // TODO : Vérifier si le panier n'est pas vide
@@ -160,28 +227,29 @@ public class UtilisateurController {
             return "redirect:/produit/liste";
         }
 
-        //Verifie si les achats sont valide (nombre de produit ok,produit non archivé)
+        // Verifie si les achats sont valide (nombre de produit ok,produit non archivé)
         for (PanierItem pi : currentUser.getPanier().getProduits()) {
-            if (pi.getQuantite() > pi.getProduit().getNbProduit() ) {
-                 model.addAttribute("error", "Oops plus de stock pour " + pi.getProduit().getNom());
+            if (pi.getQuantite() > pi.getProduit().getNbProduit()) {
+                model.addAttribute("error", "Oops plus de stock pour " + pi.getProduit().getNom());
                 return "redirect:/utilisateur/" + currentUser.getUsername() + "/checkout";
             }
             if (pi.getProduit().getArchived() == true) {
-                model.addAttribute("error", "Oops il semblerait que " + pi.getProduit().getNom() + "ne soit pas disponible");
+                model.addAttribute("error",
+                        "Oops il semblerait que " + pi.getProduit().getNom() + "ne soit pas disponible");
                 return "redirect:/utilisateur/" + currentUser.getUsername() + "/checkout";
             }
         }
 
         // ICI le panier est validé
 
-        //décrémente le nombre de produit et les sauvegarde
+        // décrémente le nombre de produit et les sauvegarde
         for (PanierItem pi : currentUser.getPanier().getProduits()) {
             int quantite = pi.getQuantite();
             pi.getProduit().decreaseNb(quantite);
             produitRepository.save(pi.getProduit());
         }
 
-        //Historique copie le panier de l'utilisateur
+        // Historique copie le panier de l'utilisateur
 
         List<PanierItem> historyItems = currentUser.getPanier().copyPanierItems();
         Historique historique = new Historique();
@@ -189,22 +257,20 @@ public class UtilisateurController {
         historique.setEtat("process");
         historique.setUtilisateur(currentUser);
         historique.setDate(LocalDateTime.now().toString());
+        historique.setLivraison(adresse + " " + ville + " " + zip + " " + pays);
 
-        //Notification
-
+        // TODO : Notification de Commande
 
         // Vider le panier après l'achat
         currentUser.getPanier().clearProduits();
 
-        
         utilisateurRepository.save(currentUser);
         historiqueRepository.save(historique);
 
-        //TODO : message de confirmation
+        // TODO : message de confirmation
 
         return "redirect:/produits/liste";
     }
-
 
     // Renvoi la chaine correspondant à la vue de l'utilisateur connecté, une
     // sécurité pour ne pas avoir accès à un autre compte que le sien

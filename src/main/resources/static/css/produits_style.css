@@ -25,11 +25,6 @@
     border-radius: 10px;
 }
 
-/* .card
- {
-    background-color: transparent;
-    border: none;
- } */
 
 .product:hover{
     transform: scale(1.1); /* petit effet de zoom au survole*/
@@ -106,56 +101,50 @@
     border-radius: 10px;
 }
 
-#monBouton {
-    position: fixed; /* ou 'absolute' si vous ne voulez pas qu'il reste en place lors du défilement */
-    top: 10px;  /* Espacement par rapport au haut de la page */
-    right: 10px; /* Espacement par rapport au côté droit de la page */
+.headtool {
+    position: fixed; 
+    top: 10px;  
+    right: 10px; 
     z-index: 100; /* S'assurer que le bouton reste au-dessus des autres éléments */
+    
+    margin-left: 5px;
 }
 
+button.btn.btn-warn.headtool {
+    margin-right: 7rem;
+}
+
+.btn-circle {
+    border-radius: 50%; /* Rend le bouton circulaire */
+    width: 50px;       /* Largeur du bouton */
+    height: 50px;      /* Hauteur du bouton */
+    padding: 0;        /* Enlève le padding par défaut */
+}
+.btn-circle img {
+    width: 100%;       /* Fait en sorte que l'image remplisse le bouton */
+    height: 100%;      /* Fait en sorte que l'image remplisse le bouton */
+    border-radius: 50%; /* Rend l'image circulaire */
+}
 /* détails produit */
 
 /* gallerie d'image*/
-.photo-gallery {
-    color:#313437;
-    background-color:#fff;
-  }
-  
-  .photo-gallery p {
-    color:#7d8285;
-  }
-  
-  .photo-gallery h2 {
-    font-weight:bold;
-    margin-bottom:40px;
-    padding-top:40px;
-    color:inherit;
-  }
-  
-  @media (max-width:767px) {
-    .photo-gallery h2 {
-      margin-bottom:25px;
-      padding-top:25px;
-      font-size:24px;
-    }
-  }
-  
-  .photo-gallery .intro {
-    font-size:16px;
-    max-width:500px;
-    margin:0 auto 40px;
-  }
-  
-  .photo-gallery .intro p {
-    margin-bottom:0;
-  }
-  
-  .photo-gallery .photos {
-    padding-bottom:20px;
-  }
-  
-  .photo-gallery .item {
-    padding-bottom:30px;
-  }
-  
+
+.carousel-item img {
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur de son conteneur */
+    max-height: 500px; /* Limite la hauteur maximale de l'image */
+    object-fit: contain; /* Garantit que l'image est entièrement visible sans être déformée */
+    margin: auto; /* Centre l'image dans son conteneur */
+}
+.carousel-control-prev, .carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.25); /* Fond noir semi-transparent */
+    color: white; /* Couleur de la flèche */
+    padding: 5px; 
+}
+
+/* historique */
+
+.card.products-list.historique {
+    margin-bottom: 50px;
+}
+
   

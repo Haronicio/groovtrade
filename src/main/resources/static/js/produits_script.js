@@ -12,6 +12,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//Script pour gérer la taille des images
+function validateImages() {
+    const maxImgSize = 307200; // 300 Ko
+    const maxImgNumber = 5;
+    var files = document.getElementById('coverImages').files;
+
+    if (files.length > maxImgNumber) {
+        alert("5 images maximum");
+        return false;
+    }
+
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].size > maxImgSize) {
+            alert("L'image " + files[i].name + " est trop volumineuse.");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 // Script pour gérer l'affichage des champs de recherche avancée
 document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('advancedSearchToggle').addEventListener('click', function() {

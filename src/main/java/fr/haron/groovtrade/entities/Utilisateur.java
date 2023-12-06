@@ -42,6 +42,7 @@ public class Utilisateur implements Serializable{
 	private String password;
 	private String role;
 	private String email;
+	private String imgPath;
 	
 	@OneToMany(
 		cascade = CascadeType.ALL,
@@ -80,5 +81,7 @@ public class Utilisateur implements Serializable{
 
 		return res;
 	}
+
+	
 	
 }

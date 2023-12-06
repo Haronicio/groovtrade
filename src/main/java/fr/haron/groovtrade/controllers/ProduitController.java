@@ -42,71 +42,67 @@ public class ProduitController {
     private UtilisateurRepository utilisateurRepository;
 
     @GetMapping("/liste")
-public String liste(Model model, 
-                    @RequestParam(name = "keyword", defaultValue = "") String keyword,
-                    @RequestParam(name = "artiste", required = false) String artiste,
-                    @RequestParam(name = "nom", required = false) String nom,
-                    @RequestParam(name = "album", required = false) String album,
-                    @RequestParam(name = "genres", required = false) String genres,
-                    @RequestParam(name = "annee_inf", required = false, defaultValue = "0") Integer annee_inf,
-                    @RequestParam(name = "annee_sup", required = false, defaultValue = "2100") Integer annee_sup) {
+    public String liste(Model model,
+            @RequestParam(name = "keyword", defaultValue = "") String keyword,
+            @RequestParam(name = "artiste", required = false) String artiste,
+            @RequestParam(name = "nom", required = false) String nom,
+            @RequestParam(name = "album", required = false) String album,
+            @RequestParam(name = "genres", required = false) String genres,
+            @RequestParam(name = "annee_inf", required = false, defaultValue = "0") Integer annee_inf,
+            @RequestParam(name = "annee_sup", required = false, defaultValue = "2100") Integer annee_sup) {
 
-    List<Produit> produits;
+        List<Produit> produits;
 
-    boolean isAdvancedSearch =  (artiste != null && !artiste.isEmpty()) || 
-                                (nom != null && !nom.isEmpty()) || 
-                                (album != null && !album.isEmpty()) || 
-                                (genres != null && !genres.isEmpty()) || 
-                                annee_inf != null || 
-                                annee_sup != null;
+        boolean isAdvancedSearch = (artiste != null && !artiste.isEmpty()) ||
+                (nom != null && !nom.isEmpty()) ||
+                (album != null && !album.isEmpty()) ||
+                (genres != null && !genres.isEmpty()) ||
+                annee_inf != null ||
+                annee_sup != null;
 
-    if (isAdvancedSearch) {
-        // Utiliser la recherche par critères
-        produits = produitRepository.findByCombinedCriteria(
-            "%" + keyword + "%", 
-            "%" + (artiste != null ? artiste : "") + "%", 
-            "%" + (nom != null ? nom : "") + "%", 
-            "%" + (album != null ? album : "") + "%", 
-            "%" + (genres != null ? genres : "") + "%", 
-            annee_inf, 
-            annee_sup);
-    } else {
-        // Utiliser une recherche globale
-        produits = produitRepository.findGlobal("%" + keyword + "%");
+        if (isAdvancedSearch) {
+            // Utiliser la recherche par critères
+            produits = produitRepository.findByCombinedCriteria(
+                    "%" + keyword + "%",
+                    "%" + (artiste != null ? artiste : "") + "%",
+                    "%" + (nom != null ? nom : "") + "%",
+                    "%" + (album != null ? album : "") + "%",
+                    "%" + (genres != null ? genres : "") + "%",
+                    annee_inf,
+                    annee_sup);
+        } else {
+            // Utiliser une recherche globale
+            produits = produitRepository.findGlobal("%" + keyword + "%");
+        }
+
+        model.addAttribute("listProduits", produits);
+        return "produits";
     }
-
-    model.addAttribute("listProduits", produits);
-    return "produits";
-}
-
 
     @GetMapping("/details/{id}")
     public String detailsProduit(@PathVariable Long id, Model model, Authentication authentication) {
-    Produit produit = produitRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
-    
-    model.addAttribute("produit", produit);
+        Produit produit = produitRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
 
-    Utilisateur vendorUser = utilisateurRepository.findByUserid(produit.getUtilisateurId());
-    model.addAttribute("vendeurUsername", vendorUser.getUsername());
+        model.addAttribute("produit", produit);
 
-    
+        Utilisateur vendorUser = utilisateurRepository.findByUserid(produit.getUtilisateurId());
+        model.addAttribute("vendeurUsername", vendorUser.getUsername());
 
-    // Permet de dire à la vue c'est l'objet peut être acheté (plus simple)
-    //TODO : peut être introduire ce mécanisme sur d'autre mapping pour les vues
-    boolean buyable;
-    
-    if (authentication != null) //Si le client n'est pas connecté il sera amené a ce connecter
-    {
-        buyable =  !(vendorUser.getUsername().equals(authentication.getName()));
+        // Permet de dire à la vue c'est l'objet peut être acheté (plus simple)
+        // TODO : peut être introduire ce mécanisme sur d'autre mapping pour les vues
+        boolean buyable;
+
+        if (authentication != null) // Si le client n'est pas connecté il sera amené a ce connecter
+        {
+            buyable = !(vendorUser.getUsername().equals(authentication.getName()));
+        } else
+            buyable = true;
+
+        model.addAttribute("buyable", buyable);
+
+        return "detailsProduit";
     }
-    else
-        buyable = true;
-
-    model.addAttribute("buyable", buyable);
-
-    return "detailsProduit";
-}
 
     @GetMapping("/delete")
     public String delete(Long id, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
@@ -119,7 +115,6 @@ public String liste(Model model,
         return "ajouterProduit";
     }
 
-
     @PostMapping("/ajouter")
     public String ajouterProduit(
             @RequestParam String description,
@@ -131,7 +126,7 @@ public String liste(Model model,
             @RequestParam String album,
             @RequestParam int annee,
             @RequestParam int nb,
-            @RequestParam("coverImage") MultipartFile coverImage,
+            @RequestParam("coverImages") List<MultipartFile> coverImages,
             Authentication authentication) {
 
         StringJoiner joiner = new StringJoiner(",");
@@ -144,49 +139,52 @@ public String liste(Model model,
 
         nouveauProduit.setNbProduit(nb);
 
-        if (authentication == null) 
-        {
+        if (authentication == null) {
             return "redirect:/login/";
         }
-        Long utilisateurId = utilisateurRepository.findByUsername(authentication.getName()).getUserid(); 
+        Long utilisateurId = utilisateurRepository.findByUsername(authentication.getName()).getUserid();
         nouveauProduit.setUtilisateurId(utilisateurId);
 
-        // TODO : Gestion de plusieurs images
         // Logique pour traiter l'image de couverture
-        if (!coverImage.isEmpty()) {
-            // Définir le chemin où vous voulez stocker les images
-            // Exemple: "static/images/"
-            String uploadDir = "src/main/resources/static/images";
+        int i = 0;
+        for (MultipartFile coverImage : coverImages) {
+            if (!coverImage.isEmpty()) {
+                // Définir le chemin où vous voulez stocker les images
+                // Exemple: "static/images/"
+                String uploadDir = "src/main/resources/static/images";
 
-            // // Obtenir le nom du fichier original
-            // String originalFilename = coverImage.getOriginalFilename();
+                // // Obtenir le nom du fichier original
+                // String originalFilename = coverImage.getOriginalFilename();
 
-            // // Construire un nouveau nom de fichier pour éviter les conflits
-            // String filename = StringUtils.cleanPath(originalFilename);
+                // // Construire un nouveau nom de fichier pour éviter les conflits
+                // String filename = StringUtils.cleanPath(originalFilename);
 
-            // TODO : générer un nom + ajouter vérifications solide
-            String filename = album + "." + getExtensionByStringHandling(coverImage.getOriginalFilename()).get();
+                // TODO :ajouter vérifications solide
+                String filename = utilisateurId.toString() + i + truncate(getFileNameWithoutExtension(coverImage.getOriginalFilename()),10) + "."
+                        + getExtensionByStringHandling(coverImage.getOriginalFilename()).get();
 
-            // Sauvegarder le fichier sur le disque dur
-            try {
-                Path uploadPath = Paths.get(uploadDir);
+                // Sauvegarder le fichier sur le disque dur
+                try {
+                    Path uploadPath = Paths.get(uploadDir);
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
+                    if (!Files.exists(uploadPath)) {
+                        Files.createDirectories(uploadPath);
+                    }
+
+                    try (InputStream inputStream = coverImage.getInputStream()) {
+                        Path filePath = uploadPath.resolve(filename);
+                        Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // TODO : Gérer l'exception ici
                 }
 
-                try (InputStream inputStream = coverImage.getInputStream()) {
-                    Path filePath = uploadPath.resolve(filename);
-                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                // TODO : Gérer l'exception ici
+                // TODO : Ajouter le chemin de l'image à l'entité Produit
+                nouveauProduit.addImg(new ProduitImg(filename));
+                // Exemple : produit.setCoverImagePath(filename)
+                i++;
             }
-
-            // TODO : Ajouter le chemin de l'image à l'entité Produit
-            nouveauProduit.addImg(new ProduitImg(filename));
-            // Exemple : produit.setCoverImagePath(filename);
         }
 
         produitRepository.save(nouveauProduit);
@@ -196,15 +194,15 @@ public String liste(Model model,
 
     @GetMapping("/modifierProduit/{id}")
     public String modifierProduitForm(@PathVariable Long id, Model model) {
-         Produit produit = produitRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
+        Produit produit = produitRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
 
         model.addAttribute("produit", produit);
         return "modifierProduit";
     }
 
     @PostMapping("/modifier")
-    public String ajouterProduit(Authentication authentication,Model model,
+    public String ajouterProduit(Authentication authentication, Model model,
             @RequestParam Long id,
             @RequestParam String description,
             @RequestParam double prix,
@@ -215,8 +213,7 @@ public String liste(Model model,
             @RequestParam String album,
             @RequestParam int annee,
             @RequestParam int nb,
-            @RequestParam("coverImage") MultipartFile coverImage)
-    {
+            @RequestParam("coverImages") List<MultipartFile> coverImages) {
 
         StringJoiner joiner = new StringJoiner(",");
         for (String genre : genres) {
@@ -225,12 +222,12 @@ public String liste(Model model,
 
         // Produit produit = (Produit)model.getAttribute("produit");
         Produit produit = produitRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
 
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
 
-        //TODO :  sécurité pour modification de produit
-        if(produit.getUtilisateurId() != currenUtilisateur.getUserid())
+        // TODO : sécurité pour modification de produit
+        if (produit.getUtilisateurId() != currenUtilisateur.getUserid())
             return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
 
         produit.setDescription(description);
@@ -239,62 +236,90 @@ public String liste(Model model,
         produit.setGenres(joiner.toString());
         produit.setNom(nom);
         produit.setArtiste(artiste);
-        String pastAlbum = produit.getAlbum();
+        // String pastAlbum = produit.getAlbum();
         produit.setAlbum(album);
         produit.setAnnee(annee);
         produit.setNbProduit(nb);
 
+        int i = 0;
+        for (MultipartFile coverImage : coverImages) {
+            // TODO : Gestion de plusieurs images
+            if (!coverImage.isEmpty()) {
+                String uploadDir = "src/main/resources/static/images";
 
-        // TODO : Gestion de plusieurs images
-        // Logique pour traiter l'image de couverture
-        if (!coverImage.isEmpty()) {
-            // Définir le chemin où vous voulez stocker les images
-            // Exemple: "static/images/"
-            String uploadDir = "src/main/resources/static/images";
+                // // Obtenir le nom du fichier original
+                // String originalFilename = coverImage.getOriginalFilename();
 
-            // // Obtenir le nom du fichier original
-            // String originalFilename = coverImage.getOriginalFilename();
+                // // Construire un nouveau nom de fichier pour éviter les conflits
+                // String filename = StringUtils.cleanPath(originalFilename);
 
-            // // Construire un nouveau nom de fichier pour éviter les conflits
-            // String filename = StringUtils.cleanPath(originalFilename);
+                // TODO : ajouter vérifications solide
+                String filename = currenUtilisateur.getUserid().toString() + i + truncate(getFileNameWithoutExtension(coverImage.getOriginalFilename()),10) + "."
+                        + getExtensionByStringHandling(coverImage.getOriginalFilename()).get();
 
-            // TODO : générer un nom + ajouter vérifications solide
-            String filename = pastAlbum + album + "." + getExtensionByStringHandling(coverImage.getOriginalFilename()).get();
+                // Sauvegarder le fichier sur le disque dur
+                try {
+                    Path uploadPath = Paths.get(uploadDir);
 
-            // Sauvegarder le fichier sur le disque dur
-            try {
-                Path uploadPath = Paths.get(uploadDir);
+                    if (!Files.exists(uploadPath)) {
+                        Files.createDirectories(uploadPath);
+                    }
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
+                    try (InputStream inputStream = coverImage.getInputStream()) {
+                        Path filePath = uploadPath.resolve(filename);
+                        Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // TODO : Gérer l'exception ici
                 }
 
-                try (InputStream inputStream = coverImage.getInputStream()) {
-                    Path filePath = uploadPath.resolve(filename);
-                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                // TODO : Gérer l'exception ici
+                // TODO : Ajouter le chemin de l'image à l'entité Produit
+                // Exemple : produit.setCoverImagePath(filename);
+                produit.addImg(new ProduitImg(filename));
+                i++;
             }
-
-            // TODO : Ajouter le chemin de l'image à l'entité Produit
-            produit.addImg(new ProduitImg(filename));
-            // Exemple : produit.setCoverImagePath(filename);
-        }   
+        }
 
         produitRepository.save(produit);
-        
 
         return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
     }
 
-
-    public Optional<String> getExtensionByStringHandling(String filename) {
+    public static Optional<String> getExtensionByStringHandling(String filename) {
         return Optional.ofNullable(filename)
-          .filter(f -> f.contains("."))
-          .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
-    
+    public static String getFileNameWithoutExtension(String fileName) {
+        if (fileName == null) {
+            return null;
+        }
+
+        int indexOfLastDot = fileName.lastIndexOf('.');
+
+        if (indexOfLastDot > 0) {
+            return fileName.substring(0, indexOfLastDot);
+        }
+
+        return fileName;
+    }
+
+    /**
+     * Tronque une chaîne de caractères jusqu'à un maximum de caractères.
+     *
+     * @param input La chaîne de caractères à tronquer.
+     * @param maxLength La longueur maximale de la chaîne tronquée.
+     * @return La chaîne tronquée.
+     */
+    public static String truncate(String input, int maxLength) {
+        if (input == null) {
+            return null;
+        }
+        if (input.length() <= maxLength) {
+            return input;
+        }
+        return input.substring(0, maxLength);
+    }
 
 }

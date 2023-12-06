@@ -40,7 +40,11 @@ public class SecurityConfig {
             .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
             .anyRequest().permitAll()
             .and()
-            .formLogin(); // Utiliser la page de connexion par défaut de Spring Security
+            .formLogin() // Utiliser la page de connexion par défaut de Spring Security
+            .and()
+            .logout()
+            .logoutSuccessUrl("/produit/liste")
+            .permitAll();
 
         return http.build();
 	}

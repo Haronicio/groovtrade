@@ -9,7 +9,7 @@
 
         <link rel="stylesheet" href="/css/produits_style.css">
 
-        <script src="/js/produits_script.js"></script>
+        <script defer src="/js/produits_script.js"></script>
 </head>
 
 <body>
@@ -77,7 +77,7 @@
                                         <div class="form-group">
                                                 <label>Genres</label>
                                                 <input type="text" id="genreSearch" placeholder="Rechercher un genre"
-                                                        onkeyup="filtrerGenres()" required>
+                                                        onkeyup="filtrerGenres()">
                                                 <div id="genresList" class="scrollable-genre-list">
                                                         <span><input type="checkbox" name="genres" value="ROCK"><label>
                                                                         Rock</label></span>
@@ -515,9 +515,9 @@
 
                                         <!-- Cover -->
                                         <div class="form-group">
-                                                <label for="coverImage">Image de couverture</label>
-                                                <input type="file" class="form-control" id="coverImage"
-                                                        name="coverImage" accept="image/*" required>
+                                                <label for="coverImages">Image de couverture</label>
+                                                <input type="file" class="form-control" id="coverImages"
+                                                        name="coverImages" accept="image/*" multiple required onchange="validateImages()">
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">Ajouter</button>

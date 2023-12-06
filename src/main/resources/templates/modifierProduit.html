@@ -10,7 +10,7 @@
 
         <link rel="stylesheet" href="/css/produits_style.css">
 
-        <script src="/js/produits_script.js"></script>
+        <script defer src="/js/produits_script.js"></script>
 </head>
 
 <body>
@@ -526,10 +526,10 @@
 
                                         <!-- Cover -->
                                         <div class="form-group">
-                                                <label for="coverImage">Image de couverture</label>
+                                                <label for="coverImages">Image de couverture</label>
                                                 <img th:src="@{'/images/' + *{imgs.get(0).path}}" alt="">
-                                                <input type="file" class="form-control" id="coverImage"
-                                                        name="coverImage" accept="image/*">
+                                                <input type="file" class="form-control" id="coverImages"
+                                                        name="coverImages" accept="image/*" multiple onchange="validateImages()">
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">Modifier</button>

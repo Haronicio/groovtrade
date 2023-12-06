@@ -46,6 +46,7 @@ public class Historique implements Serializable{
     private boolean archived = false;
     private String etat;//process paid cancel
     private String date;
+    private String livraison;
     
     /*
     @ManyToMany(
@@ -75,6 +76,24 @@ public class Historique implements Serializable{
     public void add(PanierItem e)
     {
         this.panierItems.add(e);
+    }
+
+    public int getQuantiteTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : panierItems) {
+            res += panierItem.getQuantite();
+        }
+        return res;
+    }
+
+    public int getTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : panierItems) {
+            res += panierItem.getQuantite() * panierItem.getProduit().getPrix();
+        }
+        return res;
     }
 
 }

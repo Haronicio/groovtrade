@@ -37,7 +37,10 @@
                         <a th:href="@{/utilisateur/{username}/parametres(username=${username})}">
                                 <li>paramètres</li>
                         </a>
-                        <li>logout</li>
+                        <a href="/logout">
+                                <li>logout</li>
+                        </a>
+                        
                 </ul>
         </div>
         <!-- Grille ,le controller invoque le modèle  liste de vente, panier ou historique-->
@@ -68,9 +71,11 @@
                                                                         </h6>
 
                                                                         <h7 th:if="${p.commentaire != ''}" th:text="${p.commentaire}"></h7>
-
-                                                                        <div class="button-container">
-                                                                                <form th:action="@{/utilisateur/{username}/supprimerPanier(username=${username})}"
+                                                                        <!-- TODO : historique -->
+                                                                        <!-- On choisi l'action du boutton de supression en fonction de l'attribut du modèle -->
+                                                                        <div class="button-container"   th:if="${closeAction == 'ventes' or closeAction == 'panier'}" 
+                                                                                                        th:with="closeAction=${closeAction == 'ventes' ? 'supprimerVente' : 'supprimerPanier'}">
+                                                                                <form th:action="@{/utilisateur/{username}/{closeAction}(username=${username},closeAction=${closeAction})}"
                                                                                         method="post">
                                                                                         <input type="hidden"
                                                                                                 name="produitId"

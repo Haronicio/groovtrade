@@ -2,7 +2,17 @@
 
 <header th:fragment="header">
     <a href="/produits/liste"><h1 class="header-title">Groovtrade</h1></a>
-    <a  th:href="@{/utilisateur/{username}(username=${username})}" id="monBouton">Mon Compte</a><!--Bouton de connexion ou d'accès au compte-->
+    <div th:if="${userid == null}">
+        <a href="/login"><button type="button" class="btn btn-primary headtool">Connexion</button></a>
+        <a href="/signup" ><button type="button" class="btn btn-warn headtool"  >Inscription</button></a>
+    </div>
+    <div th:unless="${userid == null}">
+        <a  th:href="@{/utilisateur/{username}(username=${username})}"><button class="btn btn-circle headtool">
+            <img th:src="${'/images/'+ userPP}" alt="Image">
+        </button></a>
+    </div>
+    
+    <!-- <a  th:href="@{/utilisateur/{username}(username=${username})}" id="monBouton">Mon Compte</a>Bouton de connexion ou d'accès au compte -->
     <div class="card-body header-search">
         <div class="search-bar mt-3">
             <form method="get" th:action="@{/produits/liste}" id="searchForm">

@@ -30,6 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 // @Entity
 @Embeddable
 // @Table(name = "panierItems")
