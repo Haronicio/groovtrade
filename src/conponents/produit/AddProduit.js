@@ -39,14 +39,10 @@ const AddProduit = () => {
             alert(erreur);
         });
     }
-    const divStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-    }
+
     return (
-        <div style={divStyle}>
+        
+        <div  className="product-form">
             <div>
                 <h1>Ajouter un nouveau produit</h1>
 
@@ -66,10 +62,10 @@ const AddProduit = () => {
                 <h2>album:<input type="text" id="album" onChange={(e) => setAlbum(e.target.value)} /></h2>
                 <h2>annee:<input type="number" id="annee" onChange={(e) => setAnnee(e.target.value)} /></h2>
                 <h2>genres:<input type="text" id="genres" onChange={(e) => setGenres(e.target.value)} /></h2>
-                <button onClick={handleClick}>Ajouter ce produit</button>
-                <br />
-                <br />
-                <button onClick={() => { window.location.reload(); }}>Annuler</button>
+                <button onClick={handleClick} className="button">Ajouter ce produit</button>
+          
+         
+  
             </div>
         </div>
     );

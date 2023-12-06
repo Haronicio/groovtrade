@@ -12,12 +12,16 @@ const DeconnexionPage = () => {
     return (authtificationService.islogged())?(
         <div>
             <Navigation/>
-            <h1>êtes vous sûre de se déconnecter?</h1>
-            <button onClick={handleClick}>Oui</button>
+            <div className="logout-container">
+                <h1>êtes vous sûre de se déconnecter?</h1>
+                <button onClick={handleClick}>Oui</button>
+            </div>
         </div>
     ):(<div>
         <Navigation/>
-        <h1>Vous n'êtes pas encore connecté</h1>
+        <div className="not-logged-in-container">
+            <h1>Vous n'êtes pas encore connecté</h1>
+        </div>
         </div>)
 };
 

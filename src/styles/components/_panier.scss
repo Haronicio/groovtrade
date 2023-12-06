@@ -1,78 +1,104 @@
 .panier {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ddd;
-    margin-top: 20px;
-  
-    .panier-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin-bottom: 10px;
-  
-      .produit-details {
-        flex: 1;
-      }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
 
-  
-      p {
-        margin: 0;
-      }
-    }
-  
-    .valider-button {
-      background-color: #008CBA;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-  
-    .prix-total {
-      margin-top: 20px;
-    }
+}
 
-    .button {
-        padding: 10px;
-        margin: 5px;
-        cursor: pointer;
-        background-color: #87bee3; /* Couleur de fond */
-        color: #fff; /* Couleur du texte */
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease; /* Animation de transition de couleur de fond */
-      
-        /* Ajoutez d'autres styles spécifiques au bouton selon vos besoins */
-      }
-    
-      .button:hover {
-        background-color: rgb(149, 172, 223);
-      }
-    
-      .valider-button {
-        background-color: #4caf50; /* Couleur de fond */
-        color: #fff; /* Couleur du texte */
-        padding: 15px 20px; /* Rembourrage */
-        font-size: 18px; /* Taille de police */
-        border: none; /* Supprime la bordure */
-        border-radius: 8px; /* Coins arrondis */
-        cursor: pointer; /* Curseur au survol */
-        transition: background-color 0.3s ease; /* Animation de transition */
-      }
-      
-      .valider-button:hover {
-        background-color: #45a049; /* Nouvelle couleur de fond au survol */
-      }
-      
-      .quantity-container {
-        display: flex;
-        align-items: center; /* Centre les éléments verticalement */
-      }
-  }
+.panier-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.produit-details {
+
+  flex: 1;
+  
+}
+p {
+  margin: 0;
+}
+.valider-button {
+  background-color: #008CBA;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.prix-total {
+  margin-top: 20px;
+}
+
+.button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #87bee3;
+  /* Couleur de fond */
+  color: #fff;
+  /* Couleur du texte */
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  /* Animation de transition de couleur de fond */
+
+  /* Ajoutez d'autres styles spécifiques au bouton selon vos besoins */
+}
+
+.button:hover {
+  background-color: rgb(149, 172, 223);
+}
+
+.valider-button {
+  background-color: #4caf50;
+  /* Couleur de fond */
+  color: #fff;
+  /* Couleur du texte */
+  padding: 15px 20px;
+  /* Rembourrage */
+  font-size: 18px;
+  /* Taille de police */
+  border: none;
+  /* Supprime la bordure */
+  border-radius: 8px;
+  /* Coins arrondis */
+  cursor: pointer;
+  /* Curseur au survol */
+  transition: background-color 0.3s ease;
+  /* Animation de transition */
+}
+
+.valider-button:hover {
+  background-color: #45a049;
+  /* Nouvelle couleur de fond au survol */
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  /* Centre les éléments verticalement */
+}
+
+.empty-cart-message {
+  width: 100vw;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Opacité réduite */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cart-message h1 {
+  font-size: 24px;
+  color: #555555;
+}

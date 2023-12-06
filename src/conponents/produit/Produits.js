@@ -30,19 +30,28 @@ const Produits = ({token}) => {
     //filter
 
     if(newProduit){
-        return <AddProduit/>
+        return (
+        <div>
+            <AddProduit/>
+            <div  className='container'>
+                <button  className="modern-button"onClick={() => { handleClick(); }}>Annuler</button>
+            </div>
+        </div>
+        )
     }else{
     return (
         <div>
-            <div>
-                <p>filtre</p>
-                  <select name="type" id="type-select" onChange={(e)=>setFiltre(e.target.value)}>
-                     <option value="">--fitrer par type--</option>
-                     <option value="CD">CD</option>
-                     <option value="K7">K7</option>
-                     <option value="VINYLE33">VINYLE33</option>
-                     <option value="VINYLE45">VINYLE45</option>
-                  </select>
+            <div className="filter-container container" >
+                <div>
+                    <p className="filter-label">Filtre</p>
+                    <select className="filter-select" name="type" id="type-select" onChange={(e) => setFiltre(e.target.value)}>
+                        <option value="">-- Filtrer par type --</option>
+                        <option value="CD">CD</option>
+                        <option value="K7">K7</option>
+                        <option value="VINYLE33">VINYLE33</option>
+                        <option value="VINYLE45">VINYLE45</option>
+                    </select>
+                </div>
             </div>
             <div style={divStyle}>
         
@@ -78,7 +87,7 @@ const Produits = ({token}) => {
                         }
                     }else{
                         return (
-                            <div>
+                            <div className="produit-container">
                                 <ProduitCard key={produit.produitid} produit={produit} />
                                 <p>Quantité: <input onChange={(e)=>SetQuantite(e.target.value)} type='number' defaultValue={1}/></p>
                                 <button onClick={handleClick}>Ajouter au panier</button>
@@ -89,7 +98,11 @@ const Produits = ({token}) => {
                 )}
             </div>
             <br/>
-            <button onClick={handleClick}>Ajouter un nouveau produit</button>
+            <div  className='container'>
+                <button className="modern-button" onClick={handleClick}>
+                    Ajouter un nouveau produit
+                </button>
+            </div>
             <ToastContainer />
         </div>
     );

@@ -37,6 +37,8 @@ const ConnexionForm = () => {
     }
     return (!authtificationService.islogged())?(
         <div className='login-container'>
+            <h1>Connexion</h1>
+            <br/>
             <form onSubmit={handle}>
                 <label>Username:<input type="text" id="username" onChange={(e)=>setUsername(e.target.value)}/></label>
                 <br/>

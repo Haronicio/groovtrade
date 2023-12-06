@@ -1,0 +1,42 @@
+.product-form {
+    max-width: 600px; /* Définissez la largeur maximale souhaitée */
+    margin: 0 auto; /* Centrez le formulaire horizontalement */
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-form h1 {
+    color: #333; /* Couleur du texte noir */
+  }
+  
+  .product-form h2 {
+    margin-bottom: 10px;
+  }
+  
+  .product-form input,
+  .product-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd; /* Bordure grise */
+    border-radius: 5px;
+  }
+  
+  .product-form button {
+    background-color: #4caf50; /* Couleur de fond verte */
+    color: #fff; /* Texte en blanc */
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transition de couleur au survol */
+  }
+  
+  .product-form button:hover {
+    background-color: #45a049; /* Changement de couleur au survol */
+  }
+  
+

@@ -13,37 +13,53 @@ const Register = () => {
         event.preventDefault();
         const token = btoa(`${username}:${password}`);
         axios.post("http://127.0.0.1:8080/api/produits/register",
-        {
-            "username":username,
-            "password":password,
-            "email":email
-        },{})
-        .then(()=>{
-            alert("inscription reussi !");
-            authtificationService.setToken(token);
-            window.location.reload();
-            }).catch((erreur)=>{
-            alert(erreur);
-        });
+            {
+                "username": username,
+                "password": password,
+                "email": email
+            }, {})
+            .then(() => {
+                alert("inscription reussi !");
+                authtificationService.setToken(token);
+                window.location.reload();
+            }).catch((erreur) => {
+                alert(erreur);
+            });
     }
-    function handleClick(){
+    function handleClick() {
         navigate("/");
     }
-    return (!authtificationService.islogged())?(
-        <form onSubmit={handle}>
-            <label>Username:<input type="text" id="username" onChange={(e)=>setUsername(e.target.value)}/></label>
-            <br/>
-            <label>Password:<input type="password" id="password" onChange={(e)=>setPassword(e.target.value)}/></label>
-            <br/>
-            <label>email:<input type="email" id="password" onChange={(e)=>setEmail(e.target.value)}/></label>
-            <br/>
-
-            <input type="submit" value="S'inscrire"/>
-        </form>
-    ):(
-        <div>
-            <h1>Vous êtes conncté!</h1>
-                <button onClick={handleClick}>ok</button>
+    return (!authtificationService.islogged()) ? (
+        <div className="sign-up-form">
+            <h1>Inscription</h1>
+            <br />
+            <form onSubmit={handle}>
+                <label>
+                    Username:
+                    <input type="text" id="username" onChange={(e) => setUsername(e.target.value)} />
+                </label>
+                <br />
+                <label>
+                    Password:
+                    <input type="password" id="password" onChange={(e) => setPassword(e.target.value)} />
+                </label>
+                <br />
+                <label>
+                    Email:
+                    <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
+                </label>
+                <br />
+                <input type="submit" value="S'inscrire" />
+            </form>
+        </div>
+    ) : (
+        <div className="logged-in-container">
+            <div className="logged-in-message">
+                <h1>Vous êtes connecté !</h1>
+            </div>
+            <button className="ok-button" onClick={handleClick}>
+                OK
+            </button>
         </div>
     );
 };
