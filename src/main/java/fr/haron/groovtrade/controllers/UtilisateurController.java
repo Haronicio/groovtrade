@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -42,11 +44,16 @@ public class UtilisateurController {
         return correctUser(authentication.getName(), username);
     }
 
-    // Les infos du profiles de l'utilisateur
+    // Les infos du profiles de l'utilisateur a tous les utilisateurs authentifié
     @GetMapping("/profile")
-    public String profile(Model model, Authentication authentication) {
-        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
-        model.addAttribute("useremail", currenUtilisateur.getEmail());
+    public String profile(@PathVariable String username, Model model, Authentication authentication) {
+        // Utilisateur currenUtilisateur =
+        // utilisateurRepository.findByUsername(authentication.getName());
+        Utilisateur user = utilisateurRepository.findByUsername(username);
+        System.out.println("DEBUG : " + username + " " + user.getEmail());
+        model.addAttribute("user_email", user.getEmail());
+        model.addAttribute("user_name", username);// éviter conflit avec le model global
+        model.addAttribute("user_PP", user.getImgPath());// éviter conflit avec le model global
         return "profile";
     }
 
@@ -66,14 +73,15 @@ public class UtilisateurController {
             nbInPanier = article.getQuantite();
         }
 
+        System.out.println("fuuuuuuuuuuuuuuuuuuuuuuuck");
         // TODO : Gestion erreurs
         try {
             if (nbProduit + nbInPanier > produit.getNbProduit())// acheter un trop grand nombre de produit ou déjà trop
                                                                 // dans panier
                 throw new IllegalArgumentException();
-            if (currenUtilisateur.getUserid().equals(produit.getUtilisateurId()))
-                throw new IllegalArgumentException();
-            if (username == "anonymousUser")
+            if (currenUtilisateur.getUserid().equals(produit.getUtilisateurId()))//
+                throw new IllegalArgumentException(); // Utilisateur == vendeur
+            if (username == "anonymousUser") // Utilisateur non authentifié
                 throw new IllegalArgumentException();
 
         } catch (IllegalArgumentException e) {
@@ -150,7 +158,10 @@ public class UtilisateurController {
 
     @PostMapping("/supprimerHistorique")
     public String deleteHistorique(@PathVariable String username, Model model, Authentication authentication,
+            HttpServletRequest request,
             @RequestParam Long id) {
+        // TODO : verif referer
+        String referer = request.getHeader("Referer");
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Historique historique = historiqueRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Historique invalide avec l'id:" + id));
@@ -164,12 +175,16 @@ public class UtilisateurController {
         }
 
         historiqueRepository.save(historique);
-        return "redirect:/utilisateur/" + currenUtilisateur.getUsername();
+        // return "redirect:/utilisateur/" + currenUtilisateur.getUsername();
+        return "redirect:" + referer;
     }
 
     @PostMapping("/supprimerPanier")
     public String deletePanier(@PathVariable String username, Model model, Authentication authentication,
+            HttpServletRequest request,
             @RequestParam Long produitId) {
+        // TODO : verif referer renboyé model sinon erreur 500
+        String referer = request.getHeader("Referer");
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Produit article = produitRepository.findById(produitId)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + produitId));
@@ -178,14 +193,57 @@ public class UtilisateurController {
 
         utilisateurRepository.save(currenUtilisateur);
 
-        return "redirect:/utilisateur/" + currenUtilisateur.getUsername() + "/panier";
+        // return "redirect:/utilisateur/" + currenUtilisateur.getUsername() +
+        // "/panier";
+        return "redirect:" + referer;
+    }
 
-        // return correctUser(authentication.getName(), username);
+    @PostMapping("/modifierPanier")
+    public String modifyPanier(@PathVariable String username, Model model, Authentication authentication,
+            HttpServletRequest request,
+            @RequestParam Long produitId,
+            @RequestParam int nb,
+            @RequestParam(required = false, defaultValue = "") String commentaire) {
+
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        // TODO : verif referer
+        String referer = request.getHeader("Referer");
+
+        Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
+        PanierItem article = currenUtilisateur.getPanier().getItemByProduitId(produitId);
+
+                // TODO : verif referer renboyé model sinon erreur 500
+        try {
+            if (nb  > article.getProduit().getNbProduit())// acheter un trop grand nombre de produit
+                throw new IllegalArgumentException("acheter un trop grand nombre de produit");
+            if (currenUtilisateur.getUserid().equals(article.getProduit().getUtilisateurId()))//
+                throw new IllegalArgumentException("Utilisateur == vendeur"); // Utilisateur == vendeur
+            if (username == "anonymousUser") // Utilisateur non authentifié
+                throw new IllegalArgumentException("Utilisateur non authentifié");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR: " + e);
+            // return "redirect:/produits/details/" + produitId;
+        }
+        System.out.println("DEBUG : " + nb);
+
+        article.setCommentaire(commentaire);
+        article.setQuantite(nb);
+        
+        utilisateurRepository.save(currenUtilisateur);
+        return "redirect:" + referer;
+
+        // return "redirect:/utilisateur/" + currenUtilisateur.getUsername() +
+        // "/panier";
+
     }
 
     @PostMapping("/supprimerVente")
     public String deleteVente(@PathVariable String username, Model model, Authentication authentication,
+            HttpServletRequest request,
             @RequestParam Long produitId) {
+        // TODO : verif referer renboyé model sinon erreur 500
+        String referer = request.getHeader("Referer");
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
         Produit article = produitRepository.findById(produitId)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + produitId));
@@ -193,7 +251,10 @@ public class UtilisateurController {
         article.setArchived(true);
         produitRepository.save(article);
 
-        return "redirect:/utilisateur/" + currenUtilisateur.getUsername() + "/panier";
+        return "redirect:" + referer;
+
+        // return "redirect:/utilisateur/" + currenUtilisateur.getUsername() +
+        // "/panier";
 
         // return correctUser(authentication.getName(), username);
     }
@@ -224,7 +285,7 @@ public class UtilisateurController {
         // TODO : Vérifier si le panier n'est pas vide
         if (currentUser.getPanier().getProduits().isEmpty()) {
             model.addAttribute("error", "Votre panier est vide.");
-            return "redirect:/produit/liste";
+            return "redirect:/produits/liste";
         }
 
         // Verifie si les achats sont valide (nombre de produit ok,produit non archivé)

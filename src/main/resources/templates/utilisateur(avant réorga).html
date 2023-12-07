@@ -108,14 +108,14 @@
                                                                                         </form>
                                                                                 </div>
 
-                                                                        </div>
-                                                                        <div class="button-container"
-                                                                                th:if="${closeAction == 'panier'}">
-                                                                                <form th:action="@{/utilisateur/{username}/modifierPanier(username=${username})}"
-                                                                                        method="post" id="changeQ">
-                                                                                        <input type="hidden"name="produitId" th:value="${p.produit.id}"  />
-                                                                                        <input type="number" id="quantite" name="nb" th:value="${p.quantite}"/>
-                                                                                </form>
+                                                                                <div th:if="${closeAction == 'panier'}">
+                                                                                        <form th:action="@{/utilisateur/{username}/modifierPanier(username=${username})}"
+                                                                                                method="post" id="changeQ">
+                                                                                                <input type="hidden"name="produitId" th:value="${p.produit.id}"  />
+                                                                                                <input type="hidden"name="commentaire"   />
+                                                                                                <input type="number" id="quantite" name="nb" onchange="this.form.submit()" th:value="${p.quantite}"/>
+                                                                                        </form>
+                                                                                </div>
                                                                         </div>
                                                                 </div>
                                                         </div>

@@ -1,3 +1,7 @@
+.masque-div {
+    opacity: 0.3;
+}
+
 .scrollable-genre-list {
     max-height: 300px; /* ou la hauteur que vous souhaitez */
     overflow-y: scroll;
@@ -58,13 +62,19 @@
     color: blue;         /* Couleur de la croix */
     background-color: transparent; /* Fond transparent */
     border: none;       /* Pas de bordure */
-    font-size: 40px;    /* Taille de la croix */
+    font-size: 25px;    /* Taille de la croix */
 
 }
 
 .modify:focus {
     outline: none; /* Supprime le contour lors de la mise au point sur le bouton */
     
+}
+
+input#quantite {
+    position: relative;
+    width: 53px;
+    top: 26px;
 }
 
 /* Barre Recherche */
@@ -145,6 +155,12 @@ button.btn.btn-warn.headtool {
 
 .card.products-list.historique {
     margin-bottom: 50px;
+}
+
+/* détails */
+
+#commentaire-articles{
+    height: 80px;
 }
 
   

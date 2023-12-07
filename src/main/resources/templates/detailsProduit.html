@@ -32,18 +32,19 @@
                 <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
                 <input type="number" name="nbProduit" value="1" min="1" th:max="${produit.nbProduit}" />
                 <div><textarea name="commentaire" id="commentaire-articles"
-                        placeholder="Quelquonque commentaire concernant la ou les commandes" cols="30"
+                        placeholder="Quelquonque commentaire concernant la ou les commandes" cols="27"
                         rows="10"></textarea>
                 </div>
             </form>
         </div>
         <div th:unless="${buyable}">
             <button type="submit" class="btn btn-secondary" disabled>Ajouter au Panier</button>
+            <p style="font-weight: 800; color: rgb(217, 41, 41);">Produit non disponible</p>
         </div>
         <p><b>Nombre disponible :</b><span th:text="${produit.nbProduit}"></span></p>
 
         <div>
-            <p><b>Vendeur :</b> <span th:text="${vendeurUsername}"></span></p><!--TODO lien vers le profile-->
+            <p><b>Vendeur :</b> <a th:href="@{/utilisateur/{vendeurUsername}/profile(vendeurUsername=${vendeurUsername})}" th:text="${vendeurUsername}"></a></p>
             <p><b>Description :</b>
             <pre th:text="${produit.description}"></pre>
             </p>

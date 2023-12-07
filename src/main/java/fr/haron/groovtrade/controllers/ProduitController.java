@@ -93,9 +93,10 @@ public class ProduitController {
         // TODO : peut être introduire ce mécanisme sur d'autre mapping pour les vues
         boolean buyable;
 
-        if (authentication != null) // Si le client n'est pas connecté il sera amené a ce connecter
+        if (authentication != null ) // Si le client n'est pas connecté il sera amené a ce connecter
         {
-            buyable = !(vendorUser.getUsername().equals(authentication.getName()));
+            // on ne paeut pas acheter sont propre article , un produit archivé ne peut pas être acheté
+            buyable = !(vendorUser.getUsername().equals(authentication.getName()) || (produit.getArchived() == true)); //
         } else
             buyable = true;
 
@@ -104,11 +105,12 @@ public class ProduitController {
         return "detailsProduit";
     }
 
-    @GetMapping("/delete")
-    public String delete(Long id, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        produitRepository.deleteById(id);
-        return "redirect:/produits/liste?keyword=" + keyword;
-    }
+    //TODO :
+    // @GetMapping("/delete")
+    // public String delete(Long id, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    //     produitRepository.deleteById(id);
+    //     return "redirect:/produits/liste?keyword=" + keyword;
+    // }
 
     @GetMapping("/ajouterProduit")
     public String ajouterProduitForm() {

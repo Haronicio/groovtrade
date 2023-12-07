@@ -1,7 +1,12 @@
 package fr.haron.groovtrade.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -77,12 +82,29 @@ public class APIConnectController {
 		utilisateurRepository.save(u);
 	}
 
+	@GetMapping("/")//Renvoi une page html de redirection
+	public void userInfo(@AuthenticationPrincipal UserDetails userDetails,HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		//TODO : verif referer + un peu dégeu comme redirection
+		String referer = request.getHeader("Referer");
+		System.out.println(referer);
+		String un = "";
+		
+		if (userDetails != null) {
+			referer += "/done";// pas terrible
+			un =
+			 userDetails.getUsername();
+		}
+		
+		String htmlContent = 	"<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"1;url=" + 
+							referer +"\"><title>Redirection</title></head><body><p>Bienvenue "+
+							un +"</p><p>Redirection en cours...</p></body></html>";
 
-	@GetMapping("/")
-	public String userInfo(@AuthenticationPrincipal UserDetails userDetails){
-		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		return "Welcome "+u.getUsername();
+		response.setContentType("text/html");
+		response.getWriter().write(htmlContent);
 	}
+
+
 	// @GetMapping("/")
 	// public String getUserInfo(Principal user) {
 	// 	StringBuffer userInfo= new StringBuffer();

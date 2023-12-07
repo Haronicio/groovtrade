@@ -65,7 +65,7 @@ public class Produit implements Serializable{
     public void decreaseNb(int quantite)
     {
         nbProduit = nbProduit - quantite;
-        if (nbProduit == 0) {
+        if (nbProduit <= 0) {
             setArchived(true);
         }
     }

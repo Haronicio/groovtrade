@@ -43,7 +43,7 @@ public class SecurityConfig {
             .formLogin() // Utiliser la page de connexion par défaut de Spring Security
             .and()
             .logout()
-            .logoutSuccessUrl("/produit/liste")
+            .logoutSuccessUrl("/produits/liste")
             .permitAll();
 
         return http.build();

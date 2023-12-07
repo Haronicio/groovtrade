@@ -68,6 +68,7 @@ public class Utilisateur implements Serializable{
 
 
 	//Pour le controller utilisateur
+	//D'après une list de produit, retourne une liste d'article (objet du panier) que l'utilisateur vend
 	public List<PanierItem> getVentes(List<Produit> produits)
 	{
 		List<PanierItem> res = new ArrayList<>();
