@@ -42,3 +42,45 @@
     margin-top: 20px;
   }
 }
+
+
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+
+  div {
+    margin-bottom: 15px;
+
+    label {
+      margin-right: 10px;
+    }
+
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+  }
+
+  .historique-list {
+    .historique-card {
+      margin: 10px;
+    }
+  }
+}
