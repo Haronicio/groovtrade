@@ -29,6 +29,7 @@ const ProduitCard = ({ produit }) => {
             <>
                 <br />
                 {imageSrc && <img className="image" src={imageSrc} alt="imageFailed" />}
+                <p><b>ID: </b>{produit.produitid}</p>
                 <p><b>Nom: </b>{produit.nom}</p>
                 <p className="vendeur"><FaUser /> <b>Vendeur :</b>{produit.utilisateurId}</p>
                 <p><b>Description :</b>{produit.description}</p>

@@ -79,6 +79,37 @@ const Panier = () => {
     };
 
     //commentaire
+    const [commentaires, setCommentaires] = useState(produits.map((panierItem) => "panierItem.commentaire"));
+
+    const handleCommentaireChange = (index, e) => {
+        const nouveauxCommentaires = [...commentaires];
+        nouveauxCommentaires[index] = e.target.value;
+        setCommentaires(nouveauxCommentaires);
+
+        
+    };
+
+    const handleModifierCommentaire = (index) => {
+        console.log(`Nouveau commentaire pour produit ${index}: ${commentaires[index]}`);
+        console.log(produits[index].produit.produitid);
+        axios.post("http://127.0.0.1:8080/api/produits/addCommentaire",{
+            "produitid":produits[index].produit.produitid,
+            "commentaire":commentaires[index]
+        },{
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Basic ' + authtificationService.getToken()
+            }
+        }).then(
+            toast.success("Commentaire modifié !", {
+            position: toast.POSITION.BOTTOM_RIGHT})
+        ).catch((erreur)=>{
+            alert(erreur);
+        });
+
+
+    };
 
     return (
         <div className="panier">
@@ -173,16 +204,8 @@ const Panier = () => {
                                             alert(erreur);
                                         });
                                     }
-                                    var commentaire = false;
-                                        const handleCommentaire = (e) => {
-                                            e.preventDefault();
-                                            commentaire = true;
-                                        }
-
-
-
                                     return (
-                                        
+
                                         <div className="div-produit-details">
                                             <div className="produit-details" key={index}>
                                                 <ProduitCard produit={panierItem.produit} />
@@ -192,21 +215,25 @@ const Panier = () => {
                                                             -1
                                                         </button>
                                                         <p>Quantité: {panierItem.quantite}</p>
-                                                  
+
                                                         <button onClick={handleAdd} className="button">
                                                             +1
                                                         </button>
                                                     </div>
 
-                                                    {
-                                                        commentaire ?
-                                                            <input maxLength="50" type='text'></input>
-                                                            :
-                                                            <button onClick={handleCommentaire} className="button" >
-                                                                ajoute un commentaire
-                                                            </button>
-                                                    }
-
+                                                    <label>
+                                                        Commentaire:
+                                                        <input
+                                                            type="text"
+                                                            defaultValue={panierItem.commentaire}
+                                                            onChange={(e) => handleCommentaireChange(index, e)}
+                                                        />
+                                                    </label>
+                                                    <br/>
+                                                    <button className="button" onClick={() => handleModifierCommentaire(index)}>
+                                                        Modifier Commentaire
+                                                    </button>
+                                                    <br/>
                                                     <button onClick={handleRemove} className="button supprimer-button">
                                                         Supprimer
                                                     </button>
