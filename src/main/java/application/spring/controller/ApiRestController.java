@@ -188,7 +188,6 @@ public class ApiRestController {
 	}
 	@PostMapping("/addCommentaire")
 	public HttpStatus getMethodName(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleCommentaire simpleCommentaire) {
-		System.out.println("++++++++++++++++++++++++++++++++++++++++ "+simpleCommentaire.getCommentaire()+"   "+simpleCommentaire.getProduitid());
 		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 		Panier panier = user.getPanier();
 		Produit p = produitRepository.findByProduitid(simpleCommentaire.getProduitid());
@@ -206,7 +205,7 @@ public class ApiRestController {
 
 	// ajouter panier dans historique
 	@PostMapping("/addHistorique")
-	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
+	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleLivraison livaison){
 
 		try{
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
@@ -216,7 +215,7 @@ public class ApiRestController {
 			
 			if(!panier.getProduits().isEmpty()){
 				//  Historique(boolean archived, Date date, List<Produit> produits)
-				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()), "", panierItems);
+				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()), livaison.getInfo(), panierItems);
 				historiques.add(newHistorique);
 				panier.setProduits(new ArrayList<>());
 
