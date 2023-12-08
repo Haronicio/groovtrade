@@ -48,6 +48,6 @@ public class PanierItem implements Serializable {
 
     @ManyToOne
     private Produit produit;
-
+    private String commentaire;
     private int quantite;
 }

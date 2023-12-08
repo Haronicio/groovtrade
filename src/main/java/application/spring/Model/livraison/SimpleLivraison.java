@@ -1,4 +1,4 @@
-package application.spring.Model.produit;
+package application.spring.Model.livraison;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,13 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SimpleProduit {
-    private Long produitid;
-    private String commentaire;
-    private int quantite;
+@Getter
+@Setter
+public class SimpleLivraison {
+    private String info;
 }

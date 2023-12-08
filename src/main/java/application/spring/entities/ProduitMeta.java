@@ -2,6 +2,7 @@ package application.spring.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
@@ -23,10 +24,15 @@ public class ProduitMeta implements Serializable
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     // private Long id;
 
+    @Column(length = 500)
     private String nom;
+    @Column(length = 500)
     private String artiste;
+    @Column(length = 500)
     private String album;
+    @Column(length = 500)
     private int annee;
+    @Column(length = 500)
     private String genres;
 
     // Changer pour Embedded

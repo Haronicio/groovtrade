@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import application.spring.Model.commentaire.SimpleCommentaire;
+import application.spring.Model.livraison.SimpleLivraison;
 import application.spring.Model.produit.SimpleProduit;
 import application.spring.Model.register.SimpleUser;
 import application.spring.entities.Historique;
@@ -37,6 +38,8 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RequestMapping("/api/produits")
 @RestController
@@ -183,10 +186,28 @@ public class ApiRestController {
 			return HttpStatus.NOT_ACCEPTABLE;
 		}
 	}
+	@PostMapping("/addCommentaire")
+	public HttpStatus getMethodName(@AuthenticationPrincipal UserDetails userDetails,@RequestBody SimpleCommentaire simpleCommentaire) {
+		System.out.println("++++++++++++++++++++++++++++++++++++++++ "+simpleCommentaire.getCommentaire()+"   "+simpleCommentaire.getProduitid());
+		Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
+		Panier panier = user.getPanier();
+		Produit p = produitRepository.findByProduitid(simpleCommentaire.getProduitid());
+		for (PanierItem item : panier.getProduits()) {
+			if (item.getProduit().equals(p)) {
+				// Augmenter la quantité et retourner
+				item.setCommentaire(simpleCommentaire.getCommentaire());
+				utilisateurRepository.save(user);
+				return HttpStatus.OK;
+			}
+		}
+		return HttpStatus.NOT_ACCEPTABLE;
+	}
+	
 
 	// ajouter panier dans historique
 	@PostMapping("/addHistorique")
 	public ResponseEntity<String> addHistorique(@AuthenticationPrincipal UserDetails userDetails){
+
 		try{
 			Utilisateur user = utilisateurRepository.findByUsername(userDetails.getUsername());
 			List<Historique> historiques = user.getHistoriques();
@@ -195,7 +216,7 @@ public class ApiRestController {
 			
 			if(!panier.getProduits().isEmpty()){
 				//  Historique(boolean archived, Date date, List<Produit> produits)
-				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()),panierItems);
+				Historique newHistorique = new Historique(false,new Date(System.currentTimeMillis()), "", panierItems);
 				historiques.add(newHistorique);
 				panier.setProduits(new ArrayList<>());
 

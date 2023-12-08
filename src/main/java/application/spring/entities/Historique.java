@@ -43,7 +43,7 @@ public class Historique implements Serializable{
     private boolean archived;
 
     private Date date;
-    
+    private String livraison;
     // @ManyToMany(
     //     fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne sont pas récupérés
     //     cascade = {
@@ -61,9 +61,12 @@ public class Historique implements Serializable{
     @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
     private List<PanierItem> produits = new ArrayList<>();
 
-    public Historique(boolean archived, Date date, List<PanierItem> produits){
+
+
+    public Historique(boolean archived, Date date, String livraison, List<PanierItem> produits){
         this.archived = archived;
         this.date = date;
         this.produits = produits;
+        this.livraison = livraison;
     }
 }
