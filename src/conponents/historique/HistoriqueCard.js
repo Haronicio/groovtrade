@@ -23,7 +23,7 @@ const HistoriqueCard = ({ historique }) => {
         <h1>date: {historique.date}</h1>
         <h1>produits: </h1>
         <div className="produits-container">
-          {historique.produits.map((produit, index) => (
+          {historique.produits.sort((a, b) => a.produit.produitid - b.produit.produitid).map((produit, index) => (
             <div className='div-produit-details'>
               <div className="produit-details" key={index}>
 
