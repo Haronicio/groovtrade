@@ -1,7 +1,9 @@
-<<<<<<< Updated upstream
-=======
 .body{
+    min-height: 100%;
+    position: relative;
+    padding: 0;
     margin-top: 20px;
+    margin-bottom: 60px;
 }
 
 .header-title{
@@ -12,7 +14,6 @@
     opacity: 0.3;
 }
 
->>>>>>> Stashed changes
 .scrollable-genre-list {
     max-height: 300px;
     /* ou la hauteur que vous souhaitez */
@@ -84,14 +85,6 @@
 
 }
 
-<<<<<<< Updated upstream
-.modify{
-    
-    color: blue;         /* Couleur de la croix */
-    background-color: transparent; /* Fond transparent */
-    border: none;       /* Pas de bordure */
-    font-size: 40px;    /* Taille de la croix */
-=======
 .modify {
 
     color: blue;
@@ -102,7 +95,6 @@
     /* Pas de bordure */
     font-size: 25px;
     /* Taille de la croix */
->>>>>>> Stashed changes
 
 }
 
@@ -110,6 +102,12 @@
     outline: none;
     /* Supprime le contour lors de la mise au point sur le bouton */
 
+}
+
+input#quantite {
+    position: relative;
+    width: 53px;
+    top: 26px;
 }
 
 /* Barre Recherche */
@@ -243,9 +241,6 @@ button.btn.btn-warn.headtool {
     margin-bottom: 50px;
 }
 
-<<<<<<< Updated upstream
-  
-=======
 /* détails */
 
 #commentaire-articles {
@@ -256,6 +251,9 @@ button.btn.btn-warn.headtool {
 /* Footer */
 
 .footer {
+    /* position: absolute; */
+    /* bottom: 0; */
+    margin-top: 241px;
     margin-top: 50px;
     width: 100%;
     background: linear-gradient(to right, #333333, #1a1a1a);
@@ -265,4 +263,3 @@ button.btn.btn-warn.headtool {
         -4px 0px 8px 0px rgba(255, 255, 255, 0.1);
     /* Éclaircissement sur les côtés gauche et haut */
 }
->>>>>>> Stashed changes

@@ -1,7 +1,12 @@
 package fr.haron.groovtrade.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -77,8 +82,6 @@ public class APIConnectController {
 		utilisateurRepository.save(u);
 	}
 
-<<<<<<< Updated upstream
-=======
 	@GetMapping("/")//Renvoi une page html de redirection
 	public void userInfo(@AuthenticationPrincipal UserDetails userDetails,HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
@@ -96,13 +99,12 @@ public class APIConnectController {
 		String htmlContent = 	"<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"1;url=" + 
 							referer +"\"><title>Redirection</title></head><body><p>Bienvenue "+
 							un +"</p><p>Redirection en cours...</p></body></html>";
->>>>>>> Stashed changes
 
-	@GetMapping("/")
-	public String userInfo(@AuthenticationPrincipal UserDetails userDetails){
-		Utilisateur u = utilisateurRepository.findByUsername(userDetails.getUsername());
-		return "Welcome "+u.getUsername();
+		response.setContentType("text/html");
+		response.getWriter().write(htmlContent);
 	}
+
+
 	// @GetMapping("/")
 	// public String getUserInfo(Principal user) {
 	// 	StringBuffer userInfo= new StringBuffer();

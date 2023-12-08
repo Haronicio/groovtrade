@@ -27,14 +27,14 @@
 
 <body>
         <div th:include="header :: header" class="container mt-2"></div>
-        
+
         <!-- pour le modal de message -->
         <div th:insert="msg :: msgFragment"></div>
-        
+
         <!-- Début du corps -->
         <div class="container mt-2">
                 <ul>
-                        <li>image de profile</li>
+                        <!-- <li>image de profile</li> -->
                         <a th:href="@{/utilisateur/{username}/ventes(username=${username})}">
                                 <li>liste produit en vente</li>
                         </a>
@@ -53,13 +53,13 @@
                         <a th:href="@{/utilisateur/{username}/profile(username=${username})}">
                                 <li>profile</li>
                         </a>
-                        <a th:href="@{/utilisateur/{username}/parametres(username=${username})}">
+                        <!-- <a th:href="@{/utilisateur/{username}/parametres(username=${username})}">
                                 <li>paramètres</li>
-                        </a>
+                        </a> -->
                         <a href="/logout">
                                 <li>logout</li>
                         </a>
-                        
+
                 </ul>
         </div>
         <!-- Grille ,le controller invoque le modèle  liste de vente, panier ou historique-->
@@ -79,6 +79,7 @@
                                                         <div th:if="${p != null}" class="card h-100 border-0">
                                                                 <img th:if="${p.produit.imgs != null and not #lists.isEmpty(p.produit.imgs)}"
                                                                         th:src="@{'/images/' + ${p.produit.imgs.get(0).path}}"
+                                                                        th:classappend="${p.produit.archived} ? 'masque-div' : ''"
                                                                         alt="Image de couverture" class="card-img-top">
                                                                 <div class="card-body">
                                                                         <h5 class="card-title"
@@ -91,11 +92,13 @@
                                                                                 th:text="${'Sous-Total (x' + p.quantite +') : ' + p.quantite * p.produit.prix + ' €'}">
                                                                         </h6>
 
-                                                                        <h7 th:if="${p.commentaire != ''}" th:text="${p.commentaire}"></h7>
+                                                                        <h7 th:if="${p.commentaire != ''}"
+                                                                                th:text="${p.commentaire}"></h7>
                                                                         <!-- TODO : historique -->
                                                                         <!-- On choisi l'action du boutton de supression en fonction de l'attribut du modèle -->
-                                                                        <div class="button-container"   th:if="${closeAction == 'ventes' or closeAction == 'panier'}" 
-                                                                                                        th:with="closeAction=${closeAction == 'ventes' ? 'supprimerVente' : 'supprimerPanier'}">
+                                                                        <div class="button-container"
+                                                                                th:if="${closeAction == 'ventes' or closeAction == 'panier'}"
+                                                                                th:with="closeAction=${closeAction == 'ventes' ? 'supprimerVente' : 'supprimerPanier'}">
                                                                                 <form th:action="@{/utilisateur/{username}/{closeAction}(username=${username},closeAction=${closeAction})}"
                                                                                         method="post">
                                                                                         <input type="hidden"
@@ -127,8 +130,6 @@
                                                                                 </div>
 
                                                                         </div>
-<<<<<<< Updated upstream
-=======
                                                                         <div class="button-container"
                                                                                 th:if="${closeAction == 'panier'}">
                                                                                 <form th:action="@{/utilisateur/{username}/modifierPanier(username=${username})}"
@@ -142,7 +143,6 @@
                                                                                                 th:value="${p.quantite}" />
                                                                                 </form>
                                                                         </div>
->>>>>>> Stashed changes
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -153,6 +153,10 @@
                                         <!-- Logique pour nouvelle ligne après chaque 4 produits -->
                                 </div>
                                 <!-- Fin de la grille des produits -->
+                                <!-- Boutton checkout si panier -->
+                                <div class="" th:if="${closeAction == 'panier'}">
+                                        <a th:href="@{/utilisateur/{username}/checkout(username=${username})}"><button  class="btn btn-primary">Allez au CHECKOUT</button></a>
+                                </div>
                         </div>
                 </div>
         </div>

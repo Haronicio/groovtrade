@@ -35,11 +35,11 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-4">
-                <img th:src="@{'/images/' + ${userPP}}" alt="Image de Profil" class="img-fluid rounded-circle">
+                <img th:src="@{'/images/' + ${user_PP}}" alt="Image de Profil" class="img-fluid rounded-circle">
             </div>
             <div class="col-md-8">
-                <h2 th:text="${username}">Nom d'utilisateur</h2>
-                <p th:text="${useremail}">Email</p>
+                <h2 th:text="${user_name}"></h2>
+                <p th:text="${user_email}"></p>
             </div>
         </div>
     </div>

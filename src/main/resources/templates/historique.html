@@ -48,11 +48,7 @@
                             <div th:if="${p != null}" class="card h-100 border-0">
                                 <img th:if="${p.produit.imgs != null and not #lists.isEmpty(p.produit.imgs)}"
                                     th:src="@{'/images/' + ${p.produit.imgs.get(0).path}}" alt="Image de couverture"
-<<<<<<< Updated upstream
-                                    class="card-img-top">
-=======
                                     th:classappend="${p.produit.archived} ? 'masque-div' : ''" class="card-img-top">
->>>>>>> Stashed changes
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${p.produit.meta.nom}"></h5>
                                     <p class="card-text" th:text="${p.produit.type}"></p>

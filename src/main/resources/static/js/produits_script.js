@@ -56,6 +56,20 @@ function showModal(type, message) {
   // showModal('message', 'Ceci est un message informatif.');
   
 
+//Script pour changer dynamiquement la quantité dans le panier
+// document.addEventListener('DOMContentLoaded', function() {
+//     var quantiteInput = document.getElementById('quantite');
+//     if (quantiteInput) {
+//         quantiteInput.addEventListener('change', function() {
+//             var monFormulaire = document.getElementById('changeQ');
+//             if (monFormulaire) {
+//                 monFormulaire.submit();
+//             }
+//         });
+//     }
+// });
+
+
 //Script pour gérer la taille des images
 function validateImages() {
     const maxImgSize = 307200; // 300 Ko

@@ -96,4 +96,14 @@ public class Historique implements Serializable{
         return res;
     }
 
+    public void setEtat(String e)
+    {
+        this.etat = e;
+    }
+
+    public void setArchived(boolean a)
+    {
+        this.archived = a;
+    }
+
 }

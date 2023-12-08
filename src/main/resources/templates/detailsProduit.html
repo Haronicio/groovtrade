@@ -49,17 +49,14 @@
         </div>
         <div th:unless="${buyable}">
             <button type="submit" class="btn btn-secondary" disabled>Ajouter au Panier</button>
+            <p style="font-weight: 800; color: rgb(217, 41, 41);">Produit non disponible</p>
         </div>
         <p><b>Nombre disponible :</b><span th:text="${produit.nbProduit}"></span></p>
 
         <div>
-<<<<<<< Updated upstream
-            <p><b>Vendeur :</b> <span th:text="${vendeurUsername}"></span></p><!--TODO lien vers le profile-->
-=======
             <p><b>Vendeur :</b> <a
                     th:href="@{/utilisateur/{vendeurUsername}/profile(vendeurUsername=${vendeurUsername})}"
                     th:text="${vendeurUsername}"></a></p>
->>>>>>> Stashed changes
             <p><b>Description :</b>
             <pre th:text="${produit.description}"></pre>
             </p>

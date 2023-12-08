@@ -45,7 +45,7 @@
                             <div th:if="${p != null}" class="card h-100 border-0">
                                 <img th:if="${p.produit.imgs != null and not #lists.isEmpty(p.produit.imgs)}"
                                     th:src="@{'/images/' + ${p.produit.imgs.get(0).path}}" alt="Image de couverture"
-                                    class="card-img-top">
+                                    th:classappend="${p.produit.archived} ? 'masque-div' : ''" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${p.produit.meta.nom}"></h5>
                                     <p class="card-text" th:text="${p.produit.type}"></p>
@@ -66,18 +66,6 @@
 
                                         </form>
 
-<<<<<<< Updated upstream
-                                        <!-- TODO: peut être essayer avec authentication = plus sécurisé -->
-                                        <div th:if="${userid == p.produit.utilisateurId}">
-                                            <form th:action="@{/produits/modifierProduit/{id}(id=${p.produit.id})}"
-                                                method="get">
-                                                <!-- <input type="hidden"name="produitId"th:value="${p.produit.id}"  /> -->
-                                                <button type="submit" class="modify" aria-label="Modify">
-                                                    <span aria-hidden="true">&#9998;</span>
-                                                </button>
-                                            </form>
-                                        </div>
-=======
 
                                         <form
                                             th:action="@{/utilisateur/{username}/modifierPanier(username=${username})}"
@@ -88,7 +76,6 @@
                                                 th:value="${p.quantite}" />
                                         </form>
 
->>>>>>> Stashed changes
 
                                     </div>
                                 </div>
