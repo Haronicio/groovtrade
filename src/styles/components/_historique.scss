@@ -1,5 +1,6 @@
 
 .historique-container {
+
   background-color: #f3f3f3;
   border: 1px solid #ddd;
   padding: 20px;
@@ -19,9 +20,12 @@
   .produits-container {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+  
     .produit-details {
       flex-wrap:  wrap;
       align-items: center;
+      width: 100%;
       justify-content: space-between;
       border-bottom: 1px solid #ddd;
       padding: 10px 0;
@@ -79,6 +83,7 @@
   }
 
   .historique-list {
+    width: 100%;
     .historique-card {
       margin: 10px;
     }

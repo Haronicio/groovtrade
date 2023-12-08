@@ -1,8 +1,14 @@
 .navigation {
+
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 20px; /* Ajustez la taille de police selon vos préférences */
+
   ul {
     display: flex;
     margin: 30px;
-
+    
     a {
       text-decoration: none;
       padding: 10px;
@@ -11,7 +17,7 @@
         color: $color-1;
         transition: 0.2s;
         cursor: pointer;
-
+        
         &:hover {
           color: $color-3;
         }

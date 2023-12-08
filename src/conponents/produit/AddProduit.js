@@ -63,9 +63,6 @@ const AddProduit = () => {
                 <h2>annee:<input type="number" id="annee" onChange={(e) => setAnnee(e.target.value)} /></h2>
                 <h2>genres:<input type="text" id="genres" onChange={(e) => setGenres(e.target.value)} /></h2>
                 <button onClick={handleClick} className="button">Ajouter ce produit</button>
-          
-         
-  
             </div>
         </div>
     );

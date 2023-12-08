@@ -4,27 +4,28 @@ import { header } from '../requete/header';
 import HistoriqueCard from './HistoriqueCard';
 
 const Historique = () => {
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [historiques, setHistoriques] = useState([]);
-    useEffect(() => {
-        axios(header.getHistorique())
-            .then(function (res) {
-                console.log(res.data);
-                setHistoriques(res.data);
-            })
-    }, []);
-    const filteredHistorique = useMemo(() => {
-        if (!selectedDate) {
-            return historiques;
-        }
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [historiques, setHistoriques] = useState([]);
+  useEffect(() => {
+    axios(header.getHistorique())
+      .then(function (res) {
+        console.log(res.data);
+        setHistoriques(res.data);
+      })
+  }, []);
+  const filteredHistorique = useMemo(() => {
+    if (!selectedDate) {
+      return historiques;
+    }
 
-        return historiques.filter((entry) => entry.date === selectedDate);
-    }, [historiques, selectedDate]);
-    const resetFilter = () => {
-        setSelectedDate(null);
-    };
-    return (
-        <div className="filter-container">
+    return historiques.filter((entry) => entry.date === selectedDate);
+  }, [historiques, selectedDate]);
+  const resetFilter = () => {
+    setSelectedDate(null);
+  };
+  return (
+    <div>
+      <div className="filter-container">
         <div>
           <div>
             <label>Sélectionner une date :</label>
@@ -36,19 +37,31 @@ const Historique = () => {
           </div>
           <button onClick={resetFilter}>Réinitialiser le filtre</button>
         </div>
+      </div>
+      <div className='historique-container'>
         <div className="historique-list">
           {filteredHistorique.sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
-            return dateB - dateA; // Trie du plus récent au plus ancien
+
+            // Trie du plus récent au plus ancien
+            if (dateA > dateB) return -1;
+            if (dateA < dateB) return 1;
+
+            // Si les dates sont égales, comparez par les identifiants
+            return b.historiqueid - a.historiqueid;
           }).map((historique, index) =>
+
             <HistoriqueCard key={historique.historiqueid} historique={historique} className="historique-card" />
+
+
           )}
         </div>
       </div>
+    </div>
 
 
-    );
+  );
 };
 
 export default Historique;

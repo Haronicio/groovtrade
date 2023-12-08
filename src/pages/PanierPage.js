@@ -16,7 +16,6 @@ const PanierPage = () => {
             <div>
                 <Navigation/>
                 <Panier/>
-                
             </div>
         );
     }

@@ -1,6 +1,7 @@
 .panier {
   display: flex;
   flex-direction: column;
+  
   align-items: center;
   padding: 20px;
   border: 1px solid #ddd;
@@ -11,17 +12,23 @@
 .panier-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   border: 1px solid #ddd;
   padding: 10px;
   margin-bottom: 10px;
   flex-wrap: wrap;
 }
+.div-produit-details{
+  
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
 .produit-details {
 
-  flex: 1;
-  
+  margin: 1%;
+
 }
 p {
   margin: 0;
@@ -101,4 +108,35 @@ p {
 .empty-cart-message h1 {
   font-size: 24px;
   color: #555555;
+}
+
+//livarison
+.delivery-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
