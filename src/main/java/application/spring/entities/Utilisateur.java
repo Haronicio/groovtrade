@@ -29,7 +29,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "utilisateur")
 public class Utilisateur implements Serializable{
@@ -58,10 +58,7 @@ public class Utilisateur implements Serializable{
 	@Embedded
 	private Panier panier;
 
-	public String getUsername()
-	{
-		return this.username;
-	}
+
 	
 	public Utilisateur(String username, String password, String role, String email, 
 		List<Historique> historiques, Panier panier){
@@ -74,17 +71,6 @@ public class Utilisateur implements Serializable{
 			this.panier = panier;
 	}
 
-	public Utilisateur(Long userid, String username, String password, String role, String email, 
-		List<Historique> historiques, Panier panier){
-			this.userid = userid;
-			BCryptPasswordEncoder b = new BCryptPasswordEncoder();
-			this.username = b.encode(username);
-			this.password = password;
-			this.role = role;
-			this.email = email;
-			this.historiques = historiques;
-			this.panier = panier;
-		}
 			//Pour le controller utilisateur
 	public List<PanierItem> getVentes(List<Produit> produits)
 	{
