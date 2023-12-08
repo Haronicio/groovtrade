@@ -41,7 +41,6 @@ public class UtilisateurController {
 
     @GetMapping
     public String utilisateur(@PathVariable String username, Model model, Authentication authentication) {
-        System.out.println(username + "," + authentication.getName());
         // Récupérer et ajouter les informations de l'utilisateur au modèle
         return correctUser(authentication.getName(), username);
     }
@@ -113,12 +112,9 @@ public class UtilisateurController {
 
     // Liste des produits en vente
     @GetMapping("/ventes")
-    // public String listeVentes(@PathVariable Long id, Model model) {
     public String listeVentes(@PathVariable String username, Model model, Authentication authentication) {
         // Fournir le modèle avec la liste des produits en vente
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
-        // avec manipulation des produits directement
-        // model.addAttribute("listProduits",produitRepository.findByUtilisateurId(currenUtilisateur.getUserid()));
         // avec manipulation de ProduitItem
         model.addAttribute("listProduits", currenUtilisateur.getVentes(produitRepository.findAll()));
         model.addAttribute("closeAction", "ventes");
@@ -161,7 +157,6 @@ public class UtilisateurController {
 
     // Détails historique
     @GetMapping("/historique/{id}/details")
-    // public String historiqueAchats(@PathVariable Long id, Model model) {
     public String historiqueDetails(@PathVariable String username, @PathVariable Long id, Model model,
             Authentication authentication) {
         // Fournir le modèle avec l'historique des achats

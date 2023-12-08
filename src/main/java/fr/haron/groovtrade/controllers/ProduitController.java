@@ -206,7 +206,7 @@ public class ProduitController {
     }
 
     @PostMapping("/modifier")
-    public String ajouterProduit(Authentication authentication, Model model,RedirectAttributes redirectAttributes,
+    public String modifierProduit(Authentication authentication, Model model,RedirectAttributes redirectAttributes,
             @RequestParam Long id,
             @RequestParam String description,
             @RequestParam double prix,

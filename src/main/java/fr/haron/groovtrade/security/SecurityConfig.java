@@ -38,6 +38,7 @@ public class SecurityConfig {
         http
             .authorizeRequests()
             .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
+            .antMatchers("/api/utilisateur/**").authenticated()
             .anyRequest().permitAll()
             .and()
             .formLogin() // Utiliser la page de connexion par défaut de Spring Security
