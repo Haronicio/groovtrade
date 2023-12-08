@@ -25,7 +25,7 @@ public class LoginController {
      @GetMapping("/login/done")
     public String doneLogin() {
 
-        return "redirect:/produits/liste"; // Redirige vers la page d'accueil
+        return "redirect:/welcome"; // Redirige vers la page d'accueil
 
     }
 

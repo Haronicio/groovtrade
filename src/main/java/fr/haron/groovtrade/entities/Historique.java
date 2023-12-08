@@ -21,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.ToString;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -69,6 +71,8 @@ public class Historique implements Serializable{
     @ElementCollection
     private List<PanierItem> panierItems = new ArrayList<>();
 
+    // éviter les boucles de dépendances lors de la sérialisation
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "utilisateur_id")
     private Utilisateur Utilisateur;

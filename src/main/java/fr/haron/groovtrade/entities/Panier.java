@@ -36,44 +36,6 @@ import lombok.Setter;
 @Embeddable
 public class Panier implements Serializable {
 
-    // Ancienne structure
-    // @ManyToMany(
-    // fetch = FetchType.LAZY,//à la récupération de la catégorie, les produits ne
-    // sont pas récupérés
-    // cascade = {
-    // //la cascade s’applique tant en création qu’en modification
-    // CascadeType.PERSIST,
-    // CascadeType.MERGE
-    // }
-    // )
-    // @JoinTable(
-    // name = "panier_produits",
-    // joinColumns = @JoinColumn(name = "panierid"),
-    // inverseJoinColumns = @JoinColumn(name = "produitid")
-    // )
-    // @OneToOne(cascade = {
-    // CascadeType.MERGE,
-    // CascadeType.PERSIST
-    // })
-    // @JoinColumn(name = "userid")
-    // private Utilisateur utilisateur;
-
-    // structure liste de produit
-    // @ElementCollection
-    // @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name =
-    // "utilisateur_id"))
-    // @Column(name = "produit_id")
-    // private List<Produit> produits = new ArrayList<>();
-    // public boolean add(Produit e)
-    // {
-    // return produits.addAll(e);
-    // }
-
-    // structure liste de panieritem
-    // @OneToMany(cascade = CascadeType.ALL)
-    // private List<PanierItem> produits = new ArrayList<>();
-
-    // structure liste de panieritem embedded
     @ElementCollection
     @CollectionTable(name = "panier_produits", joinColumns = @JoinColumn(name = "utilisateur_id"))
     private List<PanierItem> produits = new ArrayList<>();

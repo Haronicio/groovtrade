@@ -157,6 +157,7 @@ public class APIRestController {
 				new ProduitDetailsDTO(vendorUser.getUsername(), buyable, produit.get())));
 	}
 
+	// TODO : test
 	@PostMapping("/produits/ajouter")
 	public ResponseEntity<?> ajouterProduit(@RequestBody AjouterProduitDTO ajouterProduitDTO,
 			Authentication authentication) {
@@ -187,6 +188,7 @@ public class APIRestController {
 		return ResponseEntity.ok("Produit " + nouveauProduit.getNom() + " ajouté au catalogue");
 	}
 
+	// TODO : test
 	@PostMapping("/produits/modifier")
 	public ResponseEntity<GlobalDTO> modifierProduit(@RequestBody ModifierProduitDTO modifierProduitDTO,
 			Authentication authentication) {
@@ -227,8 +229,8 @@ public class APIRestController {
 	}
 
 	// Pour le controller Utilisateur
-
-	@GetMapping
+ 
+	@GetMapping("/utilisateur/{username}")
 	public ResponseEntity<GlobalDTO> utilisateur(@PathVariable String username, Authentication authentication) {
 		// Récupérer et ajouter les informations de l'utilisateur au modèle
 		return ResponseEntity
@@ -251,8 +253,6 @@ public class APIRestController {
 		GlobalDTO globalDTO = createGlobalDTO(authentication, profileDTO);
 		return ResponseEntity.ok(globalDTO);
 	}
-
-	// TODO : ajouterP
 
 	// ventes de l'utilisateur
 	@GetMapping("/utilisateur/{username}/ventes")
@@ -290,6 +290,8 @@ public class APIRestController {
 
 	}
 
+
+	//TODO : test
 	@PostMapping("/utilisateur/{username}/ajouterPanier")
 	public ResponseEntity<GlobalDTO> ajouterPanier(@PathVariable String username,
 			@RequestBody AjouterPanierDTO ajoutPanierDTO,
@@ -352,6 +354,7 @@ public class APIRestController {
 		return ResponseEntity.ok(globalDTO);
 	}
 
+	//TODO : BUG
 	@GetMapping("/utilisateur/{username}/historique")
 	public ResponseEntity<GlobalDTO> historiqueAchats(@PathVariable String username, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(username)) {
@@ -361,9 +364,18 @@ public class APIRestController {
 
 		Utilisateur currentUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
 
-		List<Historique> hist = currentUtilisateur.getHistoriques().stream()
-				.filter(h -> !h.isArchived())
-				.collect(Collectors.toList());
+		// List<Historique> hist = currentUtilisateur.getHistoriques().stream()
+		// 		.filter(h -> !h.isArchived())
+		// 		.collect(Collectors.toList());
+
+		List<Historique> hist = new ArrayList<>();
+
+		for (Historique h : currentUtilisateur.getHistoriques()) {
+            if(!h.isArchived())
+                hist.add(h);
+        }
+
+
 
 		HistoriqueAchatsDTO historiqueAchatsDTO = new HistoriqueAchatsDTO(hist);
 
@@ -371,6 +383,9 @@ public class APIRestController {
 
 		return ResponseEntity.ok(globalDTO);
 	}
+
+
+	//TODO : test
 
 	@PostMapping("/utilisateur/{username}/supprimerHistorique")
 	public ResponseEntity<GlobalDTO> deleteHistorique(@PathVariable String username,
@@ -401,6 +416,8 @@ public class APIRestController {
 		return ResponseEntity.ok(globalDTO);
 	}
 
+	//TODO : test
+
 	@PostMapping("/utilisateur/{username}/supprimerPanier")
 	public ResponseEntity<GlobalDTO> deletePanier(@PathVariable String username,
 			@RequestParam Long produitId,
@@ -423,6 +440,7 @@ public class APIRestController {
 		return ResponseEntity.ok(globalDTO);
 	}
 
+	//TODO :test
 	@PostMapping("/utilisateur/{username}/supprimerVente")
 	public ResponseEntity<GlobalDTO> deleteVente(@PathVariable String username,
 			@RequestParam Long produitId,
@@ -448,6 +466,8 @@ public class APIRestController {
 
 		return ResponseEntity.ok(globalDTO);
 	}
+
+	//TODO : test
 
 	@PostMapping("/utilisateur/{username}/modifierPanier")
 	public ResponseEntity<GlobalDTO> modifyPanier(@PathVariable String username,
@@ -494,6 +514,8 @@ public class APIRestController {
 
 		return ResponseEntity.ok(globalDTO);
 	}
+
+	//TODO : test
 
 	@PostMapping("/utilisateur/{username}/validate")
 	public ResponseEntity<GlobalDTO> checkout(@PathVariable String username,

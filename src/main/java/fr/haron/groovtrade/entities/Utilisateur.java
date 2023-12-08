@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.ToString;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -49,6 +51,7 @@ public class Utilisateur implements Serializable{
 		orphanRemoval = true,
 		fetch = FetchType.EAGER
 	)
+	@JsonBackReference // éviter les boucles de dépendances lors de la sérialisation
 	@JoinColumn(name = "utilisateur_id")
     private List<Historique> historiques = new ArrayList<>();
 
