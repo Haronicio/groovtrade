@@ -50,6 +50,17 @@ public class Panier implements Serializable {
         return false;
     }
 
+    //Copie superficiel (il ce passent la ref de produit)
+    public List<PanierItem> copyPanierItems() {
+
+        List<PanierItem> res = new ArrayList<>();
+
+        for (PanierItem panierItem : produits) { 
+            res.add(new PanierItem(panierItem.getProduit(),panierItem.getQuantite(),panierItem.getCommentaire()));
+        }
+        return res;
+    }
+    
     public boolean add(PanierItem e) {
         // Trouver l'article dans le panier
         for (PanierItem item : produits) {
@@ -61,5 +72,38 @@ public class Panier implements Serializable {
         }
         // Si le produit n'est pas trouvé, ajoutez un nouvel article
         return produits.add(e);
+    }
+
+    public PanierItem getItemByProduitId(Long id) {
+        // Trouver l'article dans le panier
+        for (PanierItem item : produits) {
+            if (item.getProduit().getId().equals(id)) {
+                return item;
+            }
+        }
+        // Si le produit n'est pas trouvé, ajoutez un nouvel article
+        return null;
+    }
+
+    public int getQuantiteTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : produits) {
+            res += panierItem.getQuantite();
+        }
+        return res;
+    }
+
+    public int getTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : produits) {
+            res += panierItem.getQuantite() * panierItem.getProduit().getPrix();
+        }
+        return res;
+    }
+
+    public void clearProduits() {
+        produits.clear();
     }
 }

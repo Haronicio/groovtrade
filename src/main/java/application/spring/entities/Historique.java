@@ -34,7 +34,7 @@ public class Historique implements Serializable {
     @Column(unique = true, name = "historiqueid")
     private Long historiqueid;
     private boolean archived;
-
+    private String etat;//process paid cancel
     private Date date;
     private String livraison;
     @ElementCollection
@@ -46,5 +46,39 @@ public class Historique implements Serializable {
         this.date = date;
         this.produits = produits;
         this.livraison = livraison;
+    }
+
+
+    public void add(PanierItem e)
+    {
+        this.produits.add(e);
+    }
+
+    public int getQuantiteTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : produits) {
+            res += panierItem.getQuantite();
+        }
+        return res;
+    }
+
+    public int getTotal() {
+        int res = 0;
+
+        for (PanierItem panierItem : produits) {
+            res += panierItem.getQuantite() * panierItem.getProduit().getPrix();
+        }
+        return res;
+    }
+
+    public void setEtat(String e)
+    {
+        this.etat = e;
+    }
+
+    public void setArchived(boolean a)
+    {
+        this.archived = a;
     }
 }

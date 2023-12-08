@@ -43,6 +43,7 @@ public class Utilisateur implements Serializable {
 	private String password;
 	private String role;
 	private String email;
+	private String imgPath;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "userid")
@@ -61,18 +62,21 @@ public class Utilisateur implements Serializable {
 		this.historiques = historiques;
 		this.panier = panier;
 	}
+	
+	public String getUsername()
+	{
+		return this.username;
+	}
 
-	// Pour le controller utilisateur
-	public List<PanierItem> getVentes(List<Produit> produits) {
+	//Pour le controller utilisateur
+	public List<PanierItem> getVentes(List<Produit> produits)
+	{
 		List<PanierItem> res = new ArrayList<>();
-
 		for (Produit e : produits) {
 			if (e.getUtilisateurId() == userid) {
 				res.add(new PanierItem(e, e.getNbProduit()));
 			}
-
 		}
-
 		return res;
 	}
 }

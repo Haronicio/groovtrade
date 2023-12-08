@@ -64,7 +64,16 @@ public class Produit implements Serializable {
     public Produit() {
     }
 
-    public boolean isArchived() {
+
+    public void decreaseNb(int quantite)
+    {
+        nbProduit = nbProduit - quantite;
+        if (nbProduit == 0) {
+            setArchived(true);
+        }
+    }
+    
+     public boolean isArchived() {
         return this.archived;
     }
 
@@ -83,8 +92,8 @@ public class Produit implements Serializable {
     public void setUtilisateurId(Long utilisateurId) {
         this.utilisateurId = utilisateurId;
     }
-
-    public int getNbProduit() {
+    
+     public int getNbProduit() {
         return this.nbProduit;
     }
 
@@ -95,24 +104,23 @@ public class Produit implements Serializable {
     public String getNom() {
         return this.meta.getNom();
     }
-
     public void setNom(String s) {
         this.meta.setNom(s);
     }
 
     public String getArtiste() {
-        return this.meta.getArtiste();
+         return this.meta.getArtiste();
     }
 
-    public void setArtiste(String s) {
+        public void setArtiste(String s) {
         this.meta.setArtiste(s);
     }
 
     public String getAlbum() {
-        return this.meta.getAlbum();
+         return this.meta.getAlbum();
     }
 
-    public void setAlbum(String s) {
+         public void setAlbum(String s) {
         this.meta.setAlbum(s);
     }
 
@@ -120,8 +128,16 @@ public class Produit implements Serializable {
         return this.meta.getAnnee();
     }
 
-    public void setAnnee(int i) {
+         public void setAnnee(int i) {
         this.meta.setAnnee(i);
+    }
+
+    public Long getId() {
+        return this.produitid;
+    }
+
+    public void setId(Long id) {
+        this.produitid = id;
     }
 
     public double getPrix() {
@@ -156,16 +172,17 @@ public class Produit implements Serializable {
         this.imgs = imgs;
     }
 
-    public void addImg(ProduitImg img) {
+    public void addImg(ProduitImg img)
+    {
         this.imgs.add(img);
     }
 
     // public List<ProduitSong> getSongs() {
-    // return this.songs;
+    //     return this.songs;
     // }
 
     // public void setSongs(List<ProduitSong> songs) {
-    // this.songs = songs;
+    //     this.songs = songs;
     // }
 
     public ProduitMeta getMeta() {
@@ -175,22 +192,21 @@ public class Produit implements Serializable {
     public void setMeta(ProduitMeta meta) {
         this.meta = meta;
     }
-
     public void setGenres(String string) {
-        this.meta.setGenres(string);
-    }
+            this.meta.setGenres(string);
+        }
 
     @Override
     public String toString() {
         return "{" +
-                " id='" + getProduitid() + "'" +
-                ", prix='" + getPrix() + "'" +
-                ", type='" + getType() + "'" +
-                ", description='" + getDescription() + "'" +
-                // ", imgs='" + getImgs() + "'" +
-                // ", songs='" + getSongs() + "'" +
-                ", meta='" + getMeta() + "'" +
-                "}";
+            " id='" + getId() + "'" +
+            ", prix='" + getPrix() + "'" +
+            ", type='" + getType() + "'" +
+            ", description='" + getDescription() + "'" +
+            // ", imgs='" + getImgs() + "'" +
+            // ", songs='" + getSongs() + "'" +
+            ", meta='" + getMeta() + "'" +
+            "}";
     }
 
 }

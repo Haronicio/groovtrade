@@ -22,6 +22,11 @@ public class PanierItem implements Serializable {
         this.produit = produit;
         this.quantite = nbProduit;
     }
+    public PanierItem(Produit produit, int nbProduit,String commentaire) {
+        this.produit = produit;
+        this.quantite = nbProduit;
+        this.commentaire = commentaire;
+    }
 
     @ManyToOne
     private Produit produit;
