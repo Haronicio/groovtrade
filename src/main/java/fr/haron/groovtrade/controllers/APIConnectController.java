@@ -77,6 +77,26 @@ public class APIConnectController {
 		utilisateurRepository.save(u);
 	}
 
+<<<<<<< Updated upstream
+=======
+	@GetMapping("/")//Renvoi une page html de redirection
+	public void userInfo(@AuthenticationPrincipal UserDetails userDetails,HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		// verif referer + un peu dégeu comme redirection
+		String referer = request.getHeader("Referer");
+		System.out.println(referer);
+		String un = "";
+		
+		if (userDetails != null) {
+			referer += "/done";// pas terrible
+			un =
+			 userDetails.getUsername();
+		}
+		
+		String htmlContent = 	"<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"1;url=" + 
+							referer +"\"><title>Redirection</title></head><body><p>Bienvenue "+
+							un +"</p><p>Redirection en cours...</p></body></html>";
+>>>>>>> Stashed changes
 
 	@GetMapping("/")
 	public String userInfo(@AuthenticationPrincipal UserDetails userDetails){

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Guide d'utilisation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Optionnel : jQuery et Popper.js (certains composants de Bootstrap, comme les modales, les nécessitent) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/produits_style.css">
+
+    <script defer src="/js/produits_script.js"></script>
+</head>
+
+<body>
+    <div th:include="header :: header" class="container mt-2"></div>
+
+    <!-- pour le modal de message -->
+    <div th:insert="msg :: msgFragment"></div>
+
+    <!-- Début du corps -->
+    <div class="container mt-2 welcome">
+        <h2>Bienvenue sur GroovTrade !</h2>
+        <p>Plongez dans l'univers de GroovTrade pour enrichir vos collections ou partager vos trésors musicaux
+            ! Que vous soyez un mélomane passionné ou une entreprise musicale, découvrez l'opportunité
+            d'acheter et de vendre des vinyles, K7 et CD. Des dernières sorties aux pépites indépendantes,
+            vos produits trouveront toujours leur place dans la collection d'un autre passionné.
+            Alors rejoignez-nous pour créer des connexions musicales uniques, élargir vos horizons sonores
+            et faire résonner votre passion au sein de la communauté GroovTrade.
+        </p>
+    </div>
+    <div class="container mt-4">
+        <h2 class="mb-4">Guide d'utilisation du site</h2>
+
+        <!-- Sommaire -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <ul>
+                        <li><a class="nav-link " href="#catalogue-produits">Catalogue de produits</a></li>
+                        <li><a class="nav-link" href="#recherche-produits">Recherche de produits</a></li>
+                        <ul>
+                            <li><a class="nav-link" href="#recherche-avancee">Recherche avancée</a></li>
+                        </ul>
+                        <li><a class="nav-link" href="#details-produit">Détails d'un produits</a></li>
+                        <ul>
+                            <li><a class="nav-link" href="#ajouter-au-panier">Ajouter un au panier</a></li>
+                        </ul>
+                        <li><a class="nav-link" href="#votre-compte">Votre Compte</a></li>
+                        <li><a class="nav-link" href="#consulter-panier">Consulter le panier</a></li>
+                        <ul>
+                            <li><a class="nav-link" href="#supprimer-panier">Modifier ou supprimer des articles du
+                                    panier</a></li>
+                        </ul>
+                        <li><a class="nav-link" href="#validation-panier">Validation du panier</a></li>
+                        <li><a class="nav-link" href="#vendre-produit">Vendre un produit</a></li>
+                        <li><a class="nav-link" href="#consulter-liste-vente">Consulter sa liste de vente</a></li>
+                        <ul>
+                            <a class="nav-link" href="#modifier-supprimer-vente">Modifier ou supprimer un produit mis en
+                                vente</a>
+                        </ul>
+                        <li><a class="nav-link" href="#historique-vente">Historique de vente</a></li>
+                        <li><a class="nav-link" href="#consulter-profil">Consulter son profile</a></li>
+                    </ul>
+                    <!-- Ajoutez d'autres liens ici -->
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <!-- Contenu du guide -->
+                <section id="catalogue-produits">
+                    <h3>Catalogue de produits</h3>
+                    <p>Les produits du catlogue sont listé ici, vous pouvez y voir le titre de l'annonce et/ou celui de
+                        l'article, le prix ainsi que le support, cliquez sur les images pour accéder aux détails</p>
+                </section>
+
+                <section id="recherche-produits">
+                    <h3>Recherche de produits</h3>
+                    <p>Rechercher un terme, celui-ci vous renverras la liste des produits lié à votre recherche, les
+                        termes sont recherchés dans tous les champs d'une annonce</p>
+                    <!-- Sous-section recherche avancée -->
+                    <h4 id="recherche-avancee">Recherche avancée</h4>
+                    <p>Appuyez sur le <b>+</b> pour effectuez une recherche plus fine, les termes sont recherchés dans
+                        chaque champs indépendamment d'une annonce</p>
+                </section>
+                <section id="details-produit">
+                    <h3>Détails d'un Produit</h3>
+                    <p>Cette section offre une vue détaillée d'un produit spécifique. Vous trouverez des informations
+                        telles que la description détaillée, le nombre d'article
+                        disponible, les photos, le prix, et d'autres caractéristiques
+                        pertinentes du produit.</p>
+                </section>
+
+                <!-- Ajouter un Produit au Panier -->
+                <section id="ajouter-au-panier">
+                    <h4>Ajouter un Produit au Panier</h4>
+                    <p>Sélectionner le nombre d'article à mettre dans votre panier en y ajoutant une description, <b>il
+                            faut être connecté pour ajouter des articles à votre panier</b></p>
+                </section>
+
+                <!-- Votre Compte -->
+                <section id="votre-compte">
+                    <h3>Votre Compte</h3>
+                    <p>Accédez à votre compte en cliquant sur la bulle en haut à droite pour gérer vos informations
+                        personnelles, consulter votre panier, vos ventes ou votre historique.
+                    </p>
+                </section>
+
+                <!-- Consulter le Panier -->
+                <section id="consulter-panier">
+                    <h3>Consulter le Panier</h3>
+                    <p>Visualisez les articles dans votre panier.</p>
+                </section>
+                <!-- Supprimer du panier -->
+                <section id="supprimer-panier">
+                    <h4>Modifier ou Supprimer des produits du panier</h4>
+                    <p>Retirez vos produits du panier en appuyant sur ❌ ou changez le nombre d'article voulue.</p>
+                </section>
+                <!-- Validation du Panier -->
+                <section id="validation-panier">
+                    <h3>Validation du Panier</h3>
+                    <p>Finalisez votre achat en passant par le processus de validation du panier.</p>
+                </section>
+                <!-- Vendre un Produit -->
+                <section id="vendre-produit">
+                    <h3>Vendre un Produit</h3>
+                    <p>Cliquez sur <b>ajouter un produit</b>, vous emmènera sur une page dans la quel vous remplissez un
+                        formulaire d'ajout de produit <b>Les photos sont limités à 5 et ne doivent pas dépasser
+                            300Ko</b>.</p>
+                </section>
+                <!-- Consulter sa Liste de Vente -->
+                <section id="consulter-liste-vente">
+                    <h3>Consulter sa Liste de Vente</h3>
+                    <p>Suivez vos ventes en cours et gérez vos annonces actives.</p>
+                </section>
+
+                <!-- Modifier ou Supprimer un Produit Mis en Vente -->
+                <section id="modifier-supprimer-vente">
+                    <h4>Modifier ou Supprimer un Produit Mis en Vente</h4>
+                    <p>Retirez vos produits mis en vente dans le catalogue en appuyant sur ❌ ou changez les détails de
+                        vos produits en appuyant sur ✏.</p>
+                </section>
+
+
+                <!-- Historique de Vente -->
+                <section id="historique-vente">
+                    <h3>Historique de Vente</h3>
+                    <p>Consultez l'historique de vos transactions et suivez vos ventes antérieures, vous pouvez
+                        éventuellement masqué un historique en appuyant sur ❌.</p>
+                </section>
+
+                <!-- Consulter son Profil -->
+                <section id="consulter-profil">
+                    <h3>Consulter son Profil</h3>
+                    <p>Accédez et revoyez vos informations personnelles et les paramètres de votre compte.</p>
+                </section>
+
+
+
+                <!-- Ajoutez d'autres sections ici -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <div th:include="footer :: footer" class="footer"></div>
+</body>
+
+</html>

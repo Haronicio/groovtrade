@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
@@ -90,7 +91,7 @@ public class ProduitController {
         model.addAttribute("vendeurUsername", vendorUser.getUsername());
 
         // Permet de dire à la vue c'est l'objet peut être acheté (plus simple)
-        // TODO : peut être introduire ce mécanisme sur d'autre mapping pour les vues
+
         boolean buyable;
 
         if (authentication != null) // Si le client n'est pas connecté il sera amené a ce connecter
@@ -127,7 +128,8 @@ public class ProduitController {
             @RequestParam int annee,
             @RequestParam int nb,
             @RequestParam("coverImages") List<MultipartFile> coverImages,
-            Authentication authentication) {
+            Authentication authentication,
+            RedirectAttributes redirectAttributes) {
 
         StringJoiner joiner = new StringJoiner(",");
         for (String genre : genres) {
@@ -177,10 +179,10 @@ public class ProduitController {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // TODO : Gérer l'exception ici
+                    redirectAttributes.addFlashAttribute("error","il y a eu une erreur concernant les images désolé");
                 }
 
-                // TODO : Ajouter le chemin de l'image à l'entité Produit
+                // Ajouter le chemin de l'image à l'entité Produit
                 nouveauProduit.addImg(new ProduitImg(filename));
                 // Exemple : produit.setCoverImagePath(filename)
                 i++;
@@ -189,11 +191,13 @@ public class ProduitController {
 
         produitRepository.save(nouveauProduit);
         // return "redirect:/produits/liste";
+
+        redirectAttributes.addFlashAttribute("message",nouveauProduit.getNom()+" à été ajouté au catalogue");
         return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
     }
 
     @GetMapping("/modifierProduit/{id}")
-    public String modifierProduitForm(@PathVariable Long id, Model model) {
+    public String modifierProduitForm(@PathVariable Long id, Model model,RedirectAttributes redirectAttributes) {
         Produit produit = produitRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produit invalide avec l'id:" + id));
 
@@ -202,7 +206,7 @@ public class ProduitController {
     }
 
     @PostMapping("/modifier")
-    public String ajouterProduit(Authentication authentication, Model model,
+    public String ajouterProduit(Authentication authentication, Model model,RedirectAttributes redirectAttributes,
             @RequestParam Long id,
             @RequestParam String description,
             @RequestParam double prix,
@@ -226,9 +230,13 @@ public class ProduitController {
 
         Utilisateur currenUtilisateur = utilisateurRepository.findByUsername(authentication.getName());
 
-        // TODO : sécurité pour modification de produit
+        // sécurités pour modification de produit
         if (produit.getUtilisateurId() != currenUtilisateur.getUserid())
+        {
+            redirectAttributes.addFlashAttribute("error","Ce n'est pas votre produit !");
             return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
+        }
+            
 
         produit.setDescription(description);
         produit.setPrix(prix);
@@ -243,7 +251,7 @@ public class ProduitController {
 
         int i = 0;
         for (MultipartFile coverImage : coverImages) {
-            // TODO : Gestion de plusieurs images
+            // Gestion de plusieurs images
             if (!coverImage.isEmpty()) {
                 String uploadDir = "src/main/resources/static/images";
 
@@ -271,17 +279,19 @@ public class ProduitController {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // TODO : Gérer l'exception ici
+                    redirectAttributes.addFlashAttribute("error","il y a eu une erreur concernant les images désolé");
                 }
 
-                // TODO : Ajouter le chemin de l'image à l'entité Produit
-                // Exemple : produit.setCoverImagePath(filename);
+                // Ajouter le chemin de l'image à l'entité Produit
+
                 produit.addImg(new ProduitImg(filename));
                 i++;
             }
         }
 
         produitRepository.save(produit);
+
+        redirectAttributes.addFlashAttribute("message",produit.getNom()+" à bien été modifié !");
 
         return "redirect:/utilisateur/" + authentication.getName() + "/ventes";
     }

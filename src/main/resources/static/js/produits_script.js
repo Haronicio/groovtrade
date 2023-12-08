@@ -3,14 +3,58 @@ function sleep(ms) {
   }
 // Script pour qu les grilles soit clickable 
 document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('.clickable-row');
+    const rows = document.querySelectorAll('.product-link');
     rows.forEach(row => {
         row.addEventListener('click', function() {
+            // Vérifie si l'élément cliqué ou un de ses parents est un formulaire
+            if (event.target.closest('.button-container')) {
+                // Ne fait rien si un formulaire ou un élément de formulaire a été cliqué
+                return;
+            }
             const productId = this.dataset.id;
             window.location.href = `/produits/details/${productId}`;
         });
     });
 });
+// Gérer le modal càd message d'info
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modalTrigger = document.getElementById('modalTrigger');
+    if (modalTrigger) {
+        const message = modalTrigger.getAttribute('data-message');
+        const error = modalTrigger.getAttribute('data-error');
+        console.log(error);
+        if ((message && message !== 'null') || (error && error !== 'null')) {
+            showModal(message ? 'message' : 'error', message || error);
+        }
+    }
+});
+
+
+
+function showModal(type, message) {
+    // Sélectionner les éléments du modal
+    var modalHeader = document.getElementById('modalHeader');
+    var modalBody = document.getElementById('modalBody');
+  
+    // Définir la couleur de fond en fonction du type
+    if (type === 'error') {
+      modalHeader.style.backgroundColor = 'rgba(255, 0, 0, 0.5)'; // Rouge transparent
+    } else {
+      modalHeader.style.backgroundColor = 'rgba(0, 123, 255, 0.5)'; // Bleu transparent
+    }
+  
+    // Définir le message
+    modalBody.textContent = message;
+  
+    // Afficher le modal
+    $('#messageModal').modal('show');
+  }
+  
+  // Exemple d'utilisation
+  // showModal('error', 'Ceci est un message d\'erreur.');
+  // showModal('message', 'Ceci est un message informatif.');
+  
 
 //Script pour gérer la taille des images
 function validateImages() {

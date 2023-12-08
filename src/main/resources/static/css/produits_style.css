@@ -1,81 +1,128 @@
+<<<<<<< Updated upstream
+=======
+.body{
+    margin-top: 20px;
+}
+
+.header-title{
+    margin-top: 15px;
+}
+
+.masque-div {
+    opacity: 0.3;
+}
+
+>>>>>>> Stashed changes
 .scrollable-genre-list {
-    max-height: 300px; /* ou la hauteur que vous souhaitez */
+    max-height: 300px;
+    /* ou la hauteur que vous souhaitez */
     overflow-y: scroll;
-    border: 1px solid #ccc; /* pour voir les limites du conteneur */
+    border: 1px solid #ccc;
+    /* pour voir les limites du conteneur */
     padding: 10px;
 }
 
 .product-link {
-    color: inherit; /* Utilise la couleur de texte héritée */
-    text-decoration: none; /* Enlève le soulignement */
+    color: inherit;
+    /* Utilise la couleur de texte héritée */
+    text-decoration: none;
+    /* Enlève le soulignement */
 }
 
 .product-link:hover {
-    color: inherit; /* Couleur au survol */
-    text-decoration: none; /* Enlève le soulignement au survol */
+    color: inherit;
+    /* Couleur au survol */
+    text-decoration: none;
+    /* Enlève le soulignement au survol */
 }
 
-.product{
-    transition: transform .2s; /* durée Animation */
+.product {
+    transition: transform .2s;
+    /* durée Animation */
 }
 
-.products-list
-{
+.products-list {
     /* background: linear-gradient(123deg, #1f1e1e 1%, #5c5751 87%); */
     border-radius: 10px;
 }
 
 
-.product:hover{
-    transform: scale(1.1); /* petit effet de zoom au survole*/
+.product:hover {
+    transform: scale(1.1);
+    /* petit effet de zoom au survole*/
 }
 
 /* bouton de supression et de modification d'article */
 .button-container {
-    position: absolute; /* Positionne les boutons de manière absolue à l'intérieur du div */
-    bottom: 0;             /* En haut du div */
-    right: 0;           /* À droite du div */
-    display: flex;      /* Utilise Flexbox pour l'alignement des boutons */
+    position: absolute;
+    /* Positionne les boutons de manière absolue à l'intérieur du div */
+    bottom: 0;
+    /* En haut du div */
+    right: 0;
+    /* À droite du div */
+    display: flex;
+    /* Utilise Flexbox pour l'alignement des boutons */
 
 }
 
-.close{
-    
-    color: red;         /* Couleur de la croix */
-    background-color: transparent; /* Fond transparent */
-    border: none;       /* Pas de bordure */
-    font-size: 40px;    /* Taille de la croix */
+.close {
+
+    color: red;
+    /* Couleur de la croix */
+    background-color: transparent;
+    /* Fond transparent */
+    border: none;
+    /* Pas de bordure */
+    font-size: 40px;
+    /* Taille de la croix */
 
 }
 
 .close:focus {
-    outline: none; /* Supprime le contour lors de la mise au point sur le bouton */
-    
+    outline: none;
+    /* Supprime le contour lors de la mise au point sur le bouton */
+
 }
 
+<<<<<<< Updated upstream
 .modify{
     
     color: blue;         /* Couleur de la croix */
     background-color: transparent; /* Fond transparent */
     border: none;       /* Pas de bordure */
     font-size: 40px;    /* Taille de la croix */
+=======
+.modify {
+
+    color: blue;
+    /* Couleur de la croix */
+    background-color: transparent;
+    /* Fond transparent */
+    border: none;
+    /* Pas de bordure */
+    font-size: 25px;
+    /* Taille de la croix */
+>>>>>>> Stashed changes
 
 }
 
 .modify:focus {
-    outline: none; /* Supprime le contour lors de la mise au point sur le bouton */
-    
+    outline: none;
+    /* Supprime le contour lors de la mise au point sur le bouton */
+
 }
 
 /* Barre Recherche */
 
 .advanced-search {
-    display: none; /*Les champs supplémentaires sont cachés par défaut*/
+    display: none;
+    /*Les champs supplémentaires sont cachés par défaut*/
 }
 
 .search-bar {
     position: relative;
-    max-width: 75%; /* ou la largeur que vous préférez */
+    max-width: 75%;
+    /* ou la largeur que vous préférez */
     margin: auto;
     padding: 10px;
 }
@@ -85,28 +132,60 @@
     margin-bottom: 0.5rem;
 }
 
-.form-control{
+.form-control {
     border-radius: 0.5rem;
 }
 
 /* Pour le style du header */
 
+@font-face {
+    font-family: myFont;
+    src: url(/font/aAbstractGroovy.ttf);
+  }
+
+.header-title a {
+    text-decoration: none;
+    color: chocolate;
+}
+
 .header-title {
     text-transform: uppercase;
     text-align: center;
+    display: block; /* Changé de block à inline-block */
+    letter-spacing: 1px;
+    font-size: 2em;
 }
 
-.header-search{
+.header-title span {
+    font-family: myFont;
+    display: inline-block;
+    animation: animate 4s ease-in-out infinite;
+    animation-delay: calc(.1s*var(--i)); /* Assurez-vous que la variable --i est définie quelque part */
+}
+
+@keyframes animate {
+    0%, 40%, 100% {
+        transform: translateY(0px);
+    }
+    20% {
+        transform: translateY(-20px);
+    }
+}
+
+
+
+.header-search {
     /* background: linear-gradient(123deg, #1f1e1e 1%, #5c5751 87%); */
     border-radius: 10px;
 }
 
 .headtool {
-    position: fixed; 
-    top: 10px;  
-    right: 10px; 
-    z-index: 100; /* S'assurer que le bouton reste au-dessus des autres éléments */
-    
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    /* S'assurer que le bouton reste au-dessus des autres éléments */
+
     margin-left: 5px;
 }
 
@@ -115,30 +194,47 @@ button.btn.btn-warn.headtool {
 }
 
 .btn-circle {
-    border-radius: 50%; /* Rend le bouton circulaire */
-    width: 50px;       /* Largeur du bouton */
-    height: 50px;      /* Hauteur du bouton */
-    padding: 0;        /* Enlève le padding par défaut */
+    border-radius: 50%;
+    /* Rend le bouton circulaire */
+    width: 50px;
+    /* Largeur du bouton */
+    height: 50px;
+    /* Hauteur du bouton */
+    padding: 0;
+    /* Enlève le padding par défaut */
 }
+
 .btn-circle img {
-    width: 100%;       /* Fait en sorte que l'image remplisse le bouton */
-    height: 100%;      /* Fait en sorte que l'image remplisse le bouton */
-    border-radius: 50%; /* Rend l'image circulaire */
+    width: 100%;
+    /* Fait en sorte que l'image remplisse le bouton */
+    height: 100%;
+    /* Fait en sorte que l'image remplisse le bouton */
+    border-radius: 50%;
+    /* Rend l'image circulaire */
 }
+
 /* détails produit */
 
 /* gallerie d'image*/
 
 .carousel-item img {
-    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur de son conteneur */
-    max-height: 500px; /* Limite la hauteur maximale de l'image */
-    object-fit: contain; /* Garantit que l'image est entièrement visible sans être déformée */
-    margin: auto; /* Centre l'image dans son conteneur */
+    max-width: 100%;
+    /* Assure que l'image ne dépasse pas la largeur de son conteneur */
+    max-height: 500px;
+    /* Limite la hauteur maximale de l'image */
+    object-fit: contain;
+    /* Garantit que l'image est entièrement visible sans être déformée */
+    margin: auto;
+    /* Centre l'image dans son conteneur */
 }
-.carousel-control-prev, .carousel-control-next {
-    background-color: rgba(0, 0, 0, 0.25); /* Fond noir semi-transparent */
-    color: white; /* Couleur de la flèche */
-    padding: 5px; 
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.25);
+    /* Fond noir semi-transparent */
+    color: white;
+    /* Couleur de la flèche */
+    padding: 5px;
 }
 
 /* historique */
@@ -147,4 +243,26 @@ button.btn.btn-warn.headtool {
     margin-bottom: 50px;
 }
 
+<<<<<<< Updated upstream
   
+=======
+/* détails */
+
+#commentaire-articles {
+    height: 80px;
+}
+
+
+/* Footer */
+
+.footer {
+    margin-top: 50px;
+    width: 100%;
+    background: linear-gradient(to right, #333333, #1a1a1a);
+    /* Dégradé de gris foncé à noir clair */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.5),
+        /* Ombre sur les côtés bas et droit */
+        -4px 0px 8px 0px rgba(255, 255, 255, 0.1);
+    /* Éclaircissement sur les côtés gauche et haut */
+}
+>>>>>>> Stashed changes
