@@ -1,4 +1,4 @@
-package application.spring.controller;
+package application.spring.controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
