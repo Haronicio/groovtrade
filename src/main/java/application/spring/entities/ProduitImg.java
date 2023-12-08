@@ -16,25 +16,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class ProduitImg implements Serializable
-{
-    // @Id
-    // @GeneratedValue
-    // private Long id;
+public class ProduitImg implements Serializable {
 
     private String path;
-
-    // @ManyToOne
-    // private Produit produit;
 
     @Override
     public String toString() {
         return "{" +
-            // " id='" + getId() + "'" +
-            ", path='" + getPath() + "'" +
-            "}";
+        // " id='" + getId() + "'" +
+                ", path='" + getPath() + "'" +
+                "}";
     }
 
-
 }
-

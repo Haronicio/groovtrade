@@ -7,6 +7,5 @@ import application.spring.entities.Utilisateur;
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>{
     public Utilisateur findByUsername(String username);
-    //public List<Utilisateur> findByUserid(Long userid);
     public Utilisateur findByUserid(Long userid);
 }

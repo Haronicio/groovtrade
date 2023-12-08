@@ -18,11 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class ProduitMeta implements Serializable
-{
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // private Long id;
+public class ProduitMeta implements Serializable {
 
     @Column(length = 500)
     private String nom;
@@ -35,21 +31,16 @@ public class ProduitMeta implements Serializable
     @Column(length = 500)
     private String genres;
 
-    // Changer pour Embedded
-    // @OneToOne(mappedBy = "meta")
-    // private Produit produit;
-
     @Override
     public String toString() {
         return "{" +
-            // " id='" + getId() + "'" +
-            ", nom='" + getNom() + "'" +
-            ", artiste='" + getArtiste() + "'" +
-            ", album='" + getAlbum() + "'" +
-            ", annee='" + getAnnee() + "'" +
-            ", genres='" + getGenres() + "'" +
-            "}";
+        // " id='" + getId() + "'" +
+                ", nom='" + getNom() + "'" +
+                ", artiste='" + getArtiste() + "'" +
+                ", album='" + getAlbum() + "'" +
+                ", annee='" + getAnnee() + "'" +
+                ", genres='" + getGenres() + "'" +
+                "}";
     }
 
 }
-
