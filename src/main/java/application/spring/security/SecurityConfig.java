@@ -35,15 +35,18 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
             .anyRequest().permitAll()
-            .and()
+            .and()            
+            
+            .cors(withDefaults())
             .formLogin() // Utiliser la page de connexion par défaut de Spring Security
-            .and()
+            .and().httpBasic(Customizer.withDefaults())
             .logout()
             .logoutSuccessUrl("/produits/liste")
             .permitAll();
 
         return http.build();
 	}
+
     //creation nouveau utilisateur 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
@@ -66,7 +69,7 @@ public class SecurityConfig {
             }
         };
     }
-
+    
     //permet d'encoder le mdp
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
