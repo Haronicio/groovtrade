@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import application.spring.Model.commentaire.SimpleCommentaire;
-import application.spring.Model.livraison.SimpleLivraison;
-import application.spring.Model.produit.SimpleProduit;
-import application.spring.Model.register.SimpleUser;
 import application.spring.entities.Historique;
 import application.spring.entities.Panier;
 import application.spring.entities.PanierItem;
 import application.spring.entities.Produit;
 import application.spring.entities.ProduitImg;
 import application.spring.entities.Utilisateur;
+import application.spring.model.commentaire.SimpleCommentaire;
+import application.spring.model.livraison.SimpleLivraison;
+import application.spring.model.produit.SimpleProduit;
+import application.spring.model.register.SimpleUser;
 import application.spring.repository.ProduitRepository;
 import application.spring.repository.UtilisateurRepository;
 

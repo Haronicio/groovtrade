@@ -1,4 +1,4 @@
-package application.spring.Model.register;
+package application.spring.model.livraison;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,13 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SimpleUser {
-    String username;
-    String password;
-    String email;
+@Getter
+@Setter
+public class SimpleLivraison {
+    private String info;
 }

@@ -1,4 +1,4 @@
-package application.spring.Model.commentaire;
+package application.spring.model.produit;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SimpleCommentaire {
+public class SimpleProduit {
     private Long produitid;
     private String commentaire;
+    private int quantite;
 }

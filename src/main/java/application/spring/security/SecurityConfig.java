@@ -21,15 +21,28 @@ public class SecurityConfig {
     //gestion operation sur requete
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http.authorizeHttpRequests(auth -> {
-            auth.antMatchers("/api/produits/register").permitAll();
-            auth.anyRequest().authenticated();
-        }).httpBasic(Customizer.withDefaults())
-        //.oauth2Login(Customizer.withDefaults())
-                .logout(x->x.logoutUrl("/logout").permitAll())
-                               .csrf(csrf -> csrf.disable())
-                .cors(withDefaults())
-                .build();
+		// return http.authorizeHttpRequests(auth -> {
+        //     auth.antMatchers("/api/produits/register").permitAll();
+        //     auth.anyRequest().authenticated();
+        // }).httpBasic(Customizer.withDefaults())
+        // //.oauth2Login(Customizer.withDefaults())
+        //         .logout(x->x.logoutUrl("/logout").permitAll())
+        //                        .csrf(csrf -> csrf.disable())
+        //         .cors(withDefaults())
+        //         .build();
+
+        http
+            .authorizeRequests()
+            .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
+            .anyRequest().permitAll()
+            .and()
+            .formLogin() // Utiliser la page de connexion par défaut de Spring Security
+            .and()
+            .logout()
+            .logoutSuccessUrl("/produits/liste")
+            .permitAll();
+
+        return http.build();
 	}
     //creation nouveau utilisateur 
     @Bean

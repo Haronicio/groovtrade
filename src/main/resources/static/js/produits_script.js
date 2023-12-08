@@ -3,14 +3,94 @@ function sleep(ms) {
   }
 // Script pour qu les grilles soit clickable 
 document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('.clickable-row');
+    const rows = document.querySelectorAll('.product-link');
     rows.forEach(row => {
         row.addEventListener('click', function() {
+            // Vérifie si l'élément cliqué ou un de ses parents est un formulaire
+            if (event.target.closest('.button-container')) {
+                // Ne fait rien si un formulaire ou un élément de formulaire a été cliqué
+                return;
+            }
             const productId = this.dataset.id;
             window.location.href = `/produits/details/${productId}`;
         });
     });
 });
+// Gérer le modal càd message d'info
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modalTrigger = document.getElementById('modalTrigger');
+    if (modalTrigger) {
+        const message = modalTrigger.getAttribute('data-message');
+        const error = modalTrigger.getAttribute('data-error');
+        console.log(error);
+        if ((message && message !== 'null') || (error && error !== 'null')) {
+            showModal(message ? 'message' : 'error', message || error);
+        }
+    }
+});
+
+
+
+function showModal(type, message) {
+    // Sélectionner les éléments du modal
+    var modalHeader = document.getElementById('modalHeader');
+    var modalBody = document.getElementById('modalBody');
+  
+    // Définir la couleur de fond en fonction du type
+    if (type === 'error') {
+      modalHeader.style.backgroundColor = 'rgba(255, 0, 0, 0.5)'; // Rouge transparent
+    } else {
+      modalHeader.style.backgroundColor = 'rgba(0, 123, 255, 0.5)'; // Bleu transparent
+    }
+  
+    // Définir le message
+    modalBody.textContent = message;
+  
+    // Afficher le modal
+    $('#messageModal').modal('show');
+  }
+  
+  // Exemple d'utilisation
+  // showModal('error', 'Ceci est un message d\'erreur.');
+  // showModal('message', 'Ceci est un message informatif.');
+  
+
+//Script pour changer dynamiquement la quantité dans le panier
+// document.addEventListener('DOMContentLoaded', function() {
+//     var quantiteInput = document.getElementById('quantite');
+//     if (quantiteInput) {
+//         quantiteInput.addEventListener('change', function() {
+//             var monFormulaire = document.getElementById('changeQ');
+//             if (monFormulaire) {
+//                 monFormulaire.submit();
+//             }
+//         });
+//     }
+// });
+
+
+//Script pour gérer la taille des images
+function validateImages() {
+    const maxImgSize = 307200; // 300 Ko
+    const maxImgNumber = 5;
+    var files = document.getElementById('coverImages').files;
+
+    if (files.length > maxImgNumber) {
+        alert("5 images maximum");
+        return false;
+    }
+
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].size > maxImgSize) {
+            alert("L'image " + files[i].name + " est trop volumineuse.");
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 // Script pour gérer l'affichage des champs de recherche avancée
 document.addEventListener('DOMContentLoaded', function() {

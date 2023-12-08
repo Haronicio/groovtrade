@@ -18,10 +18,8 @@ public class LoginController {
         if (auth != null && auth.isAuthenticated()) {
             return "redirect:/login/done"; // Redirige vers la page d'accueil
         }
-
         return "login";
     }
-
      @GetMapping("/login/done")
     public String doneLogin() {
 
