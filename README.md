@@ -1,6 +1,8 @@
 # Développement d’une application (E-Shop ) Web avec Spring
 DAUVET-DIAKHATE Haron et ZHANG Changrui
 
+connecté vous avec le compte suivant : myadmin mdp : admin ou créer  un compte (peut être cassé avec le dernier commit ?)
+
 ## Introduction
 
 Dans le cadre de l'UE DevRep, nous réalisons un projet qui consiste à développer une application web simplifiée d'un système de type E-shop. Cette application doit inclure un catalogue, une recherche dans celui-ci, créer un compte utilisateur, ajouter au panier des articles, passer des commandes et consulter l'historique des commandes passés.
