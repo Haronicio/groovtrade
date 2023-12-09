@@ -139,7 +139,7 @@
                                                                                                 th:value="${p.produit.id}" />
                                                                                         <input type="number"
                                                                                                 id="quantite" name="nb"
-                                                                                                onchange="document.forms['changeQ'].submit()"
+                                                                                                onchange="() => {console.log(nb,produitId,'test') ; document.forms['changeQ'].submit()}"
                                                                                                 th:value="${p.quantite}" />
                                                                                 </form>
                                                                         </div>

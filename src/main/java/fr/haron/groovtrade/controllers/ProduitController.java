@@ -290,6 +290,7 @@ public class ProduitController {
         }
 
         produitRepository.save(produit);
+        utilisateurRepository.save(currenUtilisateur);
 
         redirectAttributes.addFlashAttribute("message",produit.getNom()+" à bien été modifié !");
 

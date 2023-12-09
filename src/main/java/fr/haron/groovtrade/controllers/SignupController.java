@@ -50,6 +50,8 @@ public class SignupController {
                                      @RequestParam("image") MultipartFile imageFile) {
         // Logique pour enregistrer l'utilisateur
         String imgPath = saveImage(imageFile,username);
+
+        System.out.println("ICI");
         
         Utilisateur newUser = new Utilisateur();
         newUser.setUsername(username);
@@ -63,6 +65,8 @@ public class SignupController {
         newUser.setRole("USER");
 
         utilisateurRepository.save(newUser);
+
+        System.out.println("LA");
 
         return "redirect:/login";
     }
