@@ -1,8 +1,6 @@
 # Développement d’une application (E-Shop ) Web avec Spring
 DAUVET-DIAKHATE Haron et ZHANG Changrui
 
-connecté vous avec le compte suivant : myadmin mdp : admin ou créer  un compte (peut être cassé avec le dernier commit ?)
-
 ## Introduction
 
 Dans le cadre de l'UE DevRep, nous réalisons un projet qui consiste à développer une application web simplifiée d'un système de type E-shop. Cette application doit inclure un catalogue, une recherche dans celui-ci, créer un compte utilisateur, ajouter au panier des articles, passer des commandes et consulter l'historique des commandes passés.
@@ -22,6 +20,8 @@ Dans ce document nous verrons comment nous avons mis en oeuvre cette application
 Cette description est celle de notre site de E-Shop, en effet nous avons choisi de réaliser un site d'achat et vente de seconde main de supports musicaux.
 Dans cette section nous allons décire les différentes structures de données de notre site que ce soit au sein du JPA ou dans la base de donnée
 Pour maintenir notre base de donnée nous avons créer une database **groovtrade**, il existe une copie de celle-ci dans le dossier *bd*. Vous pourrez l'importé en faisant `mysql -u username -p database_name < groovtrade.sql` dans votre console.
+
+pour l'éssayer, connectez vous sur le compte de **myadmin** avec le mot de passe **admin** ou créer votre propre compte (attention l'image doit faire moin de 300Ko), retrouvé le tutoriel complet dans ma dans la partie *Guide d'utilisation* de ce document.
 
 ### Entités
 
