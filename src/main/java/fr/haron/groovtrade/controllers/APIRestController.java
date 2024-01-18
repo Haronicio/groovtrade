@@ -354,7 +354,6 @@ public class APIRestController {
 		return ResponseEntity.ok(globalDTO);
 	}
 
-	//TODO : BUG
 	@GetMapping("/utilisateur/{username}/historique")
 	public ResponseEntity<GlobalDTO> historiqueAchats(@PathVariable String username, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(username)) {

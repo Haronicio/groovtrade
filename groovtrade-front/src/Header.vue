@@ -1,0 +1,67 @@
+<template>
+     <h1 class="header-title">
+        <a href="/produits/liste">
+            <span style="--i:0;">G</span>
+            <span style="--i:1;">r</span>
+            <span style="--i:2;">o</span>
+            <span style="--i:3;">o</span>
+            <span style="--i:4;">v</span>
+            <span style="--i:5;">T</span>
+            <span style="--i:6;">r</span>
+            <span style="--i:7;">a</span>
+            <span style="--i:8;">d</span>
+            <span style="--i:9;">e</span>
+        </a>
+    </h1>
+
+    <div th:if="${userid == null}">
+        <a href="/login"><button type="button" class="btn btn-primary headtool">Connexion</button></a>
+        <a href="/signup"><button type="button" class="btn btn-warn headtool">Inscription</button></a>
+    </div>
+    <div th:unless="${userid == null}">
+        <a th:href="@{/utilisateur/{username}(username=${username})}"><button class="btn btn-circle headtool">
+                <img th:src="${'/images/'+ userPP}" alt="Image">
+            </button></a>
+    </div>
+
+    <!-- <a  th:href="@{/utilisateur/{username}(username=${username})}" id="monBouton">Mon Compte</a>Bouton de connexion ou d'accès au compte -->
+    <div class="card-body header-search">
+        <div class="search-bar mt-3">
+            <form method="get" th:action="@{/produits/liste}" id="searchForm">
+                <!-- <label>Keyword</label> -->
+                <input class="form-control form-control-lg" type="search" placeholder="Recherche" name="keyword"
+                    aria-label="Keyword" id="input-keyword">
+                <button class="btn btn-outline-secondary" type="button" id="advancedSearchToggle" aria-haspopup="true"
+                    aria-expanded="false">
+                    +
+                </button>
+                <div class="advanced-search mt-2" id="advancedSearch">
+                    <input class="form-control" type="search" placeholder="Artiste" name="artiste" aria-label="Artiste">
+                    <input class="form-control mt-2" type="search" placeholder="Titre" name="nom" aria-label="Titre">
+                    <!-- attention nom = titre-->
+                    <input class="form-control mt-2" type="search" placeholder="Album" name="album" aria-label="Album">
+                    <input class="form-control mt-2" type="search" placeholder="Genres" name="genres"
+                        aria-label="Genres">
+                    <!-- TODO: chercher plusieurs genres-->
+                    <!-- années -->
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <input class="form-control" type="number" name="annee_inf" placeholder="Année Min.">
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" type="number" name="annee_sup" placeholder="Année Max.">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">🔎</button>
+            </form>
+        </div>
+    </div>
+</template>
+  
+<script>
+export default {
+    name: 'Header'
+    // Logique du composant ici
+}
+</script>

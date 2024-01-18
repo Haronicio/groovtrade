@@ -1,0 +1,93 @@
+<!-- TODO : lien vers extrait de musique, filtrer recherche, non inscrit : catalogue , inscrit : catalogue + panier + historique + ... -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Template Application Vue</title>
+    <!--  Vue.js CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- axios pour le fetch plus simple -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Optionnel : jQuery et Popper.js (certains composants de Bootstrap, comme les modales, les nécessitent) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Feuille de style -->
+    <link rel="stylesheet" href="/css/produits_style.css">
+    <!-- Script -->
+    <script defer src="/js/produits_script.js"></script>
+    <script src="/js/API_scripts.js"></script>
+    <!-- <script defer>get_Vue_data('');</script> -->
+    
+</head>
+
+<body>
+    <div id="app">
+        <!-- Logique vue ici -->
+        <!-- TODO header -->
+        <header-component :username="username" :userPP="userPP" :userid="userid"></header-component>
+        <!-- TODO modal -->
+        <!-- Début du corps -->
+        <div class="container mt-2 welcome">
+            <h2>Bienvenue sur GroovTrade !</h2>
+            <p>Plongez dans l'univers de GroovTrade pour enrichir vos collections ou partager vos trésors musicaux
+                ! Que vous soyez un mélomane passionné ou une entreprise musicale, découvrez l'opportunité
+                d'acheter et de vendre des vinyles, K7 et CD, neufs ou d'occasions. Des dernières sorties aux pépites
+                indépendantes,
+                vos produits trouveront toujours leur place dans la collection d'un autre passionné.
+                Alors rejoignez-nous pour créer des connexions musicales uniques, élargir vos horizons sonores
+                et faire résonner votre passion au sein de la communauté GroovTrade.
+            </p>
+            <a href="/welcome">Cliquez ici pour accèder au guide d'utilisation</a>
+        </div>
+        <div v-if="loading">Chargement...</div>
+        <div v-else-if="error">{{ error }}</div>
+        <div else class="container mt-2">
+            <div class="card products-list">
+                <!-- <div class="card-header">Liste de Produits Disponibles</div> -->
+                <div class="card-body">
+                    <!-- Liste des produits -->
+                    <!-- Début de la grille des produits -->
+                    <div class="row">
+                        <div v-for="p in listProduits" class="col-md-3 mb-3 product">
+                            <a v-bind:href="'produits/details/'+ p.id" class="text-decoration-none product-link">
+                                <div v-if="p != null" class="card h-100 border-0">
+                                    <img v-if="p.imgs != null && p.imgs.length > 0" v-bind:src="'/images/'+ p.imgs.at(0).path" alt="Image de couverture"
+                                        class="card-img-top"></img>
+                                    <div class="card-body">
+                                        <h5 class="card-title" v-text="p.meta.nom">
+                                        </h5>
+                                        <p class="card-text" v-text="p.type"></p>
+                                        <h6 class="card-text" v-text="p.prix + ' €'"></h6>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <!-- Logique pour nouvelle ligne après chaque 4 produits -->
+                    </div>
+                    <!-- Fin de la grille des produits -->
+
+                    <!-- Formulaire d'ajout de produit avec possibilité d'upload des fichiers-->
+                    <!-- <a href="/produits/ajouterProduit" class="btn btn-primary">Ajouter un nouveau produit</a> -->
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <footer-component></footer-component>
+    </div>
+    <!-- Script de mise en forme de la page -->
+    <script>get_Vue_data('/produits/liste');</script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: 'groovtrade'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./bd/groovtrade.sql:/docker-entrypoint-initdb.d/groovtrade.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 15s
+      timeout: 1s
+      retries: 3
+  app:
+    environment: 
+      SPRING_PROFILES_ACTIVE: docker
+    image: groovtrade
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+
+
+
+
+
+  

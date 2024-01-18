@@ -234,15 +234,26 @@ Voici quelques capture d'écran
 
 
 
-### ReactJS
+### Framework
 
-l'API peux s'utiliser conjointement avec ReactJS par exemple pour généré du code HTML dans le quel est inclu nos objets sérialisés.
+A l'instar de PHP, Python et Java Spring, il est possible de créer des serveurs avec JavaScript. L'intérêt est d'utilisé des frameworks, donc des outils de développement WEB qui intéragissent avec le client et éxécutant le code du rendu de son côté (à différencié avec thymleaf qui fait le rendu côté server avant de l'envoyer au client)  ils existent sous forme de nombreux module dans JavaScript. Les Frameworks les plus connu comprennent ReactJS par Facebook, AngularJS par Google et Vue.js qui est OpenSource, il en existe de nombreux autres Framework mais nous avons choisis d'utiliser Vue.js qui est plus léger en terme de dépendances, de codes et qui a une syntaxe ce rapprochant de thymleaf.
+
+
+l'API Rest peux s'utiliser conjointement avec ReactJS par exemple pour généré du code HTML dans le quel est inclu nos objets sérialisés.
 
 Dans l'état actuelle de l'application, ReactJS n'est pas complètement fonctionnelle, en revanche l'API REST fonctionne. A l'avenir, nous transformeront tous les blocs thymleaf en fonction ReactJS.
 
 Nous avons enfaite développer ReactJS avec une API de test sur une branche et les vues thymleaf avec les controllers dont l'API final sur une autre, nous n'avons pas eu le temps encore d'adapter les deux branches.
 
 Vous retrouverez cettevue dans le dossier */front-end*
+
+#### Docker
+
+Docker est un outil essentiel pour assurer la portabilité et la cohérence des applications en les emballant dans des conteneurs isolés. Dans notre cas, Docker s'avère utile pour maintenir une uniformité de l'environnement d'exécution de notre application Spring Boot, indépendamment de la machine hôte.
+
+Nous commençons par créer un Dockerfile pour emballer notre application JAR dans un conteneur Docker. Ensuite, avec `docker build -t groovtrade`, nous construisons l'image Docker de notre application. L'utilisation de Docker Compose, définie dans docker-compose.yml, nous permet de configurer facilement notre application et notre base de données MySQL. Pour s'adapter spécifiquement à l'environnement Docker, nous utilisons application-docker.properties dans notre application Spring Boot. Un point crucial est l'ajout d'un health check dans le service MySQL, garantissant ainsi que notre application ne démarre que lorsque MySQL est pleinement opérationnel. On démarre notre application avec `docker-compose up`
+
+Cette approche offre de grandes possibilités pour l'avenir, notamment en facilitant le développement distribué grâce à des environnements partagés et cohérents. De plus, elle nous permet d'intégrer d'autres services, comme un serveur utilisant une API REST, simplement en ajoutant de nouveaux services à notre configuration Docker Compose. L'utilisation de Docker ouvre ainsi la voie à une flexibilité accrue dans le déploiement et le développement de notre application.
 
 
 ## Conclusion
