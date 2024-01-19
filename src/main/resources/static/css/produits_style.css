@@ -282,6 +282,11 @@ button.btn.btn-warn.headtool {
     background-color: var(--accent-color);
     border-color : var(--accent-color) !important;
 }
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    border-color : var(--accent-color) !important;
+    filter: saturate(.5);
+}
 
 a {
     color: var(--accent-color);

@@ -298,11 +298,11 @@ public class UtilisateurController {
             @RequestParam("adresse") String adresse,
             @RequestParam("ville") String ville,
             @RequestParam("pays") String pays,
-            @RequestParam("zip") String zip,
+            @RequestParam("zip") String zip/*/,
             @RequestParam("nom_carte") String nomCarte,
             @RequestParam("numero_carte") String numeroCarte,
             @RequestParam("cvv_carte") String cvvCarte,
-            @RequestParam("annee_mois_carte") String anneMoisCarte)
+            @RequestParam("annee_mois_carte") String anneMoisCarte*/)
 
     /* @RequestParam("annee_carte") String anneeCarte */
     {
