@@ -1,3 +1,6 @@
+
+/*  */
+
 .body{
     min-height: 100%;
     position: relative;
@@ -5,7 +8,6 @@
     margin-top: 20px;
     margin-bottom: 60px;
 }
-
 .header-title{
     margin-top: 15px;
 }
@@ -256,10 +258,37 @@ button.btn.btn-warn.headtool {
     margin-top: 241px;
     margin-top: 50px;
     width: 100%;
-    background: linear-gradient(to right, #333333, #1a1a1a);
+    /* background: linear-gradient(to right, #333333, #1a1a1a); */
     /* Dégradé de gris foncé à noir clair */
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.5),
+    /* box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.5), */
         /* Ombre sur les côtés bas et droit */
-        -4px 0px 8px 0px rgba(255, 255, 255, 0.1);
+        /* -4px 0px 8px 0px rgba(255, 255, 255, 0.1); */
     /* Éclaircissement sur les côtés gauche et haut */
+}
+
+
+/* Theme */
+
+:root{
+    --accent-color :  dodgerblue ; 
+}
+
+
+.text-primary {
+    color: var(--accent-color) !important;
+  }
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color : var(--accent-color) !important;
+}
+
+a {
+    color: var(--accent-color);
+}
+
+.header-title a {
+    text-decoration: none;
+    color: var(--accent-color) !important;
+    filter: drop-shadow(0 0 1rem var(--accent-color) ) invert(1)  !important;
 }

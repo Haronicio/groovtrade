@@ -1,3 +1,7 @@
+// theme
+document.documentElement.setAttribute("data-bs-theme", "dark");
+
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
