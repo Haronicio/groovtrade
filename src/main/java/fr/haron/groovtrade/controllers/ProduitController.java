@@ -49,10 +49,12 @@ public class ProduitController {
             @RequestParam(name = "nom", required = false) String nom,
             @RequestParam(name = "album", required = false) String album,
             @RequestParam(name = "genres", required = false) String genres,
-            @RequestParam(name = "annee_inf", required = false, defaultValue = "0") Integer annee_inf,
-            @RequestParam(name = "annee_sup", required = false, defaultValue = "2100") Integer annee_sup) {
+            @RequestParam(name = "annee_inf", required = false) Integer annee_inf,
+            @RequestParam(name = "annee_sup", required = false) Integer annee_sup) {
 
         List<Produit> produits;
+
+        String type = "";
 
         boolean isAdvancedSearch = (artiste != null && !artiste.isEmpty()) ||
                 (nom != null && !nom.isEmpty()) ||
@@ -62,6 +64,8 @@ public class ProduitController {
                 annee_sup != null;
 
         if (isAdvancedSearch) {
+            annee_inf = (annee_inf == null) ? 0 : annee_inf;
+            annee_sup = (annee_sup == null) ? 2100 : annee_sup;
             // Utiliser la recherche par critères
             produits = produitRepository.findByCombinedCriteria(
                     "%" + keyword + "%",

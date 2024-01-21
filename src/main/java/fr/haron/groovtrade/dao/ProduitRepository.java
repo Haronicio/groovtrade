@@ -28,6 +28,7 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
        "p.meta.genres LIKE :keyword OR " +
        "p.meta.artiste LIKE :keyword OR " +
        "p.meta.annee LIKE :keyword AND " +
+       "p.type = ' ' AND " +
        "p.archived = false")
     List<Produit> findGlobal(@Param("keyword") String keyword);
 
@@ -40,6 +41,7 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
        "(p.meta.album LIKE %:album% OR :album IS NULL) AND " +
        "(p.meta.genres LIKE %:genres% OR :genres IS NULL) AND " +
        "((p.meta.annee BETWEEN :annee_inf AND :annee_sup) OR (:annee_inf IS NULL OR :annee_sup IS NULL)) AND "+
+       "p.type = ' ' AND " +
        "p.archived = false")
     List<Produit> findByCombinedCriteria(@Param("keyword") String keyword,
                                      @Param("artiste") String artiste,
