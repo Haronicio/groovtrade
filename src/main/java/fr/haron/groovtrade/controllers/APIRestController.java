@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
@@ -35,6 +38,7 @@ import fr.haron.groovtrade.dto.GlobalDTO;
 import fr.haron.groovtrade.dto.RedirectDTO;
 import fr.haron.groovtrade.dto.ErrorDTO;
 import fr.haron.groovtrade.dto.MessageDTO;
+import fr.haron.groovtrade.dto.LoginDTO;
 import fr.haron.groovtrade.dto.produit.AjouterProduitDTO;
 import fr.haron.groovtrade.dto.produit.ModifierProduitDTO;
 import fr.haron.groovtrade.dto.produit.ProduitDetailsDTO;
@@ -51,6 +55,7 @@ import fr.haron.groovtrade.entities.PanierItem;
 import fr.haron.groovtrade.entities.Produit;
 import fr.haron.groovtrade.entities.ProduitMeta;
 import fr.haron.groovtrade.entities.Utilisateur;
+
 
 @RestController
 @RequestMapping("/api")
@@ -92,7 +97,6 @@ public class APIRestController {
 		return gDTO;
 	}
 
-	// TODO : Pour le controller Login
 
 	// TODO : Pour le controller SignUP
 
@@ -585,6 +589,24 @@ public class APIRestController {
 	}
 
 	// TODO: Form
+
+	@Autowired
+    private AuthenticationManager authenticationManager;
+
+	@PostMapping("/login")
+    public ResponseEntity<GlobalDTO> authenticateUser(@RequestBody LoginDTO LoginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+			LoginDTO.getUsername(), LoginDTO.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.ok(createGlobalDTO(authentication, new MessageDTO("LOGIN SUCCESSFUL!")));
+    }
+
+	@GetMapping("/getOrigin")
+    public String getOrigin(HttpServletRequest request) {
+		System.out.println(request.getHeader("Origin"));
+        return "Origin: " + request.getHeader("Origin");
+    }
 
 	// @GetMapping("/checkout")
 	// public String checkoutForm(@PathVariable String username, Model model,

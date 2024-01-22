@@ -1,0 +1,14 @@
+Feature,#Markers,#Code Markers,#File Markers,#Propagations,#Deletion Propagations,#Replacement Propagations,#Resource Propagations,#Path Propagations
+
+DarkTheme,1,1,0,1,1,0,0,0
+RestAPI,1,0,1,0,0,0,0,1
+Thymleaf,5,0,5,1,1,0,0,19
+Controllers,0,0,0,0,0,0,0,0
+Credit Card Payment,1,1,0,1,0,1,0,0
+Allow Anonymous,2,2,0,2,1,1,0,0
+Historic and Order,8,6,2,6,6,0,0,2
+Add Product,9,7,2,7,7,0,0,2
+Account,6,3,3,3,3,0,0,3
+Title Font,1,1,0,1,0,0,1,0
+Product Type,2,2,0,2,0,0,2,0
+accentColor,1,1,0,1,0,0,1,0

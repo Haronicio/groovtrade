@@ -34,9 +34,9 @@ public class SecurityConfig {
         //                        .csrf(csrf -> csrf.disable())
         //         .cors(withDefaults())
         //         .build();
-
         http
             .authorizeRequests()
+            
             .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
             .antMatchers("/api/utilisateur/**").authenticated()
             .anyRequest().permitAll()
@@ -45,7 +45,9 @@ public class SecurityConfig {
             .and()
             .logout()
             .logoutSuccessUrl("/produits/liste")
-            .permitAll();
+            .permitAll()
+            .and()
+            .csrf().disable();
 
         return http.build();
 	}
@@ -68,7 +70,8 @@ public class SecurityConfig {
                                 "http://localhost:8080",
                                 "http://localhost:8081",
                                 "http://127.0.0.1:3000",
-                                "http://localhost:3000");
+                                "http://localhost:3000"
+                                );
             }
         };
     }

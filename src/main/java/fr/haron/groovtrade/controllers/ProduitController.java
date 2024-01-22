@@ -64,6 +64,7 @@ public class ProduitController {
                 annee_sup != null;
 
         if (isAdvancedSearch) {
+            System.out.println("ADVANCED SEARCH");
             annee_inf = (annee_inf == null) ? 0 : annee_inf;
             annee_sup = (annee_sup == null) ? 2100 : annee_sup;
             // Utiliser la recherche par critères
