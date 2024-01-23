@@ -1,6 +1,5 @@
 package fr.haron.groovtrade.controllers;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +35,7 @@ import fr.haron.groovtrade.dao.ProduitRepository;
 import fr.haron.groovtrade.dao.UtilisateurRepository;
 import fr.haron.groovtrade.dto.DTOInterface;
 import fr.haron.groovtrade.dto.GlobalDTO;
+import fr.haron.groovtrade.dto.JwtDTO;
 import fr.haron.groovtrade.dto.RedirectDTO;
 import fr.haron.groovtrade.dto.ErrorDTO;
 import fr.haron.groovtrade.dto.MessageDTO;
@@ -50,14 +51,14 @@ import fr.haron.groovtrade.dto.utilisateur.ModifierPanierDTO;
 import fr.haron.groovtrade.dto.utilisateur.ProfileDTO;
 import fr.haron.groovtrade.dto.utilisateur.UtilisateurDTO;
 import fr.haron.groovtrade.entities.Historique;
-import fr.haron.groovtrade.entities.Panier;
 import fr.haron.groovtrade.entities.PanierItem;
 import fr.haron.groovtrade.entities.Produit;
 import fr.haron.groovtrade.entities.ProduitMeta;
 import fr.haron.groovtrade.entities.Utilisateur;
-
+import fr.haron.groovtrade.security.JwtService;
 
 @RestController
+// @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api")
 public class APIRestController {
 
@@ -98,7 +99,6 @@ public class APIRestController {
 	}
 
 
-	// TODO : Pour le controller SignUP
 
 	// Pour le Controller Produit
 
@@ -110,9 +110,9 @@ public class APIRestController {
 			@RequestParam(name = "nom", required = false) String nom,
 			@RequestParam(name = "album", required = false) String album,
 			@RequestParam(name = "genres", required = false) String genres,
-			@RequestParam(name = "annee_inf", required = false, defaultValue = "0") Integer annee_inf,
-			@RequestParam(name = "annee_sup", required = false, defaultValue = "2100") Integer annee_sup) {
-
+			@RequestParam(name = "annee_inf", required = false) Integer annee_inf,
+			@RequestParam(name = "annee_sup", required = false) Integer annee_sup) {
+		
 		List<Produit> produits;
 
 		boolean isAdvancedSearch = (artiste != null && !artiste.isEmpty()) ||
@@ -124,6 +124,7 @@ public class APIRestController {
 
 		if (isAdvancedSearch) {
 			// Utiliser la recherche par critères
+			annee_inf = (annee_inf == null) ? 0 : annee_inf;annee_sup = (annee_sup == null) ? 2100 : annee_sup;
 			produits = produitRepository.findByCombinedCriteria(
 					"%" + keyword + "%",
 					"%" + (artiste != null ? artiste : "") + "%",
@@ -590,8 +591,11 @@ public class APIRestController {
 
 	// TODO: Form
 
+	// SIGNUP LOGIN
 	@Autowired
     private AuthenticationManager authenticationManager;
+	@Autowired
+    private JwtService jwtService;
 
 	@PostMapping("/login")
     public ResponseEntity<GlobalDTO> authenticateUser(@RequestBody LoginDTO LoginDTO) {
@@ -599,7 +603,9 @@ public class APIRestController {
 			LoginDTO.getUsername(), LoginDTO.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok(createGlobalDTO(authentication, new MessageDTO("LOGIN SUCCESSFUL!")));
+        String token = jwtService.GenerateToken(LoginDTO.getUsername());
+		
+		return ResponseEntity.ok(createGlobalDTO(authentication, new JwtDTO(token)));
     }
 
 	@GetMapping("/getOrigin")

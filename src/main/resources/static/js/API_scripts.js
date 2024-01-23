@@ -1,51 +1,155 @@
 // Ce script contient les datas et les logiques pour VueJS
+// AInsi que les logiques pour cette application frontend
 
 const API_URL = 'http://localhost:8080/api';
 const API_URI = window.location.search;
 
+// Fonctions Post pour les actions
+const postFunctions = {
+    // template
+    async postAjouterPanier() {
+        const url = API_URL + '/utilisateur/' + this.username + '/ajouterPanier';
+        console.log(this.$refs.nbProduit.value);
+        try {
+            const response = await axios.post(url, {
+                produitId: this.produit.id,
+                nbProduit: this.$refs.nbProduit.value,
+                commentaire: this.$refs.commentaire.value
+            });
+    
+            // Logique spécifique à réaliser du côté client
+            console.log("Réponse reçue :", response.data);
+    
+        } catch (error) {
+            console.error("Erreur lors de l'ajout au panier :", error);
+            // Gérer l'erreur (par exemple, afficher un message à l'utilisateur)
+        }
+    },
+    async postnier() {
+        // event.preventDefault(); // Empêche le comportement par défaut du formulaire
+        console.log(this.username);
+        // var url = API_URL + '/URL_du_post';
+        // const username = document.getElementById('Id_du_formulaire').value;
 
-// Page principal
-function get_Vue_data(url,uri=API_URI){
-    var url = API_URL + url + uri;
+        // try {
+        //     const response = await axios.post(url, {
+        //         Id_du_formulaire: Id_du_formulaire
+        //     });
 
-        const app = Vue.createApp({
-            data() {
-                return {
-                    listProduits: [],
-                    userid: "",
-                    userPP: "",
-                    username: "",
-                    loading: false,
-                    error: null
-                };
-            },
-            async created() {
-                this.loading = true;
-                try {
-                    const response = await axios.get(url);
-                    this.listProduits = response.data.dto.produits;
-                    this.userid = response.data.userid;
-                    this.userPP = response.data.userPP;
-                    this.username = response.data.username;
-                    //console.log(this.listProduits.dto.produits);
-                } catch (err) {
-                    this.error = err.message;
-                    console.log(this.error);
-                } finally {
-                    this.loading = false;
-                }
-            },
-            components: {
-                'header-component': HeaderComponent,
-                'footer-component': FooterComponent
+        //     //logique spécifique à réaliser du côté client
+
+        //     //Redirection en cas de succès
+        //     window.location.href = 'URL/REDIRECTION';
+        // }
+        // catch (error) {
+        //     console.error('Erreur lors de la connexion :', error);
+        //     // Gérer l'erreur (par exemple, afficher un message à l'utilisateur)
+        // }
+    },
+
+    // post pour le LoginForm
+    async postLogin() {
+        // event.preventDefault();
+
+        var url = API_URL + '/login';
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await axios.post(url, {
+                username: username,
+                password: password
+            });
+
+            //sauvegarde du token
+            if (response.data.dto.authToken) {
+                localStorage.setItem('authToken', response.data.dto.authToken);
             }
-        });
-        app.mount('#app');
+
+            window.location.href = '/produits/liste';
+        } catch (error) {
+            console.error('Erreur lors de la connexion :', error);
+        }
+    }
 }
 
+
+// Fonction principale qui envoi un get à la page actuel
+function get_Vue_data(url, uri = API_URI) {
+    var url = API_URL + url + uri;
+
+    const app = Vue.createApp({
+        data() {
+            return {
+                listProduits: [],
+                produit: {
+                    meta: {}
+                },
+                buyable: true,
+                vendeurUsername: "",
+
+                userid: "",
+                userpp: "",
+                username: "",
+
+                loading: false,
+                error: null
+            };
+        },
+        async created() {
+            this.loading = true;
+            try {
+                const response = await axios.get(url);
+
+                this.buyable = response.data.dto.buyable;
+                this.produit = response.data.dto.produit;
+                this.listProduits = response.data.dto.produits;
+                this.vendeurUsername = response.data.dto.vendeurUsername;
+
+                this.userid = response.data.userid;
+                this.userpp = response.data.userPP;
+                this.username = response.data.username;
+                console.log(response.data);
+            } catch (err) {
+                this.error = err.message;
+                console.log(this.error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        components: {
+            'header-component': HeaderComponent,
+            'footer-component': FooterComponent
+        },
+        methods: postFunctions
+        
+    });
+    app.mount('#app');
+}
+
+// Interceptor de requête pour ajouter le token
+axios.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+// Interceptor pour erreur
+// c'est dégeulasse, normalement c'est l'erreur 401, ici pour toutes les erreurs le token
+// est supprimé
+axios.interceptors.response.use(response => response, error => {
+    if (error.response && error.response.status === 500) {
+        localStorage.removeItem('authToken');
+        location.reload()
+    }
+    return Promise.reject(error);
+});
+
 //Header
-const headerVue = 
-`
+const headerVue =
+    `
 <h1 class="header-title">
     <a href="/produits/liste">
         <span style="--i:0;">G</span>
@@ -66,7 +170,7 @@ const headerVue =
     </div>
     <div v-else>
         <a :href="'/utilisateur/'+username"><button class="btn btn-circle headtool">
-                <img :src="'/images/'+userPP" alt="Image">
+                <img :src="'/images/'+userpp" alt="Image">
             </button></a>
     </div>
     <div class="card-body header-search">
@@ -104,13 +208,13 @@ const headerVue =
 
 `;
 const HeaderComponent = {
-    props: ['userid','userPP','username'],
+    props: ['userid', 'userpp', 'username'],
     template: headerVue
-  };
+};
 // Footer
 
-const footerVue = 
-`
+const footerVue =
+    `
 <div class="container text-white pt-2"> 
         <div class="row">
             <!-- Section About -->  
@@ -135,8 +239,8 @@ const footerVue =
     </div>
 `;
 
-  const FooterComponent = {
+const FooterComponent = {
     template: footerVue
-  };
+};
 
 

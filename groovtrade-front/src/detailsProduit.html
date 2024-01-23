@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Template Application Vue</title>
+    <!--  Vue.js CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- axios pour le fetch plus simple -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Optionnel : jQuery et Popper.js (certains composants de Bootstrap, comme les modales, les nécessitent) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- Feuille de style -->
+    <link rel="stylesheet" href="/css/produits_style.css">
+    <!-- Script -->
+    <script defer src="/js/produits_script.js"></script>
+    <script src="/js/API_scripts.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <!-- Logique vue ici -->
+        <!-- TODO header -->
+        <header-component :username="username" :userpp="userpp" :userid="userid"></header-component>
+        <!-- TODO modal -->
+        <!-- Début du corps -->
+        <div class="container mt-2">
+            <h1><span>{{ produit.meta.nom }}</span></h1>
+            <h2>Détails du Produit</h2>
+
+            <div v-if="buyable">
+                <!-- Update action to use Vue method for submission -->
+                <form @submit.prevent="postAjouterPanier">
+                    <input type="hidden" name="produitId" ref="produitId" :value="produit.id" />
+                    <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
+                    <input type="number" name="nbProduit" ref="nbProduit" value="1" min="1" :max="produit.nbProduit" />
+                    <div>
+                        <textarea name="commentaire" ref="commentaire" id="commentaire-articles"
+                            placeholder="Quelquonque commentaire concernant la ou les commandes" cols="30"
+                            rows="10"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div v-else>
+                <button type="submit" class="btn btn-secondary" disabled>Ajouter au Panier</button>
+                <p style="font-weight: 800; color: rgb(217, 41, 41);">Produit non disponible</p>
+            </div>
+
+            <p><b>Nombre disponible :</b><span>{{ produit.nbProduit }}</span></p>
+
+            <div>
+                <p><b>Vendeur :</b> <a :href="'utilisateur/'+ vendeurUsername +'/profile'">{{ vendeurUsername }}</a></p>
+                <p><b>Description :</b>
+                <pre>{{ produit.description }}</pre>
+                </p>
+                <p><b>Prix :</b> <span>{{ produit.prix + ' €' }}</span></p>
+                <p><b>Type :</b> <span>{{ produit.type }}</span></p>
+
+                <ul>
+                    <li><b>Album :</b> <span>{{ produit.meta.album }}</span></li>
+                    <li><b>Artiste :</b> <span>{{ produit.meta.artiste }}</span></li>
+                    <li><b>Année :</b> <span>{{ produit.meta.annee }}</span></li>
+                    <li><b>Genres :</b> <span>{{ produit.meta.genres }}</span></li>
+                </ul>
+                <div v-if="produit.imgs && produit.imgs.length > 0" id="carouselExampleControls" class="carousel slide"
+                    data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div v-for="(image, index) in produit.imgs"
+                            :class="index === 0 ? 'carousel-item active' : 'carousel-item'">
+                            <img class="d-block w-100" :src="'/images/' + image.path" alt="">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Fonction pour extraire l'ID de l'URL
+        function getIdFromUrl() {
+            const path = window.location.pathname;
+            const pathParts = path.split('/');
+            return pathParts[pathParts.length - 1]; // id à la fin de l'url
+        }
+
+        // Utiliser l'ID extrait pour appeler get_Vue_data()
+        const productId = getIdFromUrl();
+        get_Vue_data('/produits/details/' + productId);
+    </script>
+</body>
+
+</html>

@@ -54,7 +54,7 @@ public class ProduitController {
 
         List<Produit> produits;
 
-        String type = "";
+        // String type = "";
 
         boolean isAdvancedSearch = (artiste != null && !artiste.isEmpty()) ||
                 (nom != null && !nom.isEmpty()) ||

@@ -8,9 +8,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -18,6 +20,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
     //gestion operation sur requete
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -25,17 +29,15 @@ public class SecurityConfig {
         //     auth.antMatchers("/admin").hasRole("ADMIN");
         //     auth.antMatchers("/user").hasRole("USER");
         //     auth.antMatchers("/logout").permitAll();
-        //     auth.antMatchers("/test").permitAll();
-        //     auth.antMatchers("/add").permitAll();
         //     auth.anyRequest().authenticated();
         // }).httpBasic(Customizer.withDefaults())
         // //.oauth2Login(Customizer.withDefaults())
         //         .logout(x->x.logoutUrl("/logout").permitAll())
         //                        .csrf(csrf -> csrf.disable())
-        //         .cors(withDefaults())
-        //         .build();
+
         http
             .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS).permitAll()
             
             .antMatchers("/utilisateur/**").authenticated() // Protéger l'accès à la page de l'utilisateur
             .antMatchers("/api/utilisateur/**").authenticated()
@@ -47,7 +49,8 @@ public class SecurityConfig {
             .logoutSuccessUrl("/produits/liste")
             .permitAll()
             .and()
-            .csrf().disable();
+            .csrf().disable()
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 	}
@@ -66,12 +69,17 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
+                        .allowCredentials(true)
                         .allowedOrigins("http://127.0.0.1:8080",
                                 "http://localhost:8080",
                                 "http://localhost:8081",
                                 "http://127.0.0.1:3000",
                                 "http://localhost:3000"
-                                );
+                                )
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .exposedHeaders("Authorization");;
             }
         };
     }

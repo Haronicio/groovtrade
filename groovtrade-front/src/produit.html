@@ -1,4 +1,3 @@
-<!-- TODO : lien vers extrait de musique, filtrer recherche, non inscrit : catalogue , inscrit : catalogue + panier + historique + ... -->
 <!DOCTYPE html>
 <html>
 
@@ -10,8 +9,8 @@
     <!-- axios pour le fetch plus simple -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Optionnel : jQuery et Popper.js (certains composants de Bootstrap, comme les modales, les nécessitent) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -19,8 +18,8 @@
         crossorigin="anonymous"></script>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
     <!-- Feuille de style -->
@@ -28,15 +27,14 @@
     <!-- Script -->
     <script defer src="/js/produits_script.js"></script>
     <script src="/js/API_scripts.js"></script>
-    <!-- <script defer>get_Vue_data('');</script> -->
-    
+
 </head>
 
 <body>
     <div id="app">
         <!-- Logique vue ici -->
         <!-- TODO header -->
-        <header-component :username="username" :userPP="userPP" :userid="userid"></header-component>
+        <header-component :username="username" :userpp="userpp" :userid="userid"></header-component>
         <!-- TODO modal -->
         <!-- Début du corps -->
         <div class="container mt-2 welcome">
@@ -61,9 +59,10 @@
                     <!-- Début de la grille des produits -->
                     <div class="row">
                         <div v-for="p in listProduits" class="col-md-3 mb-3 product">
-                            <a v-bind:href="'produits/details/'+ p.id" class="text-decoration-none product-link">
+                            <a v-bind:href="'/produits/details/'+ p.id" class="text-decoration-none product-link">
                                 <div v-if="p != null" class="card h-100 border-0">
-                                    <img v-if="p.imgs != null && p.imgs.length > 0" v-bind:src="'/images/'+ p.imgs.at(0).path" alt="Image de couverture"
+                                    <img v-if="p.imgs != null && p.imgs.length > 0"
+                                        v-bind:src="'/images/'+ p.imgs.at(0).path" alt="Image de couverture"
                                         class="card-img-top"></img>
                                     <div class="card-body">
                                         <h5 class="card-title" v-text="p.meta.nom">
