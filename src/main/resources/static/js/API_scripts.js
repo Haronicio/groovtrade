@@ -227,7 +227,7 @@ const footerVue =
             <!-- Section Contact -->
             <div class="col-md-5">
                 <h5 class="text-primary">Contact</h5>
-                <p>DAUVET-DIAKHATE Haron et ZHANG Changrui</p>
+                <p>DAUVET-DIAKHATE Haron</p>
             </div>
 
         </div>
